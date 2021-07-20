@@ -1,0 +1,41 @@
+<% if @featured_posts.any? %>
+<div class="bg-light">
+  <div class="container py-3 py-md-5">
+    <h1 class="fs-2">Featured Posts</h1>
+    <div class="row justify-content-center mt-3 mt-md-5">
+      <% @featured_posts.each do |post| %>
+        <div class="col-sm-12 col-md-6 col-lg-4 mt-2 mb-2">
+          <div class="card h-100" style="max-width: 26rem;">
+            <div class="card-body p-3">
+              <img src="<%= post.cover_image_variant_url(resize_to_fit: [380, 190]) %>" class="card-img-top" alt="...">
+              <a href="<%= post_path(post) %>" class="no-link-styling d-flex flex-column">
+                <h5 class="card-title fw-bolder mt-3"><%= post.title %></h5>
+                <p class="mt-2 fs-7 text-muted">
+                  <img src="<%= post.gravatar(18) %>" alt="Author image" class="gravatar"> <span class="ms-1">By</span> <%= post.author_name %> • <%= distance_of_time_in_words post.reading_time.seconds %> read
+                </p>
+                <p class="card-text mt-2 mb-auto"><%= post.summary %></p>
+              </a>
+            </div>
+            <div class="card-footer">
+              <div class="text-muted fs-7">
+                Posted on <%= friendly_date post.created_at %> in <a href="<%= topic_path(post.topic) %>"><%= post.topic %></a>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+<% end %>
+
+<% if @query.present? %>
+<div class="container pt-md-5 px-2 px-md-5">
+  <h4>Search Results</h4>
+</div>
+<% end %>
+
+<div class="container py-md-5 px-2 px-md-5 d-flex flex-row justify-content-between">
+  <div class="mt-5 d-none d-md-block"><%= render 'topics' %></div>
+  <%= render 'post_list' %>
+</div>

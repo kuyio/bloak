@@ -1,0 +1,23 @@
+<div class="container pt-md-5 px-2 px-md-5">
+  <h2>Search Results</h2>
+  <%= render 'post_list' %>
+
+  <% if @posts.empty? %>
+    <div class="p-5 mb-4 bg-light border rounded-3">
+      <div class="container-fluid py-5">
+        <div class="row">
+          <div class="col-md-6">
+            <h3 class="fw-bold">No Posts Found</h3>
+            <p class="fs-6 mb-3">
+              We couldn't find any posts matching your search for <code><%= @query %></code>. You can try changing your search terms or browse one of the following topics to find the article you are looking for.
+            </p>
+          </div>
+          <div class="col"></div>
+          <div class="col-md-4 bg-white border rounded-3">
+            <%= render "topics" %>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>

@@ -1,0 +1,16 @@
+<div class="w-100 mt-5">
+  <% @posts.each do |post| %>
+    <div class="row post-list-item g-0 overflow-hidden flex-md-row mb-4 h-md-250 position-relative">
+      <div class="col-auto d-none d-lg-block py-4 ps-4">
+        <img src="<%= post.cover_image_variant_url(resize: "400x200^", crop: "200x200+150+0", gravity: "Center") %>" alt="">
+      </div>
+
+      <div class="col p-4 d-flex flex-column position-static">
+        <h4 class="mb-0"><%= post.title %></h4>
+        <div class="mt-1 mb-1 text-muted fs-7"><%= post.author_name %> on <a href="<%= topic_path(post.topic) %>"><%= post.topic %></a> • <%= friendly_date post.published_at %> • <%= distance_of_time_in_words post.reading_time.seconds %> read</div>
+        <p class="card-text mt-3 mb-auto text-muted"><%= post.summary.truncate(170) %></p>
+        <a href="<%= post_path(post) %>" class="stretched-link">Continue reading</a>
+      </div>
+    </div>
+  <% end %>
+</div>

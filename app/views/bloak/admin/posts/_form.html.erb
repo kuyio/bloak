@@ -1,0 +1,100 @@
+<%= form_with(model: [:admin, post]) do |form| %>
+  <% if post.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(post.errors.count, "error") %> prohibited this post from being saved:</h2>
+
+      <ul>
+        <% post.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="row">
+    <div class="col">
+      <div class="field mb-3">
+        <%= form.label :author_name, class: 'form-label' %>
+        <%= form.text_field :author_name, class: 'form-control' %>
+      </div>
+    </div>
+
+    <div class="col">
+      <div class="field mb-3">
+        <%= form.label :author_email, class: 'form-label' %>
+        <%= form.text_field :author_email, class: 'form-control' %>
+      </div>
+    </div>
+    <div class="col">
+      <div class="field mb-3">
+        <%= form.label :published_at, class: 'form-label' %>
+        <%= form.date_field(:published_at, class: 'form-control') %>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col">
+      <div class="field mb-3">
+        <%= form.label :cover_image, class: 'form-label' %>
+        <%= form.file_field :cover_image, class: 'form-control' %>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="row">
+    <div class="col">
+      <div class="field mb-3">
+        <%= form.label :title, class: 'form-label' %>
+        <%= form.text_field :title, class: 'form-control' %>
+        <div class="form-text">A descriptive title for this post should be less than 70 characters long</div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="field mb-3">
+        <%= form.label :topic, class: 'form-label' %>
+        <%= form.text_field :topic, class: 'form-control' %>
+        <div class="form-text">The category / tag for this post. Must be a single tag, but can be multiple words</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="field mb-3">
+    <%= form.label :summary, class: 'form-label' %>
+    <%= form.text_field :summary, class: 'form-control' %>
+    <div class="form-text">A short summary that will be shown as an excerpt on the index page for posts</div>
+  </div>
+
+  <div class="field mb-3">
+    <%= form.label :content, class: 'form-label' %>
+    <%= form.text_area :content, class: 'form-control' %>
+  </div>
+
+  <div class="row">
+    <div class="col">
+      <div class="form-check mt-3 mb-3">
+        <%= form.check_box :published, class: 'form-check-input' %>
+        <%= form.label :published, class: 'form-check-label' %>
+      </div>
+      <div class="form-check mb-3">
+        <%= form.check_box :featured, class: 'form-check-input' %>
+        <%= form.label :featured, class: 'form-check-label' %>
+      </div>
+    </div>
+    <div class="col position-relative">
+      <div class="actions mt-5 position-absolute end-0 me-3">
+        <%= link_to 'Cancel', admin_posts_path, class: 'btn btn-outline-primary' %>
+        <%= form.submit "Save Post", class: 'btn btn-primary' %>
+      </div>
+    </div>
+  </div>
+<% end %>
+
+<script>
+  var simplemde = new SimpleMDE({
+    element: document.getElementById("post_content"),
+    forceSync: true,
+    toolbar: false
+  });
+</script>

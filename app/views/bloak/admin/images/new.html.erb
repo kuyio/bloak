@@ -1,0 +1,21 @@
+<main class="admin">
+  <%= render 'bloak/admin/sidebar' %>
+
+  <div class="container mt-5">
+    <div class="row">
+      <div class="col"><h1>Upload Image</h1></div>
+    </div>
+
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#">Admin</a></li>
+        <li class="breadcrumb-item"><a href="<%= admin_images_path %>">Images</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Upload</li>
+      </ol>
+    </nav>
+
+    <div class="mt-5"></div>
+    <%= render 'form', image: @image %>
+  </div>
+</main>
+

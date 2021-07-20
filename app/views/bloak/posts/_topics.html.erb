@@ -1,0 +1,10 @@
+<div class="topics pe-5 fs-7">
+  <p class="menu-label mt-2">Topics</p>
+    <ul class="menu-list">
+      <li><a href="<%= posts_path %>" class="<%= 'is-active' if @active_tag == 'all' %>">All</a></li>
+      <% @tags.each do |tag| %>
+        <li><a href="<%= topic_path(tag) %>" class="<%= 'is-active' if @active_tag == tag %>"><%= tag.camelcase %></a></li>
+      <% end %>
+    </ul>
+  </p>
+</div>

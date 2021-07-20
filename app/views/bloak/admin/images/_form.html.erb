@@ -1,0 +1,56 @@
+<%= form_with(model: [:admin, image]) do |form| %>
+  <% if image.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(image.errors.count, "error") %> prohibited this image from being saved:</h2>
+
+      <ul>
+        <% image.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+
+
+  <% if image.image_file.attached? %>
+    <h5 class="mt-3 mb-5">Current Image Preview</h5>
+    <img src="<%= image.image_variant_url(resize_to_fit: [400, 400]) %>" alt="">
+
+    <h6 class="mt-5">Replace Image</h6>
+  <% end %>
+
+  <div class="row mt-3">
+    <div class="col">
+      <div class="field mb-3">
+        <%= form.label :image_file, class: 'form-label' %>
+        <%= form.file_field :image_file, class: 'form-control' %>
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-3">
+    <div class="col">
+      <div class="field mb-3">
+        <%= form.label :name, class: 'form-label' %>
+        <%= form.text_field :name, class: 'form-control' %>
+        <div class="form-text">A unique name for this image. Used to embed the image inside blog posts.</div>
+      </div>
+    </div>
+
+    <div class="col">
+      <div class="field mb-3">
+        <%= form.label :alt, class: 'form-label' %>
+        <%= form.text_field :alt, class: 'form-control' %>
+        <div class="form-text">A descriptive title for this image - it will be used for alt-text and aria labels.</div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="actions mt-5">
+    <%= link_to 'Cancel', admin_images_path, class: 'btn btn-outline-primary' %>
+    <%= form.submit "Save Image", class: 'btn btn-primary ms-2' %>
+  </div>
+
+<% end %>

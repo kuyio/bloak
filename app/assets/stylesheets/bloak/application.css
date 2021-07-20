@@ -1,0 +1,62 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS and SCSS file within this directory, lib/assets/stylesheets, vendor/assets/stylesheets,
+ * or any plugin's vendor/assets/stylesheets directory can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the bottom of the
+ * compiled file so the styles you add here take precedence over styles defined in any other CSS/SCSS
+ * files in this directory. Styles in this file should be added after the last require_* statement.
+ * It is generally better to create a new file per style scope.
+ *
+ *= require_tree .
+ *= require_self
+ */
+
+a {
+  text-decoration: none;
+}
+
+.fs-7 {
+  font-size: 14px;
+}
+
+.ml-1 {
+  margin-left: 0.5rem !important;
+}
+
+.py-10 {
+  padding-top: 5rem !important;
+  padding-bottom: 5rem !important;
+}
+
+td {
+  vertical-align: baseline;
+}
+
+main.admin {
+  display: flex;
+  flex-wrap: nowrap;
+  height: 100vh;
+  height: -webkit-fill-available;
+  max-height: 100vh;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+input[type="date"] {
+  display: block;
+
+  -webkit-appearance: textfield;
+  -moz-appearance: textfield;
+  max-height: 2.4em;
+}
+
+.navbar-fixed-top {
+  padding-top: calc(60px + 1rem);
+}
+
+.navbar {
+  border-bottom: 4px solid #f2f2f2;
+}

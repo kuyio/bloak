@@ -1,0 +1,65 @@
+.post-content {
+  font-size: 16px;
+  line-height: 28px;
+  font-weight: 400;
+
+  div.highlight {
+    margin-top: 1.5rem;
+    margin-bottom: 2rem;
+    border: 1px solid #000;
+    border-radius: 5px;
+    overflow: hidden;
+  }
+
+  pre.highlight {
+    padding: 1rem;
+    margin-bottom: unset;
+
+    code {
+      font-family: unset;
+      background-color: unset;
+      padding: unset;
+    }
+  }
+
+  code {
+    font-family: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
+      "Courier New", monospace;
+    background-color: #f5f5f5;
+    padding-left: 0.3rem;
+    padding-right: 0.3rem;
+    padding-top: 0.1rem;
+    padding-bottom: 0.1rem;
+  }
+
+  .title.is-1 {
+    color: #222;
+    font-size: 32px;
+  }
+  .title.is-2 {
+    color: #222;
+    font-size: 28px;
+  }
+  .title.is-3 {
+    color: #222;
+    font-size: 24px;
+  }
+  .title.is-4 {
+    color: #222;
+    font-size: 18px;
+  }
+  .title.is-5 {
+    color: #222;
+    font-size: 16px;
+  }
+
+  img {
+    margin-top: 2rem;
+  }
+}
+
+// Editor
+.CodeMirror {
+  height: 600px !important;
+  font-size: 14px;
+}
