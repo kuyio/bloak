@@ -63,7 +63,7 @@ input[type="date"] {
 }
 
 .navbar-fixed-top {
-  padding-top: calc(60px + 1rem);
+  padding-top: calc(60px + 1rem - 4px);
 }
 
 .navbar {
