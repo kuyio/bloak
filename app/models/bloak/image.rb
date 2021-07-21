@@ -12,6 +12,7 @@ module Bloak
     validates :name, uniqueness: true
     validates :alt, presence: true
     validate :image_validation
+    validate  :correct_image_mime_type
 
     def image_url
       if image_file.attached?
@@ -36,6 +37,12 @@ module Bloak
 
     def image_validation
       errors[:image] << 'is required' unless image_file.attached?
+    end
+
+    def correct_image_mime_type
+      return unless image.attached? && !image.content_type.in?(%w[image/jpeg image/png])
+
+      errors.add(:image, 'must be an image')
     end
   end
 end

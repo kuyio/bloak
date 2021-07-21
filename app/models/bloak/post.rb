@@ -20,9 +20,12 @@ module Bloak
     # Validations
     validates :topic, presence: true
     validates :title, presence: true
+    validates :author_email, presence: true
+    validates :author_name, presence: true
     validates :summary, presence: true
     validates :content, presence: true
-    # validate  :image_validation
+    validate  :image_validation
+    validate  :correct_image_mime_type
 
     # Callbacks
     before_save :update_reading_time
@@ -53,6 +56,8 @@ module Bloak
       else
         "#"
       end
+    rescue ActiveStorage::InvariableError
+      "#"
     end
 
     def update_reading_time(speed = 4.1)
@@ -63,6 +68,12 @@ module Bloak
 
     def image_validation
       errors[:cover_image] << 'is required' unless cover_image.attached?
+    end
+
+    def correct_image_mime_type
+      return unless cover_image.attached? && !cover_image.content_type.in?(%w[image/jpeg image/png])
+
+      errors.add(:cover_image, 'must be an image')
     end
   end
 end
