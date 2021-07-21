@@ -1,7 +1,7 @@
 .post-content {
+  font-weight: 300;
   font-size: 16px;
-  line-height: 28px;
-  font-weight: 400;
+  line-height: 30px;
 
   div.highlight {
     margin-top: 1.5rem;
@@ -32,6 +32,11 @@
     padding-bottom: 0.1rem;
   }
 
+  .title {
+    margin-bottom: 1.5rem;
+    font-weight: 600;
+  }
+
   .title.is-1 {
     color: #222;
     font-size: 32px;
@@ -55,6 +60,14 @@
 
   img {
     margin-top: 2rem;
+  }
+
+  p {
+    font-style: normal;
+    color: rgb(91, 105, 135);
+    strong {
+      font-weight: 600;
+    }
   }
 }
 
