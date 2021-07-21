@@ -14,12 +14,21 @@
  *= require_self
  */
 
+body {
+  font-size: 15px;
+}
+
 a {
   text-decoration: none;
 }
 
 .fs-7 {
   font-size: 14px;
+}
+
+.fs-8 {
+  font-size: 12px;
+  font-weight: 300;
 }
 
 .ml-1 {
@@ -59,4 +68,16 @@ input[type="date"] {
 
 .navbar {
   border-bottom: 4px solid #f2f2f2;
+}
+
+.nav-link.active {
+  color: white !important;
+}
+
+.admin-cover-image-preview {
+  height: 30px;
+}
+
+.feature-cover-image {
+  height: 190px;
 }

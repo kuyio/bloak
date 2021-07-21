@@ -1,0 +1,58 @@
+<!--
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark" aria-label="Admin Navigation">
+  <div class="container-fluid">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbar">
+      <ul class="navbar-nav">
+        <li class="nav-item me-3">
+          <a class="nav-link active" aria-current="page" href="<%= admin_posts_path %>">
+            <span class="d-inline-block"><img src="<%= asset_path('logo.png') %>" alt="Site logo" class="mb-1" style="max-height: 24px;"></span>
+            <span class="d-inline-block"><%= Bloak.site_name %> Admin</span>
+          </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link <%= 'active' if controller.controller_name == 'posts'%>" href="<%= admin_posts_path %>">
+              Posts
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link <%= 'active' if controller.controller_name == 'images'%>" href="<%= admin_images_path %>">
+            Images
+          </a>
+          </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+ -->
+
+ <header>
+  <div class="px-3 py-2 bg-dark text-white">
+    <div class="container">
+      <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+        <a href="/" class="d-flex align-items-center my-2 my-lg-0 me-lg-auto text-white text-decoration-none">
+          <span class="d-inline-block"><img src="<%= asset_path('logo.png') %>" alt="Site logo" class="" style="max-height: 32px;"></span>
+          <span class="d-inline-block ms-2 fs-5"><%= Bloak.site_name %> Admin</span>
+        </a>
+
+        <ul class="nav col-12 col-lg-auto my-2 justify-content-center my-md-0 text-small">
+          <li class="mx-2">
+            <a class="nav-link text-muted <%= 'active' if controller.controller_name == 'posts'%>" href="<%= admin_posts_path %>">
+              <div class="bi d-block mx-auto mb-0 text-center fs-5" width="24" height="24"><i class="far fa-file"></i></div>
+              Posts
+            </a>
+          </li>
+          <li class="mx-2">
+            <a class="nav-link text-muted <%= 'active' if controller.controller_name == 'images'%>" href="<%= admin_images_path %>">
+              <div class="bi d-block mx-auto mb-0 text-center fs-5" width="24" height="24"><i class="far fa-image"></i></div>
+              Images
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</header>

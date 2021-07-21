@@ -1,5 +1,18 @@
 <div class="container mt-5">
-  <h1 class="mb-5">New Post</h1>
+  <div class="row">
+    <div class="col"><h1>New Post</h1></div>
+  </div>
 
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="#">Admin</a></li>
+      <li class="breadcrumb-item"><a href="<%= admin_posts_path %>">Posts</a></li>
+    <li class="breadcrumb-item active" aria-current="page">New</li>
+    </ol>
+  </nav>
+
+  <div class="mt-5"></div>
   <%= render 'form', post: @post %>
+
 </div>
+
