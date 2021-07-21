@@ -6,7 +6,7 @@ Bloak::Engine.routes.draw do
   post 'search', to: 'posts#search', as: 'search'
 
   namespace :admin do
-    root 'admin#index'
+    get '/', to: "admin#index", as: "admin"
 
     resources :posts
     post 'posts/search', to: 'posts#search'

@@ -7,6 +7,8 @@ require "friendly_id"
 
 module Bloak
   self.mattr_accessor :site_name
+  self.mattr_accessor :admin_user
+  self.mattr_accessor :admin_password
 
   self.site_name = "The Blog"
 

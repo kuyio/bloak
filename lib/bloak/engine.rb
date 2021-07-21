@@ -8,5 +8,11 @@ module Bloak
     initializer "engine_name.assets.precompile" do |app|
       app.config.assets.precompile << "bloak_manifest.js"
     end
+
+    config.to_prepare do
+      Dir.glob(Rails.root + "app/decorators/**/*_decorator*.rb").each do |c|
+        require_dependency(c)
+      end
+    end
   end
 end
