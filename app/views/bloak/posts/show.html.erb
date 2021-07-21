@@ -6,15 +6,15 @@
   <div class="mt-5 d-none d-md-block"><%= render 'topics' %></div>
   <div class="post p-1 p-md-5">
     <h1 class="fs-1 fw-bold"><%= @post.title %></h1>
-    <p class="fs-7 fw-light text-muted">
+    <p class="fs-6 fw-light text-muted">
       Posted
       <%= friendly_date @post.created_at %>
       in
       <a href="<%= topic_path(@post.topic) %>"><%= @post.topic %></a>
     </p>
     <img src="<%= @post.cover_image_url %>" class="img-fluid" alt="">
-    <p class="mt-5 fs-7 text-muted">
-      <img src="<%= @post.gravatar(32) %>" alt="Author image" class="gravatar"> By <%= @post.author_name %> • <%= distance_of_time_in_words @post.reading_time.seconds %> read
+    <p class="mt-5 fs-6 text-muted">
+      <img src="<%= @post.gravatar(32) %>" alt="Author image" class="gravatar me-2"> By <%= @post.author_name %> • <%= distance_of_time_in_words @post.reading_time.seconds %> read
     </p>
     <div class="post-content mt-5">
       <%= @post.render %>

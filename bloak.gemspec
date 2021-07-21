@@ -29,5 +29,5 @@ Gem::Specification.new do |spec|
   spec.add_dependency "redcarpet", "~> 3.5.1"
   spec.add_dependency "rouge", "~> 3.26.0"
   spec.add_dependency "pg_search", "~> 2.3.5"
-
+  spec.add_dependency "pagy", "~> 3.5"
 end

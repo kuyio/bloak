@@ -7,15 +7,15 @@ module Bloak
 
       # GET /images
       def index
-        @images = Image.order(created_at: :desc)
+        @pagy, @images = pagy(Image.order(created_at: :desc), items: 20)
       end
 
       def search
         @query = params[:query]
         if @query.present?
-          @images = Image.search_by_name(@query).order(created_at: :desc)
+          @pagy, @images = pagy(Image.search_by_name(@query).order(created_at: :desc), items: 20)
         else
-          @images = Image.order(created_at: :desc)
+          @pagy, @images = pagy(Image.order(created_at: :desc), items: 20)
         end
 
         render :index

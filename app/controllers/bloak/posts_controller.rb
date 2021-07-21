@@ -7,7 +7,7 @@ module Bloak
     # GET /posts
     def index
       @featured_posts = Post.published.featured.limit(3).order(published_at: :desc)
-      @posts = Post.published.order(published_at: :desc)
+      @pagy, @posts = pagy(Post.published.order(published_at: :desc), items: 12)
       @tags = Post.published.distinct.pluck(:topic).sort
       @active_tag = 'all'
     end
@@ -15,7 +15,7 @@ module Bloak
     def topic
       @featured_posts = Post.published.featured.limit(3).order(published_at: :desc)
       @active_tag = params[:topic]
-      @posts = Post.published.tagged(@active_tag).order(published_at: :desc)
+      @pagy, @posts = pagy(Post.published.tagged(@active_tag).order(published_at: :desc), items: 12)
       @tags = Post.published.distinct.pluck(:topic).sort
 
       render :index
@@ -25,7 +25,7 @@ module Bloak
       @query = params[:query]
 
       @featured_posts = []
-      @posts = Post.published.search_by_content(@query).order(published_at: :desc)
+      @pagy, @posts = pagy(Post.published.search_by_content(@query).order(published_at: :desc), items: 12)
       @tags = Post.published.distinct.pluck(:topic).sort
       @active_tag = ''
     end

@@ -7,15 +7,15 @@ module Bloak
 
       # GET /posts
       def index
-        @posts = Post.order(published_at: :desc)
+        @pagy, @posts = pagy(Post.order(published_at: :desc), items: 20)
       end
 
       def search
         @query = params[:query]
         if @query.present?
-          @posts = Post.search_by_content(@query).order(published_at: :desc)
+          @pagy, @posts = pagy(Post.search_by_content(@query).order(published_at: :desc), items: 20)
         else
-          @posts = Post.order(published_at: :desc)
+          @pagy, @posts = pagy(Post.order(published_at: :desc), items: 20)
         end
 
         render :index

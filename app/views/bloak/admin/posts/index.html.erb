@@ -60,12 +60,12 @@
       <% @posts.each do |post| %>
         <tr>
           <td><%= lni_checkmark post.published? %></td>
-          <td><%= lni_checkmark post.featured? %></td>
+          <td><%= lni_featured post.featured? %></td>
           <td><img src="<%= post.cover_image_variant_url(resize_to_fit: [60, 60]) %>" alt=""></td>
           <td><a href="<%= edit_admin_post_path(post) %>"><%= post.title.truncate(70) %></a></td>
           <td><%= post.topic %></td>
           <td><%= post.author_name %></td>
-          <td><%= post.updated_at.to_s(:friendly_short) %></td>
+          <td><%= post.published_at.to_s(:friendly_short) %></td>
           <td>
             <div class="d-flex flex-row">
               <div class="dropdown ml-1">
@@ -87,5 +87,9 @@
       <% end %>
     </tbody>
   </table>
+
+  <div class="mt-5">
+    <%== pagy_bootstrap_nav(@pagy) if @pagy.pages > 1 %>
+  </div>
 
 </div>

@@ -1,8 +1,6 @@
 <%= form_with(model: [:admin, post]) do |form| %>
   <% if post.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(post.errors.count, "error") %> prohibited this post from being saved:</h2>
-
+    <div id="alert" class="alert alert-danger mb-5" role="alert">
       <ul>
         <% post.errors.each do |error| %>
           <li><%= error.full_message %></li>
@@ -28,7 +26,7 @@
     <div class="col">
       <div class="field mb-3">
         <%= form.label :published_at, class: 'form-label' %>
-        <%= form.date_field(:published_at, class: 'form-control') %>
+        <%= form.date_field(:published_at, class: 'form-control', value: DateTime.now.to_s(:friendly_short)) %>
       </div>
     </div>
   </div>
@@ -37,11 +35,13 @@
     <div class="col">
       <div class="field mb-3">
         <%= form.label :cover_image, class: 'form-label' %>
-        <%= form.file_field :cover_image, class: 'form-control' %>
+        <%= form.file_field :cover_image, class: 'form-control', direct_upload: true %>
+        <% if post.cover_image.attached? %>
+          <%= link_to post.cover_image.filename, Rails.application.routes.url_helpers.rails_blob_path(post.cover_image, disposition: :inline, only_path: true) %>
+        <% end %>
       </div>
     </div>
   </div>
-
 
   <div class="row">
     <div class="col">
@@ -62,7 +62,7 @@
 
   <div class="field mb-3">
     <%= form.label :summary, class: 'form-label' %>
-    <%= form.text_field :summary, class: 'form-control' %>
+    <%= form.text_field :summary, class: 'form-control', accept: 'image/png,image/gif,image/jpeg' %>
     <div class="form-text">A short summary that will be shown as an excerpt on the index page for posts</div>
   </div>
 
@@ -71,19 +71,21 @@
     <%= form.text_area :content, class: 'form-control' %>
   </div>
 
-  <div class="row">
-    <div class="col">
-      <div class="form-check mt-3 mb-3">
+  <div class="row mt-5">
+    <div class="col-2">
+      <div class="form-check">
         <%= form.check_box :published, class: 'form-check-input' %>
         <%= form.label :published, class: 'form-check-label' %>
       </div>
-      <div class="form-check mb-3">
+    </div>
+    <div class="col-2">
+      <div class="form-check">
         <%= form.check_box :featured, class: 'form-check-input' %>
         <%= form.label :featured, class: 'form-check-label' %>
       </div>
     </div>
     <div class="col position-relative">
-      <div class="actions mt-5 position-absolute end-0 me-3">
+      <div class="actions position-absolute end-0 me-3">
         <%= link_to 'Cancel', admin_posts_path, class: 'btn btn-outline-primary' %>
         <%= form.submit "Save Post", class: 'btn btn-primary' %>
       </div>
@@ -95,6 +97,6 @@
   var simplemde = new SimpleMDE({
     element: document.getElementById("post_content"),
     forceSync: true,
-    toolbar: false
+    toolbar: false,
   });
 </script>

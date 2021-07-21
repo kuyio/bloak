@@ -1,5 +1,7 @@
 module Bloak
   module ApplicationHelper
+    include Pagy::Frontend
+
     def page_title
       if content_for?(:title)
         # allows the title to be set in the view by using t(".title")
@@ -18,6 +20,14 @@ module Bloak
         tag.i(class: 'fas fa-check-circle text-success')
       else
         tag.i(class: 'far fa-circle text-secondary')
+      end
+    end
+
+    def lni_featured(value)
+      if value
+        tag.i(class: 'fas fa-star text-warning')
+      else
+        tag.i(class: 'far fa-star text-light')
       end
     end
   end
