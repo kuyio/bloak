@@ -2,14 +2,19 @@
   <% @posts.each do |post| %>
     <div class="row post-list-item g-0 overflow-hidden flex-md-row mb-4 h-md-250 position-relative">
       <div class="col-auto d-none d-lg-block py-4 ps-4">
-        <img src="<%= post.cover_image_variant_url(resize: "400x200^", crop: "200x200+150+0", gravity: "Center") %>" alt="">
+        <img src="<%= post.cover_image_variant_url(resize: "300x150^", crop: "150x150+75+0", gravity: "Center") %>" alt="Cover image for post" class="rounded-3 mt-1">
       </div>
 
       <div class="col p-4 d-flex flex-column position-static">
-        <h4 class="mb-0"><%= post.title %></h4>
-        <div class="mt-1 mb-1 text-muted fs-7"><%= post.author_name %> on <a href="<%= topic_path(post.topic) %>"><%= post.topic %></a> • <%= friendly_date post.published_at %> • <%= distance_of_time_in_words post.reading_time.seconds %> read</div>
-        <p class="card-text mt-3 mb-auto text-muted"><%= post.summary.truncate(170) %></p>
-        <a href="<%= post_path(post) %>" class="stretched-link">Continue reading</a>
+        <h4 class="mb-0 fw-bold"><%= post.title %></h4>
+        <div class="mt-3 mb-1 text-muted fs-8">
+          <img src="<%= post.gravatar(18) %>" alt="Author image" class="gravatar">
+          <%= post.author_name %> on <a href="<%= topic_path(post.topic) %>"><%= post.topic %></a> • <%= friendly_date post.published_at %> • <%= distance_of_time_in_words post.reading_time.seconds %> read
+        </div>
+        <p class="card-text mt-3 mb-auto text-muted">
+          <a href="<%= post_path(post) %>" class="stretched-link text-muted"><%= post.summary.truncate(200) %></a>
+        </p>
+
       </div>
     </div>
   <% end %>

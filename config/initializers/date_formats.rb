@@ -1,4 +1,5 @@
 Time::DATE_FORMATS.merge!(
+  friendly_short:    '%Y-%m-%d',
   datetime_military: '%Y-%m-%d %H:%M',
   datetime:          '%Y-%m-%d %I:%M%P',
   time:              '%I:%M%P',

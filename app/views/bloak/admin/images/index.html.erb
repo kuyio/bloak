@@ -1,93 +1,87 @@
 <% content_for :title, 'Admin-Posts' %>
+<div class="container mt-5">
+  <div class="row">
+    <div class="col"><h1>List Images</h1></div>
 
-<main class="admin">
-  <%= render 'bloak/admin/sidebar' %>
-
-  <div class="container mt-5">
-    <div class="row">
-      <div class="col"><h1>List Images</h1></div>
-
-      <div class="col-3">
-        <%= form_with(url: admin_images_search_path ,method: :post, local: true, class: 'form mt-2') do |form| %>
-          <div class="input-group">
-            <%= form.text_field :query,
-              class: 'form-control',
-              placeholder: 'Search for images...',
-              value: @query,
-              aria: {label: "Image name or alt text", describedby: "button-addon2"},
-              style:"max-width: 20em;"
-            %>
-            <% if @query.present? %>
-              <a href="<%= admin_images_path %>" class="btn btn-primary">
-                <i class="fas fa-times"></i>
-              </a>
-            <% else %>
-              <%= button_tag class: 'btn btn-primary' do %>
-                <i class="fas fa-search"></i>
-              <% end %>
+    <div class="col-3">
+      <%= form_with(url: admin_images_search_path ,method: :post, local: true, class: 'form mt-2') do |form| %>
+        <div class="input-group">
+          <%= form.text_field :query,
+            class: 'form-control',
+            placeholder: 'Search for Images...',
+            value: @query,
+            aria: {label: "Find image by name or alt text"},
+            style:"max-width: 20em;"
+          %>
+          <% if @query.present? %>
+            <a href="<%= admin_images_path %>" class="btn btn-danger">
+              <i class="fas fa-times"></i>
+            </a>
+          <% else %>
+            <%= button_tag class: 'btn btn-primary' do %>
+              <i class="fas fa-search"></i>
             <% end %>
-          </div>
-        <% end %>
-      </div>
-      <div class="col-1 position-relative">
-
-        <a href="<%= new_admin_image_path %>" class="btn btn-secondary position-absolute top-50 end-0 translate-middle-y">
-          <i class="fas fa-plus"></i>
-        </a>
-
-      </div>
-
+          <% end %>
+        </div>
+      <% end %>
     </div>
 
-    <nav aria-label="breadcrumb">
-      <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="#">Admin</a></li>
-      <li class="breadcrumb-item active" aria-current="page">Images</li>
-      </ol>
-    </nav>
-
-    <p id="notice"><%= notice %></p>
-
-    <table class="table mt-5">
-      <thead>
-        <tr>
-          <th>Preview</th>
-          <th>Name</th>
-          <th>Alt Text</th>
-          <th>Created</th>
-          <th>Last Updated</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <% @images.each do |image| %>
-          <tr>
-            <td><img src="<%= image.image_variant_url(resize_to_fit: [60, 60]) %>" alt=""></td>
-            <td><a href="<%= edit_admin_image_path(image) %>"><%= image.name.truncate(70) %></a></td>
-            <td><%= image.alt %></td>
-            <td><%= friendly_date image.created_at %></td>
-            <td><%= friendly_date image.updated_at %></td>
-            <td>
-              <div class="d-flex flex-row">
-                <div class="dropdown ml-1">
-                  <button class="btn btn-sm btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                    More
-                  </button>
-                  <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                    <li><a href="<%= edit_admin_image_path(image) %>" class="dropdown-item btn-primary">Edit</a></li>
-
-                    <li><a class="dropdown-item" href="<%= admin_image_path(image) %>">Preview</a></li>
-                    <li>
-                      <%= link_to "Delete", admin_image_path(image), method: :delete, class:'dropdown-item text-danger', data: {confirm: "Are you sure?"} %>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </td>
-          </tr>
-        <% end %>
-      </tbody>
-    </table>
+    <div class="col-1 text-center">
+      <a href="<%= new_admin_image_path %>" class="btn btn-primary mt-2">
+        <i class="fas fa-plus"></i>
+      </a>
+    </div>
 
   </div>
-</main>
+
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="#">Admin</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Images</li>
+    </ol>
+  </nav>
+
+  <p id="notice"><%= notice %></p>
+
+  <table class="table mt-5">
+    <thead>
+      <tr>
+        <th>Preview</th>
+        <th>Name</th>
+        <th>Alt Text</th>
+        <th>Created</th>
+        <th>Last Updated</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @images.each do |image| %>
+        <tr>
+          <td><img src="<%= image.image_variant_url(resize_to_fit: [60, 60]) %>" alt="post cover image preview" class="admin-cover-image-preview"></td>
+          <td><a href="<%= edit_admin_image_path(image) %>"><%= image.name.truncate(70) %></a></td>
+          <td><%= image.alt %></td>
+          <td><%= friendly_date image.created_at %></td>
+          <td><%= friendly_date image.updated_at %></td>
+          <td>
+            <div class="d-flex flex-row">
+              <div class="dropdown ml-1">
+                <button class="btn btn-sm btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                  More
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                  <li><a href="<%= edit_admin_image_path(image) %>" class="dropdown-item btn-primary">Edit</a></li>
+
+                  <li><a class="dropdown-item" href="<%= admin_image_path(image) %>">Preview</a></li>
+                  <li>
+                    <%= link_to "Delete", admin_image_path(image), method: :delete, class:'dropdown-item text-danger', data: {confirm: "Are you sure?"} %>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+</div>

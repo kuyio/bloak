@@ -1,22 +1,18 @@
-<main class="admin">
-  <%= render 'bloak/admin/sidebar' %>
+<div class="container mt-5">
+  <div class="row">
+    <div class="col"><h1>Editing Post</h1></div>
+  </div>
 
-  <div class="container mt-5">
-    <div class="row">
-      <div class="col"><h1>Editing Posts</h1></div>
-    </div>
-
-    <nav aria-label="breadcrumb">
-      <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="#">Admin</a></li>
-        <li class="breadcrumb-item"><a href="<%= admin_posts_path %>">Posts</a></li>
-      <li class="breadcrumb-item active" aria-current="page">Edit</li>
-      </ol>
-    </nav>
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="#">Admin</a></li>
+      <li class="breadcrumb-item"><a href="<%= admin_posts_path %>">Posts</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Edit</li>
+    </ol>
+  </nav>
 
   <div class="mt-5"></div>
   <%= render 'form', post: @post %>
 
-  </div>
-</main>
+</div>
 

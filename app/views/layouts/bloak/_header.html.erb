@@ -2,9 +2,9 @@
   <!-- Fixed navbar -->
   <nav class="navbar navbar-expand-md navbar-light fixed-top bg-white py-3">
     <div class="container-fluid">
-      <a class="navbar-brand" href="<%= root_path %>">
-        <%= image_tag("logo.png", height: 24, class: "d-inline-block align-text-top") %>
-        <span><%= Bloak.site_name %></span>
+      <a href="<%= root_path %>" class="d-flex align-items-center my-2 my-lg-0 me-lg-auto text-dark text-decoration-none">
+        <span class="d-inline-block"><img src="<%= asset_path('logo.png') %>" alt="Site logo" class="" style="max-height: 24px;"></span>
+        <span class="d-inline-block ms-2 fs-5"><%= Bloak.site_name %></span>
       </a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>

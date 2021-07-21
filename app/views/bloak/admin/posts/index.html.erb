@@ -1,98 +1,91 @@
 <% content_for :title, 'Admin-Posts' %>
 
-<main class="admin">
-  <%= render 'bloak/admin/sidebar' %>
+<div class="container mt-5">
+  <div class="row">
+    <div class="col"><h1>List Posts</h1></div>
 
-  <div class="container mt-5">
-    <div class="row">
-      <div class="col"><h1>List Posts</h1></div>
-
-      <div class="col-3">
-        <%= form_with(url: admin_posts_search_path ,method: :post, local: true, class: 'form mt-2') do |form| %>
-          <div class="input-group">
-            <%= form.text_field :query,
-              class: 'form-control',
-              placeholder: 'Search for posts...',
-              value: @query,
-              aria: {label: "Article title or content", describedby: "button-addon2"},
-              style:"max-width: 20em;"
-            %>
-            <% if @query.present? %>
-              <a href="<%= admin_posts_path %>" class="btn btn-primary">
-                <i class="fas fa-times"></i>
-              </a>
-            <% else %>
-              <%= button_tag class: 'btn btn-primary' do %>
-                <i class="fas fa-search"></i>
-              <% end %>
+    <div class="col-3">
+      <%= form_with(url: admin_posts_search_path ,method: :post, local: true, class: 'form mt-2') do |form| %>
+        <div class="input-group">
+          <%= form.text_field :query,
+            class: 'form-control',
+            placeholder: 'Search for Posts...',
+            value: @query,
+            aria: {label: "Search for posts by title or content"},
+            style:"max-width: 20em;"
+          %>
+          <% if @query.present? %>
+            <a href="<%= admin_posts_path %>" class="btn btn-danger">
+              <i class="fas fa-times"></i>
+            </a>
+          <% else %>
+            <%= button_tag class: 'btn btn-primary' do %>
+              <i class="fas fa-search"></i>
             <% end %>
-          </div>
-        <% end %>
-      </div>
-      <div class="col-1 position-relative">
-
-        <a href="<%= new_admin_post_path %>" class="btn btn-secondary position-absolute top-50 end-0 translate-middle-y">
-          <i class="fas fa-plus"></i>
-        </a>
-
-      </div>
-
+          <% end %>
+        </div>
+      <% end %>
     </div>
-
-    <nav aria-label="breadcrumb">
-      <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="#">Admin</a></li>
-      <li class="breadcrumb-item active" aria-current="page">Posts</li>
-      </ol>
-    </nav>
-
-    <p id="notice"><%= notice %></p>
-
-
-    <table class="table mt-5">
-      <thead>
-        <tr>
-          <th>P</th>
-          <th>F</th>
-          <th>Cover</th>
-          <th>Title</th>
-          <th>Topic</th>
-          <th>Author</th>
-          <th>Publish Date</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <% @posts.each do |post| %>
-          <tr>
-            <td><%= lni_checkmark post.published? %></td>
-            <td><%= lni_checkmark post.featured? %></td>
-            <td><img src="<%= post.cover_image_variant_url(resize_to_fit: [60, 60]) %>" alt=""></td>
-            <td><a href="<%= edit_admin_post_path(post) %>"><%= post.title.truncate(70) %></a></td>
-            <td><%= post.topic %></td>
-            <td><%= post.author_name %></td>
-            <td><%= friendly_date post.updated_at %></td>
-            <td>
-              <div class="d-flex flex-row">
-                <div class="dropdown ml-1">
-                  <button class="btn btn-sm btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                    More
-                  </button>
-                  <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                    <li><a href="<%= edit_admin_post_path(post) %>" class="dropdown-item btn-primary">Edit</a></li>
-
-                    <li><a class="dropdown-item" href="<%= post_path(post) %>">Preview</a></li>
-                    <li>
-                      <%= link_to "Delete", admin_post_path(post), method: :delete, class:'dropdown-item text-danger', data: {confirm: "Are you sure?"} %>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </td>
-          </tr>
-        <% end %>
-      </tbody>
-    </table>
-
+    <div class="col-1 text-center">
+      <a href="<%= new_admin_post_path %>" class="btn btn-primary mt-2">
+        <i class="fas fa-plus"></i>
+      </a>
+    </div>
   </div>
-</main>
+
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="#">Admin</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Posts</li>
+    </ol>
+  </nav>
+
+  <p id="notice"><%= notice %></p>
+
+
+  <table class="table mt-5">
+    <thead>
+      <tr>
+        <th><i class="far fa-toggle-on"></i></th>
+        <th><i class="fas fa-star"></i></th>
+        <th>Cover</th>
+        <th>Title</th>
+        <th>Topic</th>
+        <th>Author</th>
+        <th>Published</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @posts.each do |post| %>
+        <tr>
+          <td><%= lni_checkmark post.published? %></td>
+          <td><%= lni_checkmark post.featured? %></td>
+          <td><img src="<%= post.cover_image_variant_url(resize_to_fit: [60, 60]) %>" alt=""></td>
+          <td><a href="<%= edit_admin_post_path(post) %>"><%= post.title.truncate(70) %></a></td>
+          <td><%= post.topic %></td>
+          <td><%= post.author_name %></td>
+          <td><%= post.updated_at.to_s(:friendly_short) %></td>
+          <td>
+            <div class="d-flex flex-row">
+              <div class="dropdown ml-1">
+                <button class="btn btn-sm btn-light dropdown-toggle" type="button" id="dropDownMenuMore" data-bs-toggle="dropdown" aria-expanded="false">
+                  More
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropDownMenuMore">
+                  <li><a href="<%= edit_admin_post_path(post) %>" class="dropdown-item btn-primary">Edit</a></li>
+
+                  <li><a class="dropdown-item" href="<%= post_path(post) %>">Preview</a></li>
+                  <li>
+                    <%= link_to "Delete", admin_post_path(post), method: :delete, class:'dropdown-item text-danger', data: {confirm: "Are you sure?"} %>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+</div>
