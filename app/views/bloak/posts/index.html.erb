@@ -1,5 +1,5 @@
 <% if @featured_posts.any? %>
-<div class="bg-light">
+<div class="">
   <div class="container py-3 py-md-5">
     <div class="row justify-content-center pt-3 pb-3">
       <% @featured_posts.each do |post| %>
@@ -32,7 +32,7 @@
 </div>
 <% end %>
 
-<div class="container py-md-5 px-2 px-md-5 d-flex flex-row justify-content-between">
+<div class="container py-md-0 px-2 px-md-5 d-flex flex-row justify-content-between">
   <div class="mt-5 d-none d-md-block"><%= render 'topics' %></div>
   <%= render 'post_list' %>
 </div>

@@ -2,9 +2,11 @@
 
 <div class="container mt-5 mb-5">
 
-<div class="container mt-3 d-flex flex-row justify-content-between">
-  <div class="mt-5 d-none d-md-block"><%= render 'topics' %></div>
-  <div class="post p-1 p-md-5">
+<div class="container mt-3 d-flex flex-row justify-content-around">
+  <div class="mt-5 d-none d-md-block">
+    <%= render 'topics' %>
+  </div>
+  <div class="post p-1 p-md-5 bg-white rounded-3 shadow">
     <h1 class="fs-1 fw-bold"><%= @post.title %></h1>
     <p class="fs-6 fw-light text-muted">
       Posted
