@@ -7,8 +7,13 @@ module MarkdownRenderer
   class CustomHTML < Redcarpet::Render::HTML
     include Rouge::Plugins::Redcarpet
 
+    def preprocess(document)
+      @document = document
+    end
+
     def header(text, level)
-      %(<h1 class="title is-#{level} mt-5">#{text}</h1>)
+      stripped = text.downcase.gsub(/[^0-9a-z]/i, '-').delete_suffix('-')
+      %(<h1 class="title is-#{level} mt-5" id="#{stripped}">#{text}</h1>)
     end
 
     def paragraph(text)
@@ -29,6 +34,8 @@ module MarkdownRenderer
           quote_box(t[2])
       elsif t = text.match(/(!media)\[(.+)\]/)
           media_tag(t[2].strip)
+      elsif t = text.match(/(!toc)(\[(.+)\])?/)
+          table_of_contents(t[2]&.strip)
       else
         %(<p>#{text}</p>)
       end
@@ -36,8 +43,8 @@ module MarkdownRenderer
 
     def quote_box(content)
       result = <<~HTML
-        <blockquote class="has-background-white-dark">
-          <p>
+        <blockquote class="alert alert-secondary">
+          <p class="text-dark">
             #{content}
           </p>
         </blockquote>
@@ -47,9 +54,9 @@ module MarkdownRenderer
 
     def info_box(content)
       result = <<~HTML
-        <blockquote class="has-background-info-light">
-          <p>
-            <span class="icon has-text-info"><i class="fa fa-info-circle"></i></span>
+        <blockquote class="alert alert-info">
+        <p class="text-dark">
+            <span class="icon text-info"><i class="fa fa-info-circle"></i></span>
             #{content}
           </p>
         </blockquote>
@@ -59,9 +66,9 @@ module MarkdownRenderer
 
     def warning_box(content)
       result = <<~HTML
-        <blockquote class="has-background-warning-light">
-          <p>
-            <span class="icon has-text-warning"><i class="fa fa-exclamation-triangle"></i></span>
+        <blockquote class="alert alert-warning">
+          <p class="text-dark">
+            <span class="icon text-warning"><i class="fa fa-exclamation-triangle"></i></span>
             <strong>Note:</strong> #{content.strip}
           </p>
         </blockquote>
@@ -71,9 +78,9 @@ module MarkdownRenderer
 
     def danger_box(content)
       result = <<~HTML
-        <blockquote class="has-background-danger-light">
-          <p>
-            <span class="icon has-text-danger"><i class="fa fa-exclamation-circle"></i></span>
+        <blockquote class="alert alert-danger">
+        <p class="text-danger">
+            <span class="icon text-danger"><i class="fa fa-exclamation-circle"></i></span>
             <strong>Important:</strong> #{content}
           </p>
         </blockquote>
@@ -98,6 +105,19 @@ module MarkdownRenderer
 
       result
     end
+
+    def table_of_contents(label)
+      label = "Table of Contents" if label.blank?
+      toc_render = Redcarpet::Render::HTML_TOC.new(nesting_level: 2..2)
+      parser     = Redcarpet::Markdown.new(toc_render)
+
+      <<~HTML
+        <div class="table-of-contents">
+          <h4 class="toc-title">#{label}</h4>
+          #{parser.render(@document)}
+        </div>
+      HTML
+    end
   end
 
   def self.md_to_html(content, assigns = {})
@@ -113,6 +133,7 @@ module MarkdownRenderer
       no_intra_emphasis: true,
       space_after_headers: false,
       highlight: true,
+      with_toc_data: true
     ).render(src).html_safe
   end
 end

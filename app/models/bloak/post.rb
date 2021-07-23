@@ -30,8 +30,8 @@ module Bloak
     # Callbacks
     before_save :update_reading_time
 
-    def render
-      ::MarkdownRenderer.md_to_html(content)
+    def render(assigns = {})
+      ::MarkdownRenderer.md_to_html(content, assigns)
     end
 
     def gravatar(size = 32)

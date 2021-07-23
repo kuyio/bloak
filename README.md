@@ -49,6 +49,31 @@ end
 
 **Note:** Assinging a `nil` or empty value to `admin_user` or `admin_password` will disable authentication for the admin routes of the engine.
 
+## The Admin Interface
+
+You can access the admin interface under the `/admin` sub-path of your engine mount, for example, if you mounted the engine at `/blog` the admin UI is available at `/blog/admin`. The Admin UI is secured by HTTP Basic Auth if both `admin_user` and `admin_password` are set in the `Bloak` configuration (see above).
+
+Within the admin UI, you can upload images for embedding within Blog posts, as well as write and manage Blog posts.
+
+## Writing Posts
+
+Post content can be written in GitHub-flavoured markdown syntax with a few custom Markdown tag extensions. Additionally we support `HTML` tags and `ERB` tags (see below).
+
+### Custom Markdown Tags
+
+The `Bloak` Engine includes a custom Markdown render, that introduces a number of additional tags beyond GitHub-flavoured Markdown.
+
+- `!! text` renders a danger alert box with icon and the text given in the paragraph
+- `!w text` renders a warning alert box with icon and the text given in the paragraph
+- `!i text` renders an info box with icon and the text given in the paragraph
+- `!q text` renders a quote box with icon and the text given in the paragraph
+- `!media[name]` inserts an Image (make sure to upload and name it) identified by its unique name
+- `!toc` or `!toc[label]` inserts a level-1 table of contents at this position, with an optional `label`
+
+### ERB Content
+
+The custom Markdown engine also supports `ERB` tags in the Markdown content. You can pass local variables (`assigns`) into the ERB template engine by passing a Hash to the `Bloak::Post.render()` method.
+
 ## Contributing
 
 Contribution directions go here.

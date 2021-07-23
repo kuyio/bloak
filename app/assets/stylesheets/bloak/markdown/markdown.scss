@@ -70,6 +70,28 @@
       font-weight: 600;
     }
   }
+
+  .table-of-contents {
+    background-color: #f8f8f8;
+    padding: 1em;
+    border-radius: 5px;
+    margin-top: 2em;
+    margin-bottom: 2em;
+    .toc-title {
+      padding-top: 0.5em;
+      padding-left: 0.8em;
+      padding-right: 1em;
+      padding-bottom: 0.5em;
+    }
+  }
+
+  [id]::before {
+    content: "";
+    display: block;
+    height: 125px;
+    margin-top: -125px;
+    visibility: hidden;
+  }
 }
 
 // Editor
