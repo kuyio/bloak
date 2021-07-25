@@ -1,12 +1,25 @@
+require "friendly_id"
+require 'jquery-rails'
+require 'pg_search'
+require 'pagy'
+
+require "bloak/nlp"
+require "bloak/markdown_renderer"
+require "bloak/media"
+
 module Bloak
   class Engine < ::Rails::Engine
-    require 'jquery-rails'
-    require 'pg_search'
-    require 'pagy'
     isolate_namespace Bloak
 
+    @@stylesheets = []
+    @@javascripts = []
+
     initializer "engine_name.assets.precompile" do |app|
-      app.config.assets.precompile << "bloak_manifest.js"
+      app.config.assets.precompile += [
+        "bloak_manifest.js",
+        "bloak/application.js",
+        "bloak/application.css"
+      ]
     end
 
     config.to_prepare do
@@ -14,5 +27,24 @@ module Bloak
         require_dependency(c)
       end
     end
+
+    def self.add_javascript(script)
+      @@javascripts << script
+    end
+
+    def self.add_stylesheet(stylesheet)
+      @@stylesheets << stylesheet
+    end
+
+    def self.javascripts
+      @@javascripts
+    end
+
+    def self.stylesheets
+      @@stylesheets
+    end
+
+    add_javascript('bloak/application')
+    add_stylesheet('bloak/application')
   end
 end

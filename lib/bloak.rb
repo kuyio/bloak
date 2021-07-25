@@ -1,9 +1,5 @@
 require "bloak/version"
 require "bloak/engine"
-require "bloak/nlp"
-require "bloak/markdown_renderer"
-require "bloak/media"
-require "friendly_id"
 
 module Bloak
   self.mattr_accessor :site_name

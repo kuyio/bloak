@@ -5,17 +5,21 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= favicon_link_tag 'favicon.png' %>
     <%= favicon_link_tag 'favicon.png', rel: 'apple-touch-icon', type: 'image/png' %>
+
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
-    <%= stylesheet_link_tag    "bloak/application", media: "all" %>
-    <%= javascript_include_tag    "bloak/application", media: "all" %>
+    <%= render 'bloak/application/stylesheet' %>
+
   </head>
   <body class="d-flex flex-column h-100">
     <main class="flex-shrink-0">
-      <%= render 'layouts/bloak/header' %>
-      <div class="navbar-fixed-top"><%= yield %></div>
+      <%= render 'bloak/application/header' %>
+      <div class="navbar-fixed-top">
+        <%= yield %>
+      </div>
     </main>
-    <%= render 'layouts/bloak/footer' %>
+    <%= render 'bloak/application/footer' %>
+    <%= render 'bloak/application/javascript' %>
   </body>
 </html>
