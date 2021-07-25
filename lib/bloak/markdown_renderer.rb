@@ -149,6 +149,6 @@ module MarkdownRenderer
       space_after_headers: false,
       highlight: true,
       with_toc_data: true
-    ).render(src).html_safe
+    ).render(content).html_safe
   end
 end
