@@ -7,8 +7,23 @@ module MarkdownRenderer
   class CustomHTML < Redcarpet::Render::HTML
     include Rouge::Plugins::Redcarpet
 
+    def initialize(extensions = {})
+      @locals = extensions.fetch(:locals, {})
+      super(extensions)
+    end
+
     def preprocess(document)
       @document = document
+      chunks = []
+      document.each_line('') do |chunk|
+        chunks << if chunk.start_with?('```')
+          chunk
+        else
+          ERB.new(chunk).result_with_hash(@locals)
+        end
+      end
+
+      chunks.join("\n")
     end
 
     def header(text, level)
@@ -121,12 +136,12 @@ module MarkdownRenderer
   end
 
   def self.md_to_html(content, assigns = {})
-    # Render any embedded Ruby (ERB) code to HTML fragments
-    src = ApplicationController.render(inline: content, assigns: assigns)
-
     # Render the result via Redcarpet, using our Custom Renderer
     Redcarpet::Markdown.new(
-      CustomHTML.new(link_attributes: {target: '_blank'}),
+      CustomHTML.new(
+        link_attributes: { target: '_blank' },
+        locals: assigns
+      ),
       fenced_code_blocks: true,
       autolink: true,
       superscript: true,

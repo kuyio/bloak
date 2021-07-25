@@ -19,7 +19,7 @@
       <img src="<%= @post.gravatar(32) %>" alt="Author image" class="gravatar me-2"> By <%= @post.author_name %> • <%= distance_of_time_in_words @post.reading_time.seconds %> read
     </p>
     <div class="post-content mt-5">
-      <%= @post.render %>
+      <%= @post.render(post: @post, request: request) %>
     </div>
   </div>
 </div>
