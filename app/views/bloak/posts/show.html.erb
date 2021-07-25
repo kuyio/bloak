@@ -1,4 +1,16 @@
-<% content_for :title, @post.title.truncate(40) %>
+<% content_for :title, @post.title %>
+
+<% set_meta_tags(
+  author: @post.author_name,
+  description: @post.summary,
+  og: {
+    url: request.url,
+    type: 'article',
+    title: @post.title,
+    description: @post.summary,
+    image: @post.cover_image_url
+  }
+) %>
 
 <div class="container mt-5 mb-5">
 

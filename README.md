@@ -47,6 +47,13 @@ Bloak.configure do |c|
 end
 ```
 
+Also make sure to set your "default_host", so absolute URLs to your assets can be correctly generated, for example in `config/application.rb`:
+
+```ruby
+# Default Host for URL Helpers
+routes.default_url_options[:host] = 'my-blog.com'
+```
+
 **Note:** Assinging a `nil` or empty value to `admin_user` or `admin_password` will disable authentication for the admin routes of the engine.
 
 ## The Admin Interface

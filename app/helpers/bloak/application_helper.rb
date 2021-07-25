@@ -5,9 +5,18 @@ module Bloak
     def page_title
       if content_for?(:title)
         # allows the title to be set in the view by using t(".title")
-        "#{Bloak.site_name} • #{content_for(:title)}"
+        "#{Bloak.site_name} – #{content_for(:title)}"
       else
         Bloak.site_name
+      end
+    end
+
+    def admin_page_title
+      if content_for?(:title)
+        # allows the title to be set in the view by using t(".title")
+        "#{Bloak.site_name} Admin – #{content_for(:title)}"
+      else
+        "#{Bloak.site_name} Admin"
       end
     end
 

@@ -39,7 +39,7 @@ module Bloak
       "http://gravatar.com/avatar/#{gravatar_id}.png?s=#{size}"
     end
 
-    def cover_image_url
+    def cover_image_path
       if cover_image.attached?
         Rails.application.routes.url_helpers.rails_blob_url(cover_image, disposition: "attachment", only_path: true)
       else
@@ -47,12 +47,30 @@ module Bloak
       end
     end
 
-    def cover_image_variant_url(options = {})
+    def cover_image_variant_path(options = {})
       if cover_image.attached?
         Rails.application.routes.url_helpers.rails_representation_url(
           cover_image.variant(options).processed,
           only_path: true,
         )
+      else
+        "#"
+      end
+    rescue ActiveStorage::InvariableError
+      "#"
+    end
+
+    def cover_image_url
+      if cover_image.attached?
+        Rails.application.routes.url_helpers.rails_blob_url(cover_image, disposition: "attachment")
+      else
+        "#"
+      end
+    end
+
+    def cover_image_variant_url(options = {})
+      if cover_image.attached?
+        Rails.application.routes.url_helpers.rails_representation_url(cover_image.variant(options).processed)
       else
         "#"
       end

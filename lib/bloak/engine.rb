@@ -2,6 +2,7 @@ require "friendly_id"
 require 'jquery-rails'
 require 'pg_search'
 require 'pagy'
+require 'meta-tags'
 
 require "bloak/nlp"
 require "bloak/markdown_renderer"

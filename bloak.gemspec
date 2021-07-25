@@ -30,4 +30,6 @@ Gem::Specification.new do |spec|
   spec.add_dependency "rouge", "~> 3.26.0"
   spec.add_dependency "pg_search", "~> 2.3.5"
   spec.add_dependency "pagy", "~> 3.5"
+  spec.add_dependency "meta-tags", "~> 2.14.0"
+
 end
