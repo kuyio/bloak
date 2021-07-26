@@ -32,8 +32,6 @@ module Bloak
 
     # GET /posts/1
     def show
-      Rails.application.routes.default_url_options = {host: request.host_with_port}
-
       @tags = Post.published.distinct.pluck(:topic).sort
       @active_tag = @post.topic
     end

@@ -21,7 +21,8 @@
 
 .menu-label {
   text-transform: uppercase;
-  color: #aaa;
+  padding-left: 1em;
+  // color: #666;
   font-weight: 500;
 }
 
@@ -42,12 +43,12 @@ ul.menu-list {
       width: 100%;
       border-radius: 2rem;
       &.is-active {
-        background-color: #dcedff;
+        background-color: #e0ecfa;
         font-weight: 400;
         color: #0d6efd;
       }
       &:hover {
-        background-color: #dcedff;
+        background-color: #e0ecfa;
         color: #0d6efd;
       }
     }

@@ -23,7 +23,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "rails", "~> 6.1.4"
   spec.add_dependency "sprockets-rails", ">= 2.3.2"
   spec.add_dependency "sass-rails", "~> 6.0"
-  spec.add_dependency "jquery-rails", "~> 4.1.0"
+  spec.add_dependency "jquery-rails", "~> 4.4.0"
   spec.add_dependency "turbolinks", "~> 5.2.0"
   spec.add_dependency "friendly_id", "~> 5.4.2"
   spec.add_dependency "image_processing", "~> 1.2"

@@ -6,7 +6,7 @@ but each page can define additional JS sources
 by providing a `content_for(:javascript)` block.
 %>
 <% Bloak::Engine.javascripts.each do |js_path| %>
-  <%= javascript_include_tag js_path %>
+  <%= javascript_include_tag js_path, async: true, 'data-turbolinks-track': 'reload' %>
 <% end %>
 
 <%= yield :javascript %>

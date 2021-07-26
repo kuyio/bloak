@@ -128,7 +128,7 @@ module MarkdownRenderer
 
       <<~HTML
         <div class="table-of-contents">
-          <h4 class="toc-title">#{label}</h4>
+          <h2 class="toc-title">#{label}</h2>
           #{parser.render(@document)}
         </div>
       HTML
@@ -139,7 +139,7 @@ module MarkdownRenderer
     # Render the result via Redcarpet, using our Custom Renderer
     Redcarpet::Markdown.new(
       CustomHTML.new(
-        link_attributes: { target: '_blank' },
+        link_attributes: { target: '_blank', rel: 'noopener' },
         locals: assigns
       ),
       fenced_code_blocks: true,

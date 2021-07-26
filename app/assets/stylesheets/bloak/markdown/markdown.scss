@@ -22,6 +22,10 @@
     }
   }
 
+  p code {
+    color: #e0002d;
+  }
+
   code {
     font-family: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
       "Courier New", monospace;
@@ -78,6 +82,7 @@
     margin-top: 2em;
     margin-bottom: 2em;
     .toc-title {
+      font-size: 1.5em;
       padding-top: 0.5em;
       padding-left: 0.8em;
       padding-right: 1em;

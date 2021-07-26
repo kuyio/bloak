@@ -1,8 +1,30 @@
 # Bloak
 
-Bloak is a Ruby on Rails engine to provide the functionality of a micro-blog based on rendering articles written in Markdown.
+Bloak is a Ruby on Rails engine to provide the functionality of a micro-blog with articles written in Markdown.
 
-## Usage
+## Features
+
+[x] Responsive and mobile friendly
+[x] Google Lighthouse score of 90+ on all categories
+[x] Write Blog posts in Markdown format (extended Github-flavoured markdown)
+[x] SimpleDME markdown editor integration
+[x] Custom Markdown tags for info, warning, quote boxes, table-of-contents and more
+[x] Syntax highlighting for fenced code blocks provided by Rouge
+[x] Custom Markdown renderer supports ERB and HTML tags in Markdown
+[x] Cover images for posts with automatic resizing of preview images
+[x] Post categories
+[x] Filtering for categories
+[x] Full-text search for posts
+[x] Open-Graph meta tags for sharing posts with Twitter, Facebook, Linked-In
+[x] SEO meta tags for blog posts
+[x] Author gravatar images
+[x] Image uploads
+[x] Reading time estimation for articles
+[x] (Optionally) Featured articles that are always displayed on top
+[x] Extensible and customizable view templates and styles
+[x] Admin Interface with authentication
+
+## Installation
 
 Usually, specifying the engine inside your application's `Gemfile` would be done by adding it as a normal, everyday gem. However, because we have not released the `Bloak` engine on the official rubygems.org repository, we will need to specify the `git` option:
 
@@ -27,7 +49,9 @@ The engine contains migrations for the `bloak_articles` and `bloak_images` table
 $ bin/rails bloak:install:migrations
 ```
 
-To run these migrations within the context of the application, simply run `bin/rails db:migrate`.
+Additionally, we require `ActiveStorage` to be installed in your Rails application. If you haven't done so yet, now is a good time to run `bin/rails active_storage:install`. Please note, that we are using the `image_processing` gem to create preview images and image variants, which in turn requires `imagemagick` to be installed on your system.
+
+Then, run all migrations within the context of the application with `bin/rails db:migrate`.
 
 ## Configuration
 
@@ -41,15 +65,15 @@ Bloak.configure do |c|
 end
 ```
 
-Also make sure to set your "default_host", so absolute URLs to your assets can be correctly generated, for example in `config/application.rb`:
+**Note:** Assinging a `nil` or empty value to `admin_user` or `admin_password` will disable authentication for the admin routes of the engine.
+
+Also make sure to set your `default_url_options`, so absolute URLs to your assets can be correctly generated, for example in `config/application.rb`:
 
 ```ruby
 # Default Host for URL Helpers
 routes.default_url_options[:host] = 'my-blog.com'
 routes.default_url_options[:protocol] = 'https'
 ```
-
-**Note:** Assinging a `nil` or empty value to `admin_user` or `admin_password` will disable authentication for the admin routes of the engine.
 
 ## The Admin Interface
 
@@ -74,7 +98,40 @@ The `Bloak` Engine includes a custom Markdown render, that introduces a number o
 
 ### ERB Content
 
-The custom Markdown engine also supports `ERB` tags in the Markdown content. You can pass local variables (`assigns`) into the ERB template engine by passing a Hash to the `Bloak::Post.render()` method.
+The custom Markdown engine also supports `ERB` tags outside of fenced code blocks, in the Markdown content of your article.
+You can pass local variables (`assigns`) into the ERB template engine by passing a Hash to the `Bloak::Post.render()` method.
+
+## Customizations and Styles
+
+You can create or copy the following files from the Bloak engine to customize the rendering of Header, and Footer, as well as to include custom styles and JavaScripts:
+
+```
+views/
+  bloak/
+    application/
+      _stylesheet.html.erb
+      _javascript.html.erb
+      _meta_tags.html.erb
+      _header.html.erb
+      _footer.html.erb
+```
+
+You can create or copy the following files from the Bloak engine inside the host application to customize the rendering of Post index, Post display and display of search results:
+
+```
+views/
+  bloak/
+    posts/
+      index.html.erb
+      show.html.erb
+      search.html.erb
+      _topics.html.erb
+      _post_list.html.erb
+```
+
+You can customize the brand logo rendered in the navbar by adding your own file to `app/assets/images/logo.png`.
+
+You can customize the favicon rendered in the browser tab by adding your own file to `app/assets/images/favicon.png`.
 
 ## Contributing
 
