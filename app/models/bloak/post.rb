@@ -36,7 +36,7 @@ module Bloak
 
     def gravatar(size = 32)
       gravatar_id = Digest::MD5.hexdigest(author_email.downcase)
-      "http://gravatar.com/avatar/#{gravatar_id}.png?s=#{size}"
+      "https://gravatar.com/avatar/#{gravatar_id}.png?s=#{size}"
     end
 
     def cover_image_path
