@@ -1,5 +1,6 @@
 require "friendly_id"
 require 'jquery-rails'
+require 'turbolinks'
 require 'pg_search'
 require 'pagy'
 require 'meta-tags'
