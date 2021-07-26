@@ -2,7 +2,7 @@
   <% @posts.each do |post| %>
     <div class="row post-list-item g-0 overflow-hidden flex-md-row mb-4 h-md-250 position-relative">
       <div class="col-auto d-none d-lg-block py-4 ps-4">
-        <img src="<%= post.cover_image_variant_url(resize: "300x150^", crop: "150x150+75+0", gravity: "Center") %>" alt="Cover image for post" class="rounded-3 mt-1">
+        <img src="<%= post.cover_image_variant_path(resize: "300x150^", crop: "150x150+75+0", gravity: "Center") %>" alt="Cover image for post" class="rounded-3 mt-1">
       </div>
 
       <div class="col p-4 d-flex flex-column position-static">

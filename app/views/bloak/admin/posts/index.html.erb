@@ -61,7 +61,7 @@
         <tr>
           <td><%= lni_checkmark post.published? %></td>
           <td><%= lni_featured post.featured? %></td>
-          <td><img src="<%= post.cover_image_variant_url(resize_to_fit: [60, 60]) %>" alt=""></td>
+          <td><img src="<%= post.cover_image_variant_path(resize_to_fit: [60, 60]) %>" alt=""></td>
           <td><a href="<%= edit_admin_post_path(post) %>"><%= post.title.truncate(70) %></a></td>
           <td><%= post.topic %></td>
           <td><%= post.author_name %></td>

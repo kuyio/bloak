@@ -51,7 +51,7 @@ module Bloak
       if cover_image.attached?
         Rails.application.routes.url_helpers.rails_representation_url(
           cover_image.variant(options).processed,
-          only_path: true,
+          only_path: true
         )
       else
         "#"
@@ -62,6 +62,7 @@ module Bloak
 
     def cover_image_url
       if cover_image.attached?
+        # "#{ENV.fetch('APP_HOST')}#{cover_image_path}"
         Rails.application.routes.url_helpers.rails_blob_url(cover_image, disposition: "attachment")
       else
         "#"

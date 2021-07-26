@@ -18,8 +18,5 @@ module Dummy
     #
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
-
-    # Default Host for URL Helpers
-    routes.default_url_options[:host] = ENV.fetch('APP_HOST') { 'localhost:5000' }
   end
 end
