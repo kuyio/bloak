@@ -4,25 +4,27 @@ Bloak is a Ruby on Rails engine to provide the functionality of a micro-blog wit
 
 ## Features
 
-[x] Responsive and mobile friendly
-[x] Google Lighthouse score of 90+ on all categories
-[x] Write Blog posts in Markdown format (extended Github-flavoured markdown)
-[x] SimpleDME markdown editor integration
-[x] Custom Markdown tags for info, warning, quote boxes, table-of-contents and more
-[x] Syntax highlighting for fenced code blocks provided by Rouge
-[x] Custom Markdown renderer supports ERB and HTML tags in Markdown
-[x] Cover images for posts with automatic resizing of preview images
-[x] Post categories
-[x] Filtering for categories
-[x] Full-text search for posts
-[x] Open-Graph meta tags for sharing posts with Twitter, Facebook, Linked-In
-[x] SEO meta tags for blog posts
-[x] Author gravatar images
-[x] Image uploads
-[x] Reading time estimation for articles
-[x] (Optionally) Featured articles that are always displayed on top
-[x] Extensible and customizable view templates and styles
-[x] Admin Interface with authentication
+- [x] Responsive and mobile friendly
+- [x] Google Lighthouse score of 90+ on all categories
+- [x] Write Blog posts in Markdown format (extended Github-flavoured markdown)
+- [x] SimpleDME markdown editor integration
+- [x] Custom Markdown tags for info, warning, quote boxes, table-of-contents and more
+- [x] Syntax highlighting for fenced code blocks provided by Rouge
+- [x] Custom Markdown renderer supports ERB and HTML tags in Markdown
+- [x] Cover images for posts with automatic resizing of preview images
+- [x] Post categories
+- [x] Filtering for categories
+- [x] Full-text search for posts
+- [x] Open-Graph meta tags for sharing posts with Twitter, Facebook, Linked-In
+- [x] SEO meta tags for blog posts
+- [x] Author gravatar images
+- [x] Image uploads
+- [x] Reading time estimation for articles
+- [x] (Optionally) Featured articles that are always displayed on top
+- [x] Extensible and customizable view templates and styles
+- [x] Admin Interface with authentication
+- [x] Uses Bootstrap 5 front-end framework
+- [x] Uses Fontawesome 5 icons
 
 ## Installation
 
@@ -133,9 +135,15 @@ You can customize the brand logo rendered in the navbar by adding your own file 
 
 You can customize the favicon rendered in the browser tab by adding your own file to `app/assets/images/favicon.png`.
 
-## Contributing
+## Roadmap
 
-Contribution directions go here.
+- [ ] Support for article keyword lists
+- [ ] Full authentication system beyond basic auth
+- [ ] Commenting system
+- [ ] Update UI to Hotwire
+- [ ] Rake tasks to copy views from engine
+- [ ] Improved customization options and splitting into additional partials
+- [ ] Rework CSS classes to allow using frameworks other than Bootstrap
 
 ## License
 
