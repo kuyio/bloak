@@ -1,6 +1,10 @@
 # Bloak
 
-Bloak is a Ruby on Rails engine to provide the functionality of a micro-blog with articles written in Markdown.
+Bloak is a Ruby on Rails engine to provide the functionality of a micro-blog with articles written in Markdown. It includes an attractive admin UI that makes managing and writing new blog articles a breeze. Bloak is lightning-fast, and optimized for SEO, accessibility and supports open-graph meta-tags for rich social media sharing. Easy customization and styling makes Bloak a joy to integrate into your existing web-application and match the host application's look and feel.
+
+## What Does it Look Like?
+
+The Bloak engine was developed in-house to power [our own Blog](https://kuy.io/blog), showcasing a custom style to integrate nicely with our main website.
 
 ## Features
 
@@ -25,6 +29,12 @@ Bloak is a Ruby on Rails engine to provide the functionality of a micro-blog wit
 - [x] Admin Interface with authentication
 - [x] Uses Bootstrap 5 front-end framework
 - [x] Uses Fontawesome 5 icons
+
+### Google LightHouse Scorecard
+
+Google Lighthouse is a free tool that provides a report analyzing page experience and performance. Lighthouse has an increased emphasis on-page user experience, including adding a new set of Core Web Vital signals. The signals break down how a user experiences the page. One of the core design goals for Bloak was lightning-fast, great on-page user experience, so we pay special attention to the LightHouse scores for each release.
+
+![scorecard](docs/bloak_lighthouse_score.png)
 
 ## Installation
 
