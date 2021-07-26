@@ -80,5 +80,5 @@ input[type="date"] {
 }
 
 .feature-cover-image {
-  height: 190px;
+  max-height: 250px;
 }
