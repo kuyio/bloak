@@ -4,17 +4,11 @@ Bloak is a Ruby on Rails engine to provide the functionality of a micro-blog bas
 
 ## Usage
 
-Usually, specifying the engine inside your application's `Gemfile` would be done by adding it as a normal, everyday gem.
-
-```ruby
-gem 'bloak'
-```
-
-However, because we have not released the `Bloak` engine on the official rubygems.org repository, we will need to specify the `git` option:
+Usually, specifying the engine inside your application's `Gemfile` would be done by adding it as a normal, everyday gem. However, because we have not released the `Bloak` engine on the official rubygems.org repository, we will need to specify the `git` option:
 
 ```ruby
 # Blog
-gem 'bloak', git: "ssh://git@git.kuy.io:7999/www/bloak.git"
+gem 'bloak', git: "https://github.com/kuyio/bloak.git"
 ```
 
 Then run `bundle` to install the gem.
@@ -52,6 +46,7 @@ Also make sure to set your "default_host", so absolute URLs to your assets can b
 ```ruby
 # Default Host for URL Helpers
 routes.default_url_options[:host] = 'my-blog.com'
+routes.default_url_options[:protocol] = 'https'
 ```
 
 **Note:** Assinging a `nil` or empty value to `admin_user` or `admin_password` will disable authentication for the admin routes of the engine.
