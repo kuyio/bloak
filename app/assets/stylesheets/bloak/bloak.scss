@@ -1,0 +1,94 @@
+$font-size-base: 0.9rem;
+
+@import "bootstrap";
+
+body {
+  font-size: 15px;
+  background-color: #f6f8fa;
+}
+
+a {
+  text-decoration: none;
+}
+
+.fs-7 {
+  font-size: 14px;
+}
+
+.fs-8 {
+  font-size: 12px;
+  font-weight: 300;
+}
+
+.ml-1 {
+  margin-left: 0.5rem !important;
+}
+
+.py-10 {
+  padding-top: 5rem !important;
+  padding-bottom: 5rem !important;
+}
+
+.navbar-fixed-top {
+  padding-top: calc(60px + 1rem - 4px);
+}
+
+.navbar {
+  border-bottom: 4px solid #f2f2f2;
+}
+
+.nav-link.active {
+  color: white !important;
+}
+
+.feature-cover-image {
+  max-height: 250px;
+}
+
+.btn.btn-primary.is-light {
+  background-color: #3d8bfd;
+}
+
+// Editor
+.CodeMirror {
+  height: 600px !important;
+  font-size: 14px !important;
+}
+
+// Admin
+.admin-cover-image-preview {
+  height: 30px;
+}
+
+.btn-icon {
+  display: flex;
+  flex-direction: column;
+  height: 2.5em;
+  margin-top: 0.2em;
+  justify-content: center;
+}
+
+main.admin {
+  display: flex;
+  flex-wrap: nowrap;
+  height: 100vh;
+  height: -webkit-fill-available;
+  max-height: 100vh;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+input[type="date"] {
+  display: block;
+
+  -webkit-appearance: textfield;
+  -moz-appearance: textfield;
+  max-height: 2.4em;
+}
+
+table.table {
+  td {
+    font-size: 14px;
+    vertical-align: baseline;
+  }
+}

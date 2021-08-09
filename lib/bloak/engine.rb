@@ -1,4 +1,5 @@
 require "friendly_id"
+require 'bootstrap'
 require 'jquery-rails'
 require 'turbolinks'
 require 'pg_search'
@@ -20,7 +21,7 @@ module Bloak
       app.config.assets.precompile += [
         "bloak_manifest.js",
         "bloak/application.js",
-        "bloak/application.css"
+        "bloak/application.scss"
       ]
     end
 

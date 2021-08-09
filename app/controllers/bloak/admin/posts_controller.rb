@@ -44,7 +44,12 @@ module Bloak
       # PATCH/PUT /posts/1
       def update
         if @post.update(post_params)
-          redirect_to admin_posts_url, notice: 'Post was successfully updated.'
+          if params[:commit] == "Save and Close"
+            redirect_to(admin_posts_url, notice: 'Post was successfully updated.')
+          else
+            flash.now[:success] = "Post saved."
+            render :edit
+          end
         else
           render :edit
         end

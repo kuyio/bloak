@@ -1,4 +1,4 @@
-<%= form_with(model: [:admin, post]) do |form| %>
+<%= form_with(model: [:admin, post], local: false) do |form| %>
   <% if post.errors.any? %>
     <div id="alert" class="alert alert-danger mb-5" role="alert">
       <ul>
@@ -23,22 +23,10 @@
         <%= form.text_field :author_email, class: 'form-control' %>
       </div>
     </div>
-    <div class="col">
+    <div class="col-2">
       <div class="field mb-3">
         <%= form.label :published_at, class: 'form-label' %>
         <%= form.date_field(:published_at, class: 'form-control', value: (DateTime.now.to_s(:friendly_short) unless post.published_at.present?)) %>
-      </div>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col">
-      <div class="field mb-3">
-        <%= form.label :cover_image, class: 'form-label' %>
-        <%= form.file_field :cover_image, class: 'form-control', direct_upload: true %>
-        <% if post.cover_image.attached? %>
-          <%= link_to post.cover_image.filename, Rails.application.routes.url_helpers.rails_blob_path(post.cover_image, disposition: :inline, only_path: true) %>
-        <% end %>
       </div>
     </div>
   </div>
@@ -53,9 +41,20 @@
     </div>
     <div class="col">
       <div class="field mb-3">
+        <%= form.label :cover_image, class: 'form-label' %>
+        <%= form.file_field :cover_image, class: 'form-control', direct_upload: true %>
+        <% if post.cover_image.attached? %>
+          <div class="form-text">
+            <%= link_to post.cover_image.filename, Rails.application.routes.url_helpers.rails_blob_path(post.cover_image, disposition: :inline, only_path: true) %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+    <div class="col-2">
+      <div class="field mb-3">
         <%= form.label :topic, class: 'form-label' %>
         <%= form.text_field :topic, class: 'form-control' %>
-        <div class="form-text">The category / tag for this post. Must be a single tag, but can be multiple words</div>
+        <div class="form-text">Single tag or word</div>
       </div>
     </div>
   </div>
@@ -63,7 +62,7 @@
   <div class="field mb-3">
     <%= form.label :summary, class: 'form-label' %>
     <%= form.text_field :summary, class: 'form-control', accept: 'image/png,image/gif,image/jpeg' %>
-    <div class="form-text">A short summary that will be shown as an excerpt on the index page for posts</div>
+    <div class="form-text">A short summary that will be shown as an excerpt on the index page for posts, should be 150 characters long</div>
   </div>
 
   <div class="field mb-3">
@@ -86,8 +85,9 @@
     </div>
     <div class="col position-relative">
       <div class="actions position-absolute end-0 me-3">
-        <%= link_to 'Cancel', admin_posts_path, class: 'btn btn-outline-primary' %>
-        <%= form.submit "Save Post", class: 'btn btn-primary' %>
+        <%= link_to 'Cancel', admin_posts_path, class: 'btn btn-grey' %>
+        <%= form.submit "Save", class: 'btn btn-primary', onClick: "this.form.submit()" %>
+        <%= form.submit "Save and Close", class: 'btn btn-success' %>
       </div>
     </div>
   </div>
