@@ -17,7 +17,7 @@
               </p>
               <a href="<%= post_path(post) %>" class="no-link-styling d-flex flex-column">
                 <h4 class="card-title fw-bold"><%= post.title %></h4>
-                <p class="card-text text-muted fw-light mt-2 mb-auto"><%= post.summary %></p>
+                <p class="card-text text-muted fw-light fs-7 mt-2 mb-auto"><%= post.summary.truncate(150) %></p>
               </a>
             </div>
           </div>

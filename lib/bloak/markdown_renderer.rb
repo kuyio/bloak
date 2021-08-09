@@ -15,12 +15,14 @@ module MarkdownRenderer
     def preprocess(document)
       @document = document
       chunks = []
-      document.each_line('') do |chunk|
-        chunks << if chunk.start_with?('```')
-          chunk
-        else
-          ERB.new(chunk).result_with_hash(@locals)
-        end
+      document.each_line('', chomp: true) do |chunk|
+        rendered_chunk =
+          if chunk.start_with?('```')
+            chunk
+          else
+            ERB.new(chunk).result_with_hash(@locals)
+          end
+        chunks << rendered_chunk
       end
 
       chunks.join("\n")
@@ -33,6 +35,10 @@ module MarkdownRenderer
 
     def paragraph(text)
       process_custom_tags(text)
+    end
+
+    def rouge_formatter(lexer)
+      Rouge::Formatters::HTMLLegacy.new(css_class: "highlight #{lexer.tag}")
     end
 
     private

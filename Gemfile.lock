@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    bloak (0.1.15)
+    bloak (0.1.16)
       bootstrap (~> 5.0.1)
       friendly_id (~> 5.4.2)
       image_processing (~> 1.2)
