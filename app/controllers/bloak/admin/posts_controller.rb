@@ -10,20 +10,18 @@ module Bloak
         @pagy, @posts = pagy(Post.order(published_at: :desc), items: 20)
       end
 
-      def search
-        @query = params[:query]
-        if @query.present?
-          @pagy, @posts = pagy(Post.search_by_content(@query).order(published_at: :desc), items: 20)
-        else
-          @pagy, @posts = pagy(Post.order(published_at: :desc), items: 20)
-        end
-
-        render :index
-      end
-
       # GET /posts/new
       def new
         @post = Post.new
+      end
+
+      # GET /posts/1
+      def show
+        stream = render_to_string(template: 'bloak/admin/posts/show')
+        send_data(stream,
+          filename: "#{@post.published_at.strftime("%Y-%m-%d")}-#{@post.slug}.md",
+          type: "text/plain",
+        )
       end
 
       # GET /posts/1/edit
@@ -59,6 +57,19 @@ module Bloak
       def destroy
         @post.destroy
         redirect_to admin_posts_url, notice: 'Post was successfully destroyed.'
+      end
+
+      # Custom Actions
+
+      def search
+        @query = params[:query]
+        if @query.present?
+          @pagy, @posts = pagy(Post.search_by_content(@query).order(published_at: :desc), items: 20)
+        else
+          @pagy, @posts = pagy(Post.order(published_at: :desc), items: 20)
+        end
+
+        render :index
       end
 
       private

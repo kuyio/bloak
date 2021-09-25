@@ -78,6 +78,7 @@
                   <li><a href="<%= edit_admin_post_path(post) %>" class="dropdown-item btn-primary">Edit</a></li>
 
                   <li><a class="dropdown-item" href="<%= post_path(post) %>">Preview</a></li>
+                  <li><a class="dropdown-item" href="<%= admin_post_path(post, format: :yml) %>">Export</a></li>
                   <li>
                     <%= link_to "Delete", admin_post_path(post), method: :delete, class:'dropdown-item text-danger', data: {confirm: "Are you sure?"} %>
                   </li>
