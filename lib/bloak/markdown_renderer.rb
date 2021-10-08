@@ -3,6 +3,8 @@ require 'rouge'
 require 'rouge/plugins/redcarpet'
 
 module MarkdownRenderer
+
+
   # Our own custom renderer
   class CustomHTML < Redcarpet::Render::HTML
     include Rouge::Plugins::Redcarpet
@@ -13,19 +15,56 @@ module MarkdownRenderer
     end
 
     def preprocess(document)
-      @document = document
-      chunks = []
-      document.each_line('', chomp: true) do |chunk|
+      chunks = chunk_code_blocks(document)
+      puts chunks.count
+      rendered_chunks = []
+
+      chunks.each do |chunk|
         rendered_chunk =
           if chunk.start_with?('```')
+            puts "SKIPPING CODE"
             chunk
           else
+            puts "PROCESSING TEXT WITH ERB"
             ERB.new(chunk).result_with_hash(@locals)
           end
-        chunks << rendered_chunk
+        rendered_chunks << rendered_chunk
       end
 
-      chunks.join("\n")
+      @document = rendered_chunks.join("\n")
+
+      return @document
+    end
+
+    # Helper function to divide document into blocks of fenced code and not fenced code
+    # WARNING! We assume GFM with ``` fences
+    def chunk_code_blocks(text)
+      chunks = []
+      chunk = []
+      in_block = false
+
+      lines = text.lines.reverse
+      while !lines.empty?
+        line = lines.pop
+
+        if line.start_with?('```')
+          if in_block
+            in_block = false
+            chunk << line
+            chunks << chunk.join("")
+            chunk = []
+          else
+            in_block = true
+            chunks << chunk.join("")
+            chunk = []
+            chunk << line
+          end
+        else
+          chunk << line
+        end
+      end
+      chunks << chunk.join("")
+      chunks
     end
 
     def header(text, level)
