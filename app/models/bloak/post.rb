@@ -2,7 +2,7 @@ module Bloak
   class Post < ApplicationRecord
     # Search
     include PgSearch::Model
-    pg_search_scope :search_by_content, against: %w[title content]
+    pg_search_scope :search_by_content, against: %w(title content)
 
     # Slugs
     extend FriendlyId
@@ -16,6 +16,7 @@ module Bloak
     scope :published, -> { where(published: true) }
     scope :unpublished, -> { where(published: false) }
     scope :tagged, ->(topic) { where(topic: topic) }
+    scope :authored_by, ->(name) { where(author_name: name) }
 
     # Validations
     validates :topic, presence: true
@@ -32,6 +33,10 @@ module Bloak
 
     def render(assigns = {})
       ::MarkdownRenderer.md_to_html(content, assigns)
+    end
+
+    def render_toc(depth = 2)
+      ::MarkdownRenderer.render_toc(content, depth)
     end
 
     def gravatar(size = 32)
@@ -90,7 +95,7 @@ module Bloak
     end
 
     def correct_image_mime_type
-      return unless cover_image.attached? && !cover_image.content_type.in?(%w[image/jpeg image/png])
+      return unless cover_image.attached? && !cover_image.content_type.in?(%w(image/jpeg image/png))
 
       errors.add(:cover_image, 'must be an image')
     end

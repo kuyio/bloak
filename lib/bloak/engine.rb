@@ -14,8 +14,10 @@ module Bloak
   class Engine < ::Rails::Engine
     isolate_namespace Bloak
 
+    # rubocop:disable Style/ClassVars
     @@stylesheets = []
     @@javascripts = []
+    # rubocop:enable Style/ClassVars
 
     initializer "engine_name.assets.precompile" do |app|
       app.config.assets.precompile += [

@@ -2,7 +2,7 @@ module Bloak
   class Image < ApplicationRecord
     # Search
     include PgSearch::Model
-    pg_search_scope :search_by_name, against: %w[name alt]
+    pg_search_scope :search_by_name, against: %w(name alt)
 
     # Active Storage
     has_one_attached :image_file
@@ -26,7 +26,7 @@ module Bloak
       if image_file.attached?
         Rails.application.routes.url_helpers.rails_representation_url(
           image_file.variant(options).processed,
-          only_path: true,
+          only_path: true
         )
       else
         "#"
@@ -40,7 +40,7 @@ module Bloak
     end
 
     def correct_image_mime_type
-      return unless image_file.attached? && !image_file.content_type.in?(%w[image/jpeg image/png])
+      return unless image_file.attached? && !image_file.content_type.in?(%w(image/jpeg image/png))
 
       errors.add(:image, 'must be an image')
     end

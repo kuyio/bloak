@@ -5,5 +5,5 @@ Time::DATE_FORMATS.merge!(
   time:              '%I:%M%P',
   time_military:     '%H:%M%P',
   datetime_short:    '%m/%d %I:%M',
-  friendly: lambda { |time| time.strftime("%B #{time.day.ordinalize}, %Y") },
+  friendly: lambda { |time| time.strftime("%B #{time.day.ordinalize}, %Y") }
 )

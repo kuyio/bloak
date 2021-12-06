@@ -14,26 +14,7 @@
         </ul>
 
         <div class="d-flex">
-          <%= form_with(url: search_path, method: :post, local: true) do |form| %>
-            <div class="input-group">
-              <%= form.text_field :query,
-                class: 'form-control',
-                placeholder: 'Search for articles...',
-                value: @query,
-                aria: {label: "Article title or content"},
-                style:"min-width: 20em;"
-              %>
-              <% if @query.present? %>
-                <a href="<%= posts_path %>" class="btn btn-danger" aria-label="clear search">
-                  <i class="fas fa-times"></i>
-                </a>
-              <% else %>
-                <%= button_tag class: 'btn btn-primary', aria: {label: 'search' } do %>
-                  <i class="fas fa-search"></i>
-                <% end %>
-              <% end %>
-            </div>
-          <% end %>
+          <%= render 'search_box' %>
         </div>
       </div>
     </div>

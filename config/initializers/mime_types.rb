@@ -1,1 +1,1 @@
-Mime::Type.register "text/yaml", :yml
+Mime::Type.register("text/yaml", :yml)

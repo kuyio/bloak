@@ -24,6 +24,10 @@ module Bloak
       datetime.to_s(:friendly)
     end
 
+    def short_date(datetime)
+      datetime.strftime("%b %d, %Y")
+    end
+
     def lni_checkmark(value)
       if value
         tag.i(class: 'fas fa-check-circle text-success')

@@ -1,41 +1,15 @@
 <% content_for :title, "#{@active_tag.camelcase} Articles" %>
 
-<% if @featured_posts.any? %>
-<div class="">
-  <div class="container-xl py-3 py-md-5">
-    <div class="row justify-content-center pt-3 pb-3">
-      <% @featured_posts.each do |post| %>
-        <div class="col-sm-12 col-md-6 col-lg-4 mt-2 mb-2 d-flex justify-content-center">
-          <div class="card h-100" style="max-width: 26rem;">
-            <div class="card-body p-4">
-              <img src="<%= post.cover_image_variant_path(resize: "400x200^", crop: "400x200+0+0", gravity: "Center") %>" class="card-img-top feature-cover-image" alt="Cover image">
-              <p class="fs-8 text-muted mt-3 mb-3">
-                <img src="<%= post.gravatar(18) %>" alt="Author image" class="gravatar">
-                <span class="ms-1">
-                  <%= post.author_name %> on <%= link_to post.topic, topic_path(post.topic) %> • <%= post.published_at.to_s(:friendly_short) %>
-                </span>
-              </p>
-              <a href="<%= post_path(post) %>" class="no-link-styling d-flex flex-column">
-                <h4 class="card-title fw-bold"><%= post.title %></h4>
-                <p class="card-text text-muted fw-light fs-7 mt-2 mb-auto"><%= post.summary.truncate(150) %></p>
-              </a>
-            </div>
-          </div>
-        </div>
-      <% end %>
-    </div>
+<%= render 'featured_posts' %>
+
+<div class="container mt-5 mb-5 py-md-0 px-2 px-md-5 d-flex flex-row justify-content-between">
+
+  <div class="d-none d-md-block mt-5">
+    <%= render 'topics' %>
   </div>
-</div>
-<% end %>
 
-<% if @query.present? %>
-<div class="container pt-md-5 px-2 px-md-5">
-  <h4>Search Results</h4>
-</div>
-<% end %>
-
-<div class="container py-md-0 px-2 px-md-5 d-flex flex-row justify-content-between">
-  <div class="mt-5 d-none d-md-block"><%= render 'topics' %></div>
-  <%= render 'post_list' %>
+  <div class="d-block flex-grow-1 mt-4 mb-5">
+    <%= render 'post_list' %>
+  </div>
 </div>
 

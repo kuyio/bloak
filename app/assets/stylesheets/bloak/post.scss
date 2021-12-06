@@ -1,17 +1,6 @@
 .post {
-  max-width: 66em;
-}
-
-.post-content {
-  color: rgb(91, 105, 135);
-
-  ul {
-    margin-top: 0.5rem;
-    margin-bottom: 1rem;
-    li {
-      margin: 0.5rem;
-    }
-  }
+  max-width: 54em;
+  width: 100%;
 }
 
 .topics {
@@ -71,5 +60,24 @@ img.gravatar {
       0 1.2px 5.3px rgba(0, 0, 0, 0.02), 0 2.3px 10px rgba(0, 0, 0, 0.025),
       0 4px 17.9px rgba(0, 0, 0, 0.03), 0 7.5px 33.4px rgba(0, 0, 0, 0.036),
       0 18px 80px rgba(0, 0, 0, 0.05);
+  }
+}
+
+.post-aside {
+  .toc {
+    border-left: 1px solid #eee;
+    ul {
+      padding-left: 0.5em;
+      li {
+        list-style: none;
+        padding-top: 1em;
+
+        ul {
+          li {
+            font-size: 0.825rem;
+          }
+        }
+      }
+    }
   }
 }

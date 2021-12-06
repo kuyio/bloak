@@ -1,0 +1,254 @@
+Rails:
+  Enabled: true
+AllCops:
+  TargetRubyVersion: 2.7
+  Exclude:
+    - bin/*
+    - Gemfile
+    - vendor/**/*
+    - db/schema.rb
+    - db/migrate/*
+    - test/dummy/**/*
+    - "**/*.erb"
+    - node_modules/**/*
+    - data/**/*
+    - config/routes.rb
+    - config/initializers/*.rb
+
+inherit_from:
+  .rubocop.base.yml
+
+Rails/AddColumnIndex: # (new in 2.11)
+  Enabled: true
+
+Rails/EagerEvaluationLogMessage: # (new in 2.11)
+  Enabled: true
+
+Rails/ExpandedDateRange: # (new in 2.11)
+  Enabled: true
+
+Rails/I18nLocaleAssignment: # (new in 2.11)
+  Enabled: true
+
+Rails/TimeZoneAssignment: # (new in 2.10)
+  Enabled: true
+
+Rails/UnusedIgnoredColumns: # (new in 2.11)
+  Enabled: true
+
+Rails/FindEach:
+  Enabled: false
+
+Rails/OutputSafety:
+  Enabled: false
+
+Rails/DynamicFindBy:
+  Enabled: false
+
+Rails/Delegate:
+  Enabled: false
+
+Rails/ApplicationRecord:
+  Enabled: false
+
+Rails/SkipsModelValidations:
+  Enabled: false
+
+Lint/RescueException:
+  Enabled: false
+
+Style/RescueStandardError:
+  Enabled: false
+
+Lint/AssignmentInCondition:
+  Enabled: false
+
+Lint/SuppressedException:
+  Enabled: false
+
+Layout/EndAlignment:
+  Enabled: false
+
+Style/DoubleNegation:
+  Enabled: false
+
+Style/Next:
+  Enabled: false
+
+Style/EmptyMethod:
+  Enabled: false
+
+Layout/LineLength:
+  Exclude:
+    - config/routes.rb
+    - test/**/*
+    - lib/tasks/teams.rake
+  Max: 120
+
+Metrics/BlockLength:
+  Enabled: false
+
+Metrics/MethodLength:
+  Enabled: false
+
+Metrics/ClassLength:
+  Enabled: false
+
+Metrics/ModuleLength:
+  Enabled: false
+
+Metrics/AbcSize:
+  Max: 40
+
+Metrics/CyclomaticComplexity:
+  Max: 10
+
+Metrics/PerceivedComplexity:
+  Max: 10
+
+Style/Documentation:
+  Enabled: false
+
+Style/SingleLineBlockParams:
+  Enabled: false
+
+Style/SignalException:
+  Enabled: false
+
+Style/RaiseArgs:
+  Enabled: false
+
+Style/ModuleFunction:
+  Enabled: false
+
+Style/RedundantReturn:
+  AllowMultipleReturnValues: true
+
+Style/TrailingCommaInArguments:
+  EnforcedStyleForMultiline: no_comma
+
+Style/TrailingCommaInArrayLiteral:
+  EnforcedStyleForMultiline: no_comma
+
+Style/TrailingCommaInHashLiteral:
+  EnforcedStyleForMultiline: no_comma
+
+Style/ClassAndModuleChildren:
+  Enabled: false
+
+Naming/PredicateName:
+  Exclude:
+    - app/serializers/**/*
+
+Style/StringLiterals:
+  Enabled: false
+
+Style/PerlBackrefs:
+  Enabled: false
+
+Style/TrivialAccessors:
+  AllowPredicates: true
+
+Style/GuardClause:
+  Enabled: false
+
+Style/RedundantPercentQ:
+  Enabled: false
+
+Style/Alias:
+  Enabled: false
+
+Layout/SpaceInsideHashLiteralBraces:
+  EnforcedStyle: no_space
+
+Layout/MultilineHashBraceLayout:
+  Enabled: false
+
+Layout/IndentationWidth:
+  Enabled: false # totally broken
+
+Layout/IndentationConsistency:
+  Enabled: false # broken too
+  EnforcedStyle: indented_internal_methods
+
+Layout/FirstHashElementIndentation:
+  Enabled: false
+
+Layout/FirstArrayElementIndentation:
+  Enabled: false # broken
+
+Layout/ElseAlignment:
+  Enabled: false # broken
+
+Style/ParallelAssignment:
+  Enabled: false
+
+Style/IfUnlessModifier:
+  Enabled: false
+
+Performance/Casecmp:
+  Enabled: false # ugly
+
+Style/PercentLiteralDelimiters:
+  PreferredDelimiters:
+    '%i': '()'
+    '%I': '()'
+    '%w': '()'
+    '%W': '()'
+
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
+Style/FormatStringToken:
+  Enabled: false
+
+Rails/ActiveRecordCallbacksOrder: # (new in 2.7)
+  Enabled: true
+
+Rails/FindById: # (new in 2.7)
+  Enabled: true
+
+Rails/Inquiry: # (new in 2.7)
+  Enabled: true
+
+Rails/MailerName: # (new in 2.7)
+  Enabled: true
+
+Rails/MatchRoute: # (new in 2.7)
+  Enabled: true
+
+Rails/NegateInclude: # (new in 2.7)
+  Enabled: true
+
+Rails/Pluck: # (new in 2.7)
+  Enabled: true
+
+Rails/PluckInWhere: # (new in 2.7)
+  Enabled: true
+
+Rails/RenderInline: # (new in 2.7)
+  Enabled: true
+
+Rails/RenderPlainText: # (new in 2.7)
+  Enabled: true
+
+Rails/ShortI18n: # (new in 2.7)
+  Enabled: true
+
+Rails/WhereExists: # (new in 2.7)
+  Enabled: true
+
+Rails/AfterCommitOverride: # (new in 2.8)
+  Enabled: true
+
+Rails/AttributeDefaultBlockValue: # (new in 2.9)
+  Enabled: true
+
+Rails/SquishedSQLHeredocs: # (new in 2.8)
+  Enabled: true
+
+Rails/WhereEquals: # (new in 2.9)
+  Enabled: true
+
+Rails/WhereNot: # (new in 2.8)
+  Enabled: true

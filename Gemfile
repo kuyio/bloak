@@ -6,6 +6,11 @@ gemspec
 
 group :development do
   gem 'pg'
+
+  gem 'rubocop', '1.19.1'
+  gem 'rubocop-performance', '1.11.5'
+  gem 'rubocop-rails', '2.11.3'
+  gem 'rubocop-rspec', '~> 2.4.0'
 end
 
 # To use a debugger

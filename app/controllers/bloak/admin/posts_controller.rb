@@ -3,7 +3,7 @@ require_dependency "bloak/application_controller"
 module Bloak
   module Admin
     class PostsController < AdminController
-      before_action :set_post, only: [:show, :edit, :update, :destroy]
+      before_action :set_post, only: [:show, :edit, :update, :destroy, :toggle_featured, :toggle_published]
 
       # GET /posts
       def index
@@ -19,9 +19,8 @@ module Bloak
       def show
         stream = render_to_string(template: 'bloak/admin/posts/show')
         send_data(stream,
-          filename: "#{@post.published_at.strftime("%Y-%m-%d")}-#{@post.slug}.md",
-          type: "text/plain",
-        )
+          filename: "#{@post.published_at.strftime('%Y-%m-%d')}-#{@post.slug}.md",
+          type: "text/plain")
       end
 
       # GET /posts/1/edit
@@ -33,9 +32,9 @@ module Bloak
         @post = Post.new(post_params)
 
         if @post.save
-          redirect_to admin_posts_url, notice: 'Post was successfully created.'
+          redirect_to(admin_posts_url, notice: 'Post was successfully created.')
         else
-          render :new
+          render(:new)
         end
       end
 
@@ -46,17 +45,17 @@ module Bloak
             redirect_to(admin_posts_url, notice: 'Post was successfully updated.')
           else
             flash.now[:success] = "Post saved."
-            render :edit
+            render(:edit)
           end
         else
-          render :edit
+          render(:edit)
         end
       end
 
       # DELETE /posts/1
       def destroy
         @post.destroy
-        redirect_to admin_posts_url, notice: 'Post was successfully destroyed.'
+        redirect_to(admin_posts_url, notice: 'Post was successfully destroyed.')
       end
 
       # Custom Actions
@@ -69,10 +68,21 @@ module Bloak
           @pagy, @posts = pagy(Post.order(published_at: :desc), items: 20)
         end
 
-        render :index
+        render(:index)
+      end
+
+      def toggle_featured
+        @post.update(featured: !@post.featured)
+        redirect_to(admin_posts_url)
+      end
+
+      def toggle_published
+        @post.update(published: !@post.published)
+        redirect_to(admin_posts_url)
       end
 
       private
+
         # Use callbacks to share common setup or constraints between actions.
         def set_post
           @post = Post.friendly.find(params[:id])
@@ -80,7 +90,8 @@ module Bloak
 
         # Only allow a list of trusted parameters through.
         def post_params
-          params.require(:post).permit(:cover_image, :title, :topic, :summary, :content, :author_name, :author_email, :published, :featured, :reading_time, :published_at)
+          params.require(:post).permit(:cover_image, :title, :topic, :summary, :content, :author_name, :author_email,
+:published, :featured, :reading_time, :published_at)
         end
     end
   end

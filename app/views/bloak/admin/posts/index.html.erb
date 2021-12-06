@@ -55,7 +55,7 @@
         <th>Topic</th>
         <th>Author</th>
         <th>Published</th>
-        <th>Actions</th>
+        <th></th>
       </tr>
     </thead>
     <tbody>
@@ -71,14 +71,30 @@
           <td>
             <div class="d-flex flex-row">
               <div class="dropdown ml-1">
-                <button class="btn btn-sm btn-light dropdown-toggle" type="button" id="dropDownMenuMore" data-bs-toggle="dropdown" aria-expanded="false">
-                  More
+                <button class="btn btn-sm btn-white" type="button" id="dropDownMenuMore" data-bs-toggle="dropdown" aria-expanded="false">
+                  <i class="fas fa-ellipsis-v"></i>
                 </button>
                 <ul class="dropdown-menu" aria-labelledby="dropDownMenuMore">
-                  <li><a href="<%= edit_admin_post_path(post) %>" class="dropdown-item btn-primary">Edit</a></li>
+                  <li>
+                    <a class="dropdown-item" href="<%= toggle_featured_admin_post_path(post) %>">
+                    <%= post.featured? ? 'Unfeature Post' : 'Feature Post' %>
+                    </a>
+                  </li>
 
+                  <li>
+                    <a class="dropdown-item" href="<%= toggle_published_admin_post_path(post) %>">
+                      <%= post.published? ? 'Unpublish Post' : 'Publish Post' %>
+                    </a>
+                  </li>
+
+                  <li><hr class="dropdown-divider"></li>
+
+                  <li><a href="<%= edit_admin_post_path(post) %>" class="dropdown-item btn-primary">Edit</a></li>
                   <li><a class="dropdown-item" href="<%= post_path(post) %>">Preview</a></li>
                   <li><a class="dropdown-item" href="<%= admin_post_path(post, format: :yml) %>">Export</a></li>
+
+                  <li><hr class="dropdown-divider"></li>
+
                   <li>
                     <%= link_to "Delete", admin_post_path(post), method: :delete, class:'dropdown-item text-danger', data: {confirm: "Are you sure?"} %>
                   </li>

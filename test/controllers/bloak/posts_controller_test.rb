@@ -20,7 +20,7 @@ module Bloak
 
     test "should create post" do
       assert_difference('Post.count') do
-        post posts_url, params: { post: { author_id: @post.author_id, content: @post.content, featured: @post.featured, published: @post.published, reading_time: @post.reading_time, slug: @post.slug, summary: @post.summary, title: @post.title, topic: @post.topic } }
+        post posts_url, params: {post: {author_id: @post.author_id, content: @post.content, featured: @post.featured, published: @post.published, reading_time: @post.reading_time, slug: @post.slug, summary: @post.summary, title: @post.title, topic: @post.topic}}
       end
 
       assert_redirected_to post_url(Post.last)
@@ -37,7 +37,7 @@ module Bloak
     end
 
     test "should update post" do
-      patch post_url(@post), params: { post: { author_id: @post.author_id, content: @post.content, featured: @post.featured, published: @post.published, reading_time: @post.reading_time, slug: @post.slug, summary: @post.summary, title: @post.title, topic: @post.topic } }
+      patch post_url(@post), params: {post: {author_id: @post.author_id, content: @post.content, featured: @post.featured, published: @post.published, reading_time: @post.reading_time, slug: @post.slug, summary: @post.summary, title: @post.title, topic: @post.topic}}
       assert_redirected_to post_url(@post)
     end
 

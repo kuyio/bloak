@@ -14,11 +14,11 @@ FriendlyId.defaults do |config|
   #
   # Some words could conflict with Rails's routes when used as slugs, or are
   # undesirable to allow as slugs. Edit this list as needed for your app.
-  config.use :reserved
+  config.use(:reserved)
 
   config.reserved_words = %w(new edit index session login logout users admin
-    stylesheets assets javascripts images)
-    
+                             stylesheets assets javascripts images)
+
   # This adds an option to treat reserved words as conflicts rather than exceptions.
   # When there is no good candidate, a UUID will be appended, matching the existing
   # conflict behavior.

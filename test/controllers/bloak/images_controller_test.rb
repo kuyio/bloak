@@ -20,7 +20,7 @@ module Bloak
 
     test "should create image" do
       assert_difference('Image.count') do
-        post images_url, params: { image: { alt: @image.alt, name: @image.name } }
+        post images_url, params: {image: {alt: @image.alt, name: @image.name}}
       end
 
       assert_redirected_to image_url(Image.last)
@@ -37,7 +37,7 @@ module Bloak
     end
 
     test "should update image" do
-      patch image_url(@image), params: { image: { alt: @image.alt, name: @image.name } }
+      patch image_url(@image), params: {image: {alt: @image.alt, name: @image.name}}
       assert_redirected_to image_url(@image)
     end
 

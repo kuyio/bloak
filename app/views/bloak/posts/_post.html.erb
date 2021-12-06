@@ -1,0 +1,32 @@
+
+<div class="post p-1 p-md-5 bg-white rounded-3">
+
+  <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="<%= root_path %>">Blog</a></li>
+      <li class="breadcrumb-item"><a href="<%= topic_path(@post.topic) %>"><%= @post.topic %></a></li>
+      <li class="breadcrumb-item active" aria-current="page"><%= @post.title.truncate_words(3) %></li>
+    </ol>
+  </nav>
+
+
+  <h1 class="fs-xl fw-bold mt-3 mb-2"><%= @post.title %></h1>
+
+  <p class="fs-7 text-muted mb-0">
+    by <%= @post.author_name %>
+     •
+    <a href="<%= topic_path(@post.topic) %>"><%= @post.topic %></a>
+  </p>
+
+  <p class="fs-7 text-muted mb-5">
+    <%= short_date @post.created_at %>
+    <span class="text-warning">•</span>
+    <%= (@post.reading_time.seconds / 60.0).ceil %> minute read
+  </p>
+
+  <img src="<%= @post.cover_image_path %>" class="img-fluid" alt="">
+
+  <div class="post-content mt-5">
+    <%= @post.render(post: @post, request: request) %>
+  </div>
+</div>

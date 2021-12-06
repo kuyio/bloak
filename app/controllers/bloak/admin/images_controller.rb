@@ -18,7 +18,7 @@ module Bloak
           @pagy, @images = pagy(Image.order(created_at: :desc), items: 20)
         end
 
-        render :index
+        render(:index)
       end
 
       # GET /images/1
@@ -39,28 +39,29 @@ module Bloak
         @image = Image.new(image_params)
 
         if @image.save
-          redirect_to admin_images_path, notice: 'Image was successfully created.'
+          redirect_to(admin_images_path, notice: 'Image was successfully created.')
         else
-          render :new
+          render(:new)
         end
       end
 
       # PATCH/PUT /images/1
       def update
         if @image.update(image_params)
-          redirect_to admin_images_path, notice: 'Image was successfully updated.'
+          redirect_to(admin_images_path, notice: 'Image was successfully updated.')
         else
-          render :edit
+          render(:edit)
         end
       end
 
       # DELETE /images/1
       def destroy
         @image.destroy
-        redirect_to images_url, notice: 'Image was successfully destroyed.'
+        redirect_to(images_url, notice: 'Image was successfully destroyed.')
       end
 
       private
+
         # Use callbacks to share common setup or constraints between actions.
         def set_image
           @image = Image.find(params[:id])
