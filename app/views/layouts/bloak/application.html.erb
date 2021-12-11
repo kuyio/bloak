@@ -3,16 +3,14 @@
   <head>
     <title><%= page_title %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <%= favicon_link_tag 'favicon.png' %>
-    <%= favicon_link_tag 'favicon.png', rel: 'apple-touch-icon', type: 'image/png' %>
 
+    <%= render 'bloak/application/favicon_tags' %>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
     <%= render 'bloak/application/javascript' %>
     <%= render 'bloak/application/meta_tags' %>
     <%= render 'bloak/application/stylesheet' %>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.11.1/tocbot.css">
   </head>
   <body class="d-flex flex-column h-100">
     <main class="flex-shrink-0">
