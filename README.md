@@ -61,7 +61,7 @@ The engine contains migrations for the `bloak_articles` and `bloak_images` table
 $ bin/rails bloak:install:migrations
 ```
 
-Additionally, we require `ActiveStorage` to be installed in your Rails application. If you haven't done so yet, now is a good time to run `bin/rails active_storage:install`. Please note, that we are using the `image_processing` gem to create preview images and image variants, which in turn requires `imagemagick` to be installed on your system.
+Additionally, Bloak requires `ActiveStorage` to be installed in your Rails application to store images for your posts. If you haven't done so yet, now is a good time to run `bin/rails active_storage:install`. Please note, that Bloak uses the `image_processing` gem to create thumbnails and image variants, which in turn requires `imagemagick` to be installed on your system.
 
 Then, run all migrations within the context of the application with `bin/rails db:migrate`.
 
