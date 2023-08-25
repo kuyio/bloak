@@ -28,7 +28,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency("turbolinks", "~> 5.2.0")
   spec.add_dependency("friendly_id", "~> 5.4.2")
   spec.add_dependency("image_processing", "~> 1.2")
-  spec.add_dependency("redcarpet", "~> 3.5.1")
+  spec.add_dependency("redcarpet", "~> 3.6")
   spec.add_dependency("rouge", "~> 3.30")
   spec.add_dependency("pg_search", "~> 2.3.5")
   spec.add_dependency("pagy", "~> 5.10")

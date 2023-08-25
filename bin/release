@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+
+# Store version argument from command line
+VERSION=$1
+
+# Replace VERSION contant in version.rb
+sed -i "" -e "s/VERSION.*/VERSION = \"${VERSION}\"/g" lib/bloak/version.rb
+
+# Call bundle
+bundle
+cd test/dummy && bundle && cd ../..
+
+# Add files to git
+git add lib/bloak/version.rb
+git add Gemfile.lock
+git add test/dummy/Gemfile.lock
+
+# Commit push and tag
+git commit -m "Bump version for $VERSION"
+git push
+git tag v$VERSION
+git push --tags
