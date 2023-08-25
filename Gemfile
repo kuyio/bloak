@@ -6,6 +6,7 @@ gemspec
 
 group :development do
   gem 'pg'
+  gem 'puma'
 
   gem 'rubocop', '1.19.1'
   gem 'rubocop-performance', '1.11.5'

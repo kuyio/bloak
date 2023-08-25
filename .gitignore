@@ -6,5 +6,6 @@
 /test/dummy/log/*.log
 /test/dummy/storage/
 /test/dummy/tmp/
+/vendor/bundle
 .byebug_history
 node_modules

@@ -2,15 +2,15 @@
   <%= form_with(url: search_path, method: :post, local: true) do |form| %>
     <div class="input-group">
       <%= form.text_field :query,
-        class: 'form-control',
-        placeholder: 'Search articles',
         value: @query,
+        placeholder: 'Search articles',
+        class: 'form-control',
         aria: {label: "Article title or content"}
       %>
       <% if @query.present? %>
-        <a href="<%= posts_path %>" class="btn btn-danger" aria-label="clear search">
+        <%= link_to posts_path, class: "btn btn-danger", aria: {label: 'clear search'} do %>
           <i class="fas fa-times"></i>
-        </a>
+        <% end %>
       <% else %>
         <%= button_tag class: 'btn btn-primary', aria: {label: 'search' } do %>
           <i class="fas fa-search"></i>
