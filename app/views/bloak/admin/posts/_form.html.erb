@@ -26,7 +26,7 @@
     <div class="col-2">
       <div class="field mb-3">
         <%= form.label :published_at, class: 'form-label' %>
-        <%= form.date_field(:published_at, class: 'form-control', value: (DateTime.now.to_s(:friendly_short) unless post.published_at.present?)) %>
+        <%= form.date_field(:published_at, class: 'form-control', value: (DateTime.now.strftime("%Y-%m-%d") unless post.published_at.present?)) %>
       </div>
     </div>
   </div>
