@@ -61,7 +61,7 @@ The engine contains migrations for the `bloak_articles` and `bloak_images` table
 $ bin/rails bloak:install:migrations
 ```
 
-Additionally, Bloak requires `ActiveStorage` to be installed in your Rails application to store images for your posts. If you haven't done so yet, now is a good time to run `bin/rails active_storage:install`. Please note, that Bloak uses the `image_processing` gem to create thumbnails and image variants, which in turn requires `imagemagick` to be installed on your system.
+Additionally, Bloak requires `ActiveStorage` to be installed in your Rails application to store images for your posts. If you haven't done so yet, now is a good time to run `bin/rails active_storage:install`. Please note, that Bloak uses the `image_processing` gem to create thumbnails and image variants, which in turn requires the `vips` linrary to be installed on your system.
 
 Then, run all migrations within the context of the application with `bin/rails db:migrate`.
 
@@ -71,25 +71,42 @@ You can configure the Bloak engine through an initializer file at `main_app/conf
 
 ```ruby
 Bloak.configure do |c|
+# The name of the site, used in the Navigation Bar, and footer unless a copyright is set
   c.site_name = "My Awesome Blog"
-  c.admin_user = "admin"
-  c.admin_password = "admin"
+
+  # The copyright notice in the footer
+  c.copyright = "© 2023 My Awesome Company - all rights reserved"
+
+  # The username for the admin user
+  c.admin_user = ENV.fetch('BLOAK_ADMIN_USER')
+
+  # The password for the admin user
+  c.admin_password = ENV.fetch('BLOAK_ADMIN_PASSWORD')
+
+  # The number of blog posts to show before pagination
+  c.num_items = 10
+
+  # The maximum number of featured posts to display
+  c.num_featured_posts = 3
+
+  # The maximum depth to render for the TOC of a post
+  c.max_toc_depth = 3
 end
 ```
 
-**Note:** Assinging a `nil` or empty value to `admin_user` or `admin_password` will disable authentication for the admin routes of the engine.
+**Note:** You must assign a value to `admin_user` and `admin_password`, or Bloak will not serve the admin routes and raise an exception instead.
 
 Also make sure to set your `default_url_options`, so absolute URLs to your assets can be correctly generated, for example in `config/application.rb`:
 
 ```ruby
 # Default Host for URL Helpers
-routes.default_url_options[:host] = 'my-blog.com'
+routes.default_url_options[:host] = 'blog.example.com'
 routes.default_url_options[:protocol] = 'https'
 ```
 
 ## The Admin Interface
 
-You can access the admin interface under the `/admin` sub-path of your engine mount, for example, if you mounted the engine at `/blog` the admin UI is available at `/blog/admin`. The Admin UI is secured by HTTP Basic Auth if both `admin_user` and `admin_password` are set in the `Bloak` configuration (see above).
+You can access the admin interface under the `/admin` sub-path of your engine mount, for example, if you mounted the engine at `/blog` the admin UI is available at `/blog/admin`. The Admin UI is secured by HTTP Basic Auth and both `admin_user` and `admin_password` muste be set in the `Bloak` configuration (see above).
 
 Within the admin UI, you can upload images for embedding within Blog posts, as well as write and manage Blog posts.
 

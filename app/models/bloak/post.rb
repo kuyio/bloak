@@ -9,13 +9,16 @@ module Bloak
     friendly_id :title, use: :slugged
 
     # ActiveStorage
-    has_one_attached :cover_image
+    has_one_attached :cover_image do |image|
+      image.variant(:thumbnail, {resize_to_fill: [400, 200], crop: [0, 0, 400, 200]})
+      image.variant(:featured, {resize_to_fill: [440, 300], crop: [0, 0, 440, 300]})
+    end
 
     # Scopes
     scope :featured, -> { where(featured: true) }
     scope :published, -> { where(published: true) }
     scope :unpublished, -> { where(published: false) }
-    scope :tagged, ->(topic) { where(topic: topic) }
+    scope :tagged_with, ->(topic) { where(topic: topic) }
     scope :authored_by, ->(name) { where(author_name: name) }
 
     # Validations
@@ -52,10 +55,10 @@ module Bloak
       end
     end
 
-    def cover_image_variant_path(options = {})
+    def cover_image_variant_path(name)
       if cover_image.attached?
         Rails.application.routes.url_helpers.rails_representation_url(
-          cover_image.variant(options).processed,
+          cover_image.variant(name).processed,
           only_path: true
         )
       else

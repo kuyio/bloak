@@ -3,9 +3,9 @@ require_relative "lib/bloak/version"
 Gem::Specification.new do |spec|
   spec.name        = "bloak"
   spec.version     = Bloak::VERSION
-  spec.authors     = ["Nicolas Bettenburg"]
-  spec.email       = ["nicbet@kuy.io"]
-  spec.homepage    = "https://git.kuy.io/WWW/bloak"
+  spec.authors     = ["KUY.io Inc."]
+  spec.email       = ["info@kuy.io"]
+  spec.homepage    = "https://github.com/kuyio/bloak"
   spec.summary     = "Bloak is a markdown blog engine for Ruby on Rails"
   spec.description = "Bloak is a markdown blog engine for Ruby on Rails"
   spec.license     = "MIT"
@@ -15,8 +15,8 @@ Gem::Specification.new do |spec|
   spec.metadata["allowed_push_host"] = "https://rubygems.pkg.github.com/kuyio"
 
   spec.metadata["homepage_uri"] = spec.homepage
-  spec.metadata["source_code_uri"] = "https://git.kuy.io/WWW/bloak"
-  spec.metadata["changelog_uri"] = "https://git.kuy.io/WWW/bloak/CHANGELOG.md"
+  spec.metadata["source_code_uri"] = "https://github.com/kuyio/bloak"
+  spec.metadata["changelog_uri"] = "https://github.com/kuyio/bloak/CHANGELOG.md"
 
   spec.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.md"]
 

@@ -1,7 +1,7 @@
 <div class="col">
   <div class="card border-0 px-3 py-4">
   <a href="<%= post_path(post) %>">
-    <div class="figure hover-zoom-in"><img src="<%= post.cover_image_variant_path(resize: "440x150^" , crop: "440x150+100+0", gravity: "Center") %>" class="card-img-top"></div>
+    <div class="figure hover-zoom-in"><img src="<%= post.cover_image_variant_path(:thumbnail) %>" class="card-img-top"></div>
   </a>
   <div class="card-body px-0">
     <a href="<%= topic_path(post.topic) %>">
