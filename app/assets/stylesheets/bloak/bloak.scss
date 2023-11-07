@@ -62,12 +62,6 @@ a {
   background-color: #3d8bfd;
 }
 
-// Editor
-.CodeMirror {
-  height: 600px !important;
-  font-size: 14px !important;
-}
-
 // Admin
 .admin-cover-image-preview {
   height: 30px;
@@ -131,4 +125,42 @@ table.table {
     -webkit-transform: scale(1.02);
     transform: scale(1.02);
   }
+}
+
+.search-results.container {
+  max-width: 64em;
+}
+
+.featured-post.card {
+  max-width: 25rem;
+}
+
+.site-logo {
+  max-height: 24px;
+}
+
+.form-control.search-box {
+  max-width: 24rem;
+}
+
+.Markdown-Editor {
+  border: 1px solid #DDD;
+  border-radius: 8px;
+  overflow: hidden;
+
+  &:focus-within {
+    outline: 4px solid #C4DBFF;
+    border-color: #77B3FE;
+  }
+
+  .TinyMDE {
+    min-height: 12rem;
+    max-height: 36rem;
+    overflow-y: scroll;
+  }
+}
+
+.form-check-input[type="checkbox"]:checked {
+  color: #fff;
+  --bs-form-check-bg-image: url('check.svg');
 }

@@ -8,11 +8,10 @@
       <%= form_with(url: admin_posts_search_path ,method: :post, local: true, class: 'form mt-2') do |form| %>
         <div class="input-group">
           <%= form.text_field :query,
-            class: 'form-control',
+            class: 'form-control search-box',
             placeholder: 'Search for Posts...',
             value: @query,
-            aria: {label: "Search for posts by title or content"},
-            style:"max-width: 20em;"
+            aria: {label: "Search for posts by title or content"}
           %>
           <% if @query.present? %>
             <a href="<%= admin_posts_path %>" class="btn btn-danger">

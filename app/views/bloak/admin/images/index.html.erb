@@ -8,11 +8,10 @@
       <%= form_with(url: admin_images_search_path ,method: :post, local: true, class: 'form mt-2') do |form| %>
         <div class="input-group">
           <%= form.text_field :query,
-            class: 'form-control',
+            class: 'form-control search-box',
             placeholder: 'Search for Images...',
             value: @query,
-            aria: {label: "Find image by name or alt text"},
-            style:"max-width: 20em;"
+            aria: {label: "Find image by name or alt text"}
           %>
           <% if @query.present? %>
             <a href="<%= admin_images_path %>" class="btn btn-danger">

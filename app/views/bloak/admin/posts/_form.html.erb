@@ -67,7 +67,10 @@
 
   <div class="field mb-3">
     <%= form.label :content, class: 'form-label' %>
-    <%= form.text_area :content, class: 'form-control' %>
+    <div class="Markdown-Editor">
+      <div id="toolbar"></div>
+      <%= form.text_area :content, class: 'form-control' %>
+    </div>
   </div>
 
   <div class="row mt-5">
@@ -85,18 +88,19 @@
     </div>
     <div class="col position-relative">
       <div class="actions position-absolute end-0 me-3">
-        <%= link_to 'Cancel', admin_posts_path, class: 'btn btn-grey' %>
-        <%= form.submit "Save", class: 'btn btn-primary' %>
-        <%= form.submit "Save and Close", class: 'btn btn-success' %>
+        <%= link_to 'Cancel', admin_posts_path, class: 'btn btn-secondary' %>
+        <%= form.submit "Save", class: 'btn btn-success' %>
+        <%= form.submit "Save and Close", class: 'btn btn-primary' %>
       </div>
     </div>
   </div>
 <% end %>
 
-<script>
-  var simplemde = new SimpleMDE({
-    element: document.getElementById("post_content"),
-    forceSync: true,
-    toolbar: false,
+<%= javascript_tag nonce: true do -%>
+  var tinyMDE = new TinyMDE.Editor({textarea: 'post_content'});
+  var commandBar = new TinyMDE.CommandBar({
+    element: 'toolbar',
+    editor: tinyMDE,
+    commands: ['bold', 'italic', 'strikethrough', 'code', '|', 'h1', 'h2', 'h3', '|', 'ul', 'ol', '|', 'blockquote', 'insertLink', 'insertImage']
   });
-</script>
+<% end %>
