@@ -66,7 +66,7 @@
           <td><a href="<%= edit_admin_post_path(post) %>"><%= post.title.truncate(70) %></a></td>
           <td><%= post.topic %></td>
           <td><%= post.author_name %></td>
-          <td><%= post.published_at.to_s(:friendly_short) %></td>
+          <td><%= friendly_date(post.published_at, :friendly_short) %></td>
           <td>
             <div class="d-flex flex-row">
               <div class="dropdown ml-1">

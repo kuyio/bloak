@@ -20,8 +20,16 @@ module Bloak
       end
     end
 
-    def friendly_date(datetime)
-      datetime.to_s(:friendly)
+    # Render the given date in a friendly format
+    def friendly_date(datetime, format = :friendly)
+      # Rails 7.1 deprecated `to_s(format)` in favor of `to_fs(format)`
+      if datetime.respond_to?(:to_fs)
+        datetime.to_fs(format)
+      else
+        datetime.to_s(format)
+      end
+    rescue StandardError
+      datetime&.to_s
     end
 
     def short_date(datetime)

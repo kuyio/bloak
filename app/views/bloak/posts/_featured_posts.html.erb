@@ -11,7 +11,7 @@
                 <p class="fs-7 text-muted mt-3 mb-3">
                   <img src="<%= post.gravatar(18) %>" alt="Author image" class="gravatar">
                   <span class="ms-1">
-                    <%= post.author_name %> on <%= link_to post.topic, topic_path(post.topic) %> • <%= post.published_at.to_s(:friendly_short) %>
+                    <%= post.author_name %> on <%= link_to post.topic, topic_path(post.topic) %> • <%= friendly_date(post.published_at, :friendly_short) %>
                   </span>
                 </p>
                 <a href="<%= post_path(post) %>" class="no-link-styling d-flex flex-column">
