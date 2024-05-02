@@ -2,6 +2,7 @@ module Bloak
   class ApplicationController < ActionController::Base
     include Pagy::Backend
 
+    protect_from_forgery with: :exception
     before_action :set_default_url_options
 
     private
