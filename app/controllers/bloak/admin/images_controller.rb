@@ -41,7 +41,7 @@ module Bloak
         if @image.save
           redirect_to(admin_images_path, notice: 'Image was successfully created.')
         else
-          render(:new)
+          render(:new, status: :unprocessable_entity)
         end
       end
 

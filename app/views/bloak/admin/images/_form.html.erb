@@ -11,9 +11,7 @@
     </div>
   <% end %>
 
-
-
-  <% if image.image_file.attached? %>
+  <% if image.persisted? && image.image_file.attached? %>
     <h5 class="mt-3 mb-5">Current Image Preview</h5>
     <img src="<%= image.image_variant_url(resize_to_fit: [400, 400]) %>" alt="">
 
