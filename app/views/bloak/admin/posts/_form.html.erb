@@ -42,12 +42,7 @@
     <div class="col">
       <div class="field mb-3">
         <%= form.label :cover_image, class: 'form-label' %>
-        <%= form.file_field :cover_image, class: 'form-control', direct_upload: true %>
-        <% if post.cover_image.attached? %>
-          <div class="form-text">
-            <%= link_to post.cover_image.filename, Rails.application.routes.url_helpers.rails_blob_path(post.cover_image, disposition: :inline, only_path: true) %>
-          </div>
-        <% end %>
+        <%= form.file_field :cover_image, class: 'form-control', accept: 'image/png,image/gif,image/jpeg', direct_upload: true %>
       </div>
     </div>
     <div class="col-2">
@@ -61,7 +56,7 @@
 
   <div class="field mb-3">
     <%= form.label :summary, class: 'form-label' %>
-    <%= form.text_field :summary, class: 'form-control', accept: 'image/png,image/gif,image/jpeg' %>
+    <%= form.text_field :summary, class: 'form-control' %>
     <div class="form-text">A short summary that will be shown as an excerpt on the index page for posts, should be 150 characters long</div>
   </div>
 
