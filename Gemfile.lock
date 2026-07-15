@@ -1,4 +1,11 @@
 GIT
+  remote: https://github.com/kuyio/dandruff.git
+  revision: 98058acc8fd59fbba874d8d6fd75f349b3ff4fff
+  specs:
+    dandruff (0.8.1)
+      nokogiri (~> 1.10)
+
+GIT
   remote: https://github.com/kuyio/kuyio-rubocop.git
   revision: f7774235c8fddd1855cda03ea0415b5dad005621
   specs:
@@ -13,6 +20,7 @@ PATH
   specs:
     bloak (1.0.6)
       bootstrap (~> 5.2)
+      dandruff (~> 0.8)
       friendly_id (~> 5.4)
       image_processing (~> 1.2)
       jquery-rails (~> 4.4)
@@ -343,6 +351,7 @@ PLATFORMS
 
 DEPENDENCIES
   bloak!
+  dandruff!
   kuyio-rubocop!
   pg
   puma

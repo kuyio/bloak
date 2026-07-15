@@ -109,7 +109,7 @@ class MarkdownRendererTest < ActiveSupport::TestCase
     assert_match "nonexistent", html
   end
 
-  test "media tag escapes alt text" do
+  test "media tag prevents XSS via alt text" do
     image = Bloak::Image.new(name: "xss-test", alt: '" onload="alert(1)')
     image.image_file.attach(
       io: File.open(file_fixture("test.png")),
@@ -118,8 +118,11 @@ class MarkdownRendererTest < ActiveSupport::TestCase
     )
     image.save!
     html = MarkdownRenderer.md_to_html('{% media "xss-test" %}')
-    assert_no_match '" onload="', html
-    assert_match "&quot; onload=&quot;alert(1)", html
+    doc = Nokogiri::HTML.fragment(html)
+    img = doc.at_css("img")
+    assert img, "expected an <img> tag"
+    assert_nil img["onload"], "onload attribute must not be present"
+    assert_includes img["alt"], "onload", "alt text should contain the literal string"
   end
 
   test "toc tag renders table of contents" do
@@ -144,6 +147,26 @@ class MarkdownRendererTest < ActiveSupport::TestCase
     md = "```\n{{ secret }}\n```"
     html = MarkdownRenderer.md_to_html(md, { secret: "LEAKED" })
     assert_no_match "LEAKED", html
+  end
+
+  # Sanitization tests
+
+  test "strips script tags from output" do
+    html = MarkdownRenderer.md_to_html('<script>alert("xss")</script>Safe text')
+    assert_no_match "<script>", html
+    assert_match "Safe text", html
+  end
+
+  test "strips event handler attributes" do
+    html = MarkdownRenderer.md_to_html('<img src="x" onerror="alert(1)">')
+    doc = Nokogiri::HTML.fragment(html)
+    img = doc.at_css("img")
+    assert_nil img&.[]("onerror")
+  end
+
+  test "strips iframe tags" do
+    html = MarkdownRenderer.md_to_html('<iframe src="https://evil.com"></iframe>')
+    assert_no_match "<iframe", html
   end
 
   test "ERB is not processed by default" do

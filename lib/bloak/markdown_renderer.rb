@@ -4,6 +4,7 @@ require "redcarpet"
 require "rouge"
 require "rouge/plugins/redcarpet"
 require "liquid"
+require "dandruff"
 
 module MarkdownRenderer
   class CustomHTML < Redcarpet::Render::HTML
@@ -28,7 +29,7 @@ module MarkdownRenderer
   def self.md_to_html(content, assigns = {})
     processed = preprocess(content, assigns)
 
-    Redcarpet::Markdown.new(
+    raw_html = Redcarpet::Markdown.new(
       CustomHTML.new(
         link_attributes: { target: "_blank", rel: "noopener noreferrer nofollow" }
       ),
@@ -40,7 +41,9 @@ module MarkdownRenderer
       highlight: true,
       with_toc_data: true,
       tables: true
-    ).render(processed).html_safe # rubocop:disable Rails/OutputSafety
+    ).render(processed)
+
+    sanitize_html(raw_html).html_safe # rubocop:disable Rails/OutputSafety
   end
 
   def self.render_toc(content, depth = 2)
@@ -121,5 +124,40 @@ module MarkdownRenderer
     chunks
   end
 
-  private_class_method :preprocess, :process_liquid, :process_erb, :chunk_code_blocks
+  SANITIZER = Dandruff.new do |config|
+    config.allowed_tags = %w[
+      h1 h2 h3 h4 h5 h6
+      p br hr
+      strong em sup sub
+      a img
+      ul ol li
+      blockquote pre code
+      table thead tbody tfoot tr th td
+      div span i
+    ]
+    config.allowed_attributes_per_tag = {
+      "h1" => %w[id class], "h2" => %w[id class], "h3" => %w[id class],
+      "h4" => %w[id class], "h5" => %w[id class], "h6" => %w[id class],
+      "a" => %w[href target rel],
+      "img" => %w[src alt class],
+      "pre" => %w[class],
+      "code" => %w[class],
+      "div" => %w[class],
+      "span" => %w[class],
+      "blockquote" => %w[class],
+      "p" => %w[class],
+      "i" => %w[class],
+      "td" => %w[colspan rowspan],
+      "th" => %w[colspan rowspan scope]
+    }
+    config.allow_data_attributes = false
+    config.allow_data_uri = false
+  end
+  private_constant :SANITIZER
+
+  def self.sanitize_html(html)
+    SANITIZER.scrub(html)
+  end
+
+  private_class_method :preprocess, :process_liquid, :process_erb, :chunk_code_blocks, :sanitize_html
 end

@@ -6,6 +6,8 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 # Specify your gem's dependencies in bloak.gemspec.
 gemspec
 
+gem "dandruff", github: "kuyio/dandruff"
+
 group :development do
   gem 'pg'
   gem 'puma'
