@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Bloak
   module Nlp
     def self.paragraphs(text)
@@ -5,7 +7,7 @@ module Bloak
     end
 
     def self.sentences(text)
-      text.split(/((?<=[a-z0-9][.?!])|(?<=[a-z0-9][.?!]\"))(\s|\r\n)(?=\"?[A-Z])/)
+      text.split(/((?<=[a-z0-9][.?!])|(?<=[a-z0-9][.?!]"))(\s|\r\n)(?="?[A-Z])/)
     end
 
     def self.tokenize(text)
@@ -33,22 +35,19 @@ module Bloak
 
       @sentences =
         @paragraphs
-          .map { |paragraph| sentences(paragraph) }
-          .flatten
+          .flat_map { |paragraph| sentences(paragraph) }
           .filter { |s| (s =~ /\A\s*\z/).nil? }
 
       @tokens =
         @sentences
-          .map { |sentence| tokenize(sentence) }
-          .flatten
+          .flat_map { |sentence| tokenize(sentence) }
           .map(&:upcase)
-          .map(&method(:split_with_punctuation))
-          .flatten
+          .flat_map { |token| split_with_punctuation(token) }
           .filter { |s| (s =~ /\A\s*\z/).nil? }
 
-      @words = @tokens.filter(&method(:word?))
+      @words = @tokens.filter { |token| word?(token) }
 
-      (@words.count + speed / 2) / speed
+      (@words.count + (speed / 2)) / speed
     end
   end
 end

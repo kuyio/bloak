@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'redcarpet'
 require 'rouge'
 require 'rouge/plugins/redcarpet'
@@ -10,7 +12,7 @@ module MarkdownRenderer
 
     def initialize(extensions = {})
       @locals = extensions.fetch(:locals, {})
-      super(extensions)
+      super
     end
 
     def preprocess(document)
@@ -47,11 +49,11 @@ module MarkdownRenderer
           if in_block
             in_block = false
             chunk << line
-            chunks << chunk.join("")
+            chunks << chunk.join
             chunk = []
           else
             in_block = true
-            chunks << chunk.join("")
+            chunks << chunk.join
             chunk = []
             chunk << line
           end
@@ -59,7 +61,7 @@ module MarkdownRenderer
           chunk << line
         end
       end
-      chunks << chunk.join("")
+      chunks << chunk.join
       chunks
     end
 
@@ -69,8 +71,7 @@ module MarkdownRenderer
       stripped =
         sanitize(text)
           .downcase
-          .gsub(/[^0-9a-z]/i, '-')
-          .gsub(/-+/, '-')
+          .gsub(/[^0-9a-z]/i, '-').squeeze('-')
           .delete_suffix('-')
 
       %(<h#{level} class="title is-#{level}" id="#{stripped}">#{text}</h#{level}>)
@@ -112,18 +113,17 @@ module MarkdownRenderer
     end
 
     def quote_box(content)
-      result = <<~HTML
+      <<~HTML
         <blockquote class="blockquote">
           <p class="text-dark">
             #{content}
           </p>
         </blockquote>
       HTML
-      result
     end
 
     def info_box(content)
-      result = <<~HTML
+      <<~HTML
         <blockquote class="alert alert-info">
         <p class="text-dark">
             <span class="icon text-info"><i class="fa fa-info-circle"></i></span>
@@ -131,11 +131,10 @@ module MarkdownRenderer
           </p>
         </blockquote>
       HTML
-      result
     end
 
     def warning_box(content)
-      result = <<~HTML
+      <<~HTML
         <blockquote class="alert alert-warning">
           <p class="text-dark">
             <span class="icon text-warning"><i class="fa fa-exclamation-triangle"></i></span>
@@ -143,11 +142,10 @@ module MarkdownRenderer
           </p>
         </blockquote>
       HTML
-      result
     end
 
     def danger_box(content)
-      result = <<~HTML
+      <<~HTML
         <blockquote class="alert alert-danger">
         <p class="text-danger">
             <span class="icon text-danger"><i class="fa fa-exclamation-circle"></i></span>
@@ -155,11 +153,10 @@ module MarkdownRenderer
           </p>
         </blockquote>
       HTML
-      result
     end
 
     def media_tag(name)
-      result = if Bloak::Media.image(name).present?
+      if Bloak::Media.image(name).present?
         <<~HTML
           <img src="#{Bloak::Media.image_url(name)}" alt="#{Bloak::Media.image_alt(name)}" />
           <p class="fs-7 text-muted text-center mb-5 media-label">#{Bloak::Media.image_alt(name)}</p>
@@ -172,8 +169,6 @@ module MarkdownRenderer
           </p>
         HTML
       end
-
-      result
     end
 
     def table_of_contents(label)
@@ -194,7 +189,7 @@ module MarkdownRenderer
     # Render the result via Redcarpet, using our Custom Renderer
     Redcarpet::Markdown.new(
       CustomHTML.new(
-        link_attributes: {target: '_blank', rel: 'noopener noreferrer nofollow'},
+        link_attributes: { target: '_blank', rel: 'noopener noreferrer nofollow' },
         locals: assigns
       ),
       fenced_code_blocks: true,
@@ -203,13 +198,14 @@ module MarkdownRenderer
       no_intra_emphasis: true,
       space_after_headers: false,
       highlight: true,
-      with_toc_data: true
-    ).render(content).html_safe
+      with_toc_data: true,
+      tables: true
+    ).render(content).html_safe # rubocop:disable Rails/OutputSafety
   end
 
   def self.render_toc(content, depth = 2)
     toc_render = Redcarpet::Render::HTML_TOC.new(nesting_level: 1..depth)
     parser     = Redcarpet::Markdown.new(toc_render)
-    parser.render(content).html_safe
+    parser.render(content).html_safe # rubocop:disable Rails/OutputSafety
   end
 end

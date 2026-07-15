@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Bloak
   module Media
     def self.image(name)

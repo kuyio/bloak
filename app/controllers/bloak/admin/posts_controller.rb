@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_dependency "bloak/application_controller"
 
 module Bloak
@@ -24,8 +26,7 @@ module Bloak
       end
 
       # GET /posts/1/edit
-      def edit
-      end
+      def edit; end
 
       # POST /posts
       def create
@@ -83,16 +84,16 @@ module Bloak
 
       private
 
-        # Use callbacks to share common setup or constraints between actions.
-        def set_post
-          @post = Post.friendly.find(params[:id])
-        end
+      # Use callbacks to share common setup or constraints between actions.
+      def set_post
+        @post = Post.friendly.find(params[:id])
+      end
 
-        # Only allow a list of trusted parameters through.
-        def post_params
-          params.require(:post).permit(:cover_image, :title, :topic, :summary, :content, :author_name, :author_email,
-:published, :featured, :reading_time, :published_at)
-        end
+      # Only allow a list of trusted parameters through.
+      def post_params
+        params.expect(post: [:cover_image, :title, :topic, :summary, :content, :author_name, :author_email,
+          :published, :featured, :reading_time, :published_at])
+      end
     end
   end
 end

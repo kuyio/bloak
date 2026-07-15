@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "bloak/version"
 require "bloak/engine"
 
@@ -40,7 +42,7 @@ module Bloak
   end
 
   def self.copyright
-    @@copyright || "© #{Time.now.utc.year} #{site_name} &mdash; All rights reserved.".html_safe
+    @@copyright || "© #{Time.now.utc.year} #{site_name} &mdash; All rights reserved.".html_safe # rubocop:disable Rails/OutputSafety
   end
 
   def self.num_items

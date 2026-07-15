@@ -1,5 +1,7 @@
-Bloak.configure do |c|
-  c.admin_user = "admin"
-  c.admin_password = "admin"
-  c.num_items = 10
+# frozen_string_literal: true
+
+Bloak.configure do |config|
+  config.site_name = "Bloak Demo"
+  config.admin_user = "admin"
+  config.admin_password = "password"
 end

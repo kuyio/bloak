@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Bloak::Engine.routes.draw do
   root 'posts#index'
 

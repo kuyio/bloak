@@ -1,8 +1,11 @@
+# frozen_string_literal: true
+
 module Bloak
   class Image < ApplicationRecord
     # Search
     include PgSearch::Model
-    pg_search_scope :search_by_name, against: %w(name alt)
+
+    pg_search_scope :search_by_name, against: %w[name alt]
 
     # Active Storage
     has_one_attached :image_file
@@ -36,11 +39,11 @@ module Bloak
     private
 
     def image_validation
-      errors[:image] << 'is required' unless image_file.attached?
+      errors.add(:image, 'is required') unless image_file.attached?
     end
 
     def correct_image_mime_type
-      return unless image_file.attached? && !image_file.content_type.in?(%w(image/jpeg image/png))
+      return unless image_file.attached? && !image_file.content_type.in?(%w[image/jpeg image/png])
 
       errors.add(:image, 'must be an image')
     end

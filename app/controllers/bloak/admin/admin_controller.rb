@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 module Bloak
   module Admin
     class AdminController < ApplicationController
       layout 'bloak/admin'
 
       http_basic_authenticate_with(
-        name:     Bloak.admin_user,
+        name: Bloak.admin_user,
         password: Bloak.admin_password
       )
 

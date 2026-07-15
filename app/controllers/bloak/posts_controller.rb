@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_dependency "bloak/application_controller"
 
 module Bloak
@@ -21,7 +23,7 @@ module Bloak
       set_tags
 
       # 404 if the topic given in params is not a valid tag for any of the published posts
-      raise ActiveRecord::RecordNotFound.new("Invalid Topic") unless @tags.include?(topic)
+      raise ActiveRecord::RecordNotFound, "Invalid Topic" unless @tags.include?(topic)
 
       set_featured_posts
       @pagy, @posts = pagy(
@@ -38,7 +40,7 @@ module Bloak
       authors = Post.published.distinct.pluck(:author_name).sort
 
       # 404 if the author given in params is not a valid author_name for any of the published posts
-      raise ActiveRecord::RecordNotFound.new("Invalid Author") unless authors.include?(author)
+      raise ActiveRecord::RecordNotFound, "Invalid Author" unless authors.include?(author)
 
       set_featured_posts
       set_tags
@@ -73,21 +75,21 @@ module Bloak
 
     private
 
-      # Use callbacks to share common setup or constraints between actions.
-      def set_post
-        @post = Post.with_attached_cover_image.friendly.find(params[:id])
-      end
+    # Use callbacks to share common setup or constraints between actions.
+    def set_post
+      @post = Post.with_attached_cover_image.friendly.find(params[:id])
+    end
 
-      def set_featured_posts
-        @featured_posts = Post.published
-          .featured
-          .with_attached_cover_image
-          .limit(Bloak.num_featured_posts)
-          .order(published_at: :desc)
-      end
+    def set_featured_posts
+      @featured_posts = Post.published
+        .featured
+        .with_attached_cover_image
+        .limit(Bloak.num_featured_posts)
+        .order(published_at: :desc)
+    end
 
-      def set_tags
-        @tags = Post.published.distinct.pluck(:topic).sort
-      end
+    def set_tags
+      @tags = Post.published.distinct.pluck(:topic).sort
+    end
   end
 end

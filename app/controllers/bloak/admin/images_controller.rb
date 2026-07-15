@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_dependency "bloak/application_controller"
 
 module Bloak
@@ -22,8 +24,7 @@ module Bloak
       end
 
       # GET /images/1
-      def show
-      end
+      def show; end
 
       # GET /images/new
       def new
@@ -31,8 +32,7 @@ module Bloak
       end
 
       # GET /images/1/edit
-      def edit
-      end
+      def edit; end
 
       # POST /images
       def create
@@ -41,7 +41,7 @@ module Bloak
         if @image.save
           redirect_to(admin_images_path, notice: 'Image was successfully created.')
         else
-          render(:new, status: :unprocessable_entity)
+          render(:new, status: :unprocessable_content)
         end
       end
 
@@ -62,15 +62,15 @@ module Bloak
 
       private
 
-        # Use callbacks to share common setup or constraints between actions.
-        def set_image
-          @image = Image.find(params[:id])
-        end
+      # Use callbacks to share common setup or constraints between actions.
+      def set_image
+        @image = Image.find(params[:id])
+      end
 
-        # Only allow a list of trusted parameters through.
-        def image_params
-          params.require(:image).permit(:name, :alt, :image_file)
-        end
+      # Only allow a list of trusted parameters through.
+      def image_params
+        params.expect(image: [:name, :alt, :image_file])
+      end
     end
   end
 end

@@ -9,3 +9,5 @@
 /vendor/bundle
 .byebug_history
 node_modules
+/test/dummy/config/master.key
+/test/dummy/config/credentials.yml.enc

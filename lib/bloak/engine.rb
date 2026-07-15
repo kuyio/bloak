@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "friendly_id"
 require 'bootstrap'
 require 'jquery-rails'
@@ -19,6 +21,14 @@ module Bloak
     @@javascripts = []
     # rubocop:enable Style/ClassVars
 
+    initializer "bloak.migrations" do |app|
+      unless defined?(ENGINE_ROOT) && ENGINE_ROOT == root.to_s
+        config.paths["db/migrate"].expanded.each do |path|
+          app.config.paths["db/migrate"] << path
+        end
+      end
+    end
+
     initializer "engine_name.assets.precompile" do |app|
       app.config.assets.precompile += [
         "bloak_manifest.js",
@@ -28,7 +38,7 @@ module Bloak
     end
 
     config.to_prepare do
-      Dir.glob(Rails.root + "app/decorators/**/*_decorator*.rb").each do |c|
+      Dir.glob("#{Rails.root}app/decorators/**/*_decorator*.rb").each do |c|
         require_dependency(c)
       end
     end

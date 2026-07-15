@@ -7,6 +7,7 @@
   ul {
     margin-top: 0.5rem;
     margin-bottom: 1rem;
+
     li {
       margin: 0.5rem;
     }
@@ -16,7 +17,7 @@
     margin-top: 1.5rem;
     margin-bottom: 2rem;
     border: 1px solid #000;
-    border-radius: 5px;
+    border-radius: 8px;
     overflow: hidden;
   }
 
@@ -114,6 +115,7 @@
   p {
     font-style: normal;
     margin-bottom: 1.666667em;
+
     strong {
       font-weight: 600;
     }
@@ -125,12 +127,37 @@
     border-radius: 5px;
     margin-top: 2em;
     margin-bottom: 2em;
+
     .toc-title {
       font-size: 1.5em;
       padding-top: 0.5em;
       padding-left: 0.8em;
       padding-right: 1em;
       padding-bottom: 0.5em;
+    }
+  }
+
+  table {
+    width: 100%;
+    margin-top: 1.5em;
+    margin-bottom: 2em;
+    border-collapse: collapse;
+    font-size: 0.9em;
+
+    th,
+    td {
+      padding: 0.6em 1em;
+      border: 1px solid #ddd;
+      text-align: left;
+    }
+
+    th {
+      background-color: #f5f5f5;
+      font-weight: 600;
+    }
+
+    tr:nth-child(even) {
+      background-color: #fafafa;
     }
   }
 

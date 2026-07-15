@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Bloak
   module ApplicationHelper
     include Pagy::Frontend
@@ -5,7 +7,7 @@ module Bloak
     def page_title
       if content_for?(:title)
         # allows the title to be set in the view by using t(".title")
-        "#{Bloak.site_name} – #{content_for(:title)}".html_safe
+        "#{Bloak.site_name} – #{content_for(:title)}".html_safe # rubocop:disable Rails/OutputSafety
       else
         Bloak.site_name
       end

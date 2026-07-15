@@ -1,17 +1,21 @@
+# frozen_string_literal: true
+
 module Bloak
   class Post < ApplicationRecord
     # Search
     include PgSearch::Model
-    pg_search_scope :search_by_content, against: %w(title content)
+
+    pg_search_scope :search_by_content, against: %w[title content]
 
     # Slugs
     extend FriendlyId
+
     friendly_id :title, use: :slugged
 
     # ActiveStorage
     has_one_attached :cover_image do |image|
-      image.variant(:thumbnail, {resize_to_fill: [400, 200], crop: [0, 0, 400, 200]})
-      image.variant(:featured, {resize_to_fill: [440, 300], crop: [0, 0, 440, 300]})
+      image.variant(:thumbnail, { resize_to_fill: [400, 200], crop: [0, 0, 400, 200] })
+      image.variant(:featured, { resize_to_fill: [440, 300], crop: [0, 0, 440, 300] })
     end
 
     # Scopes
@@ -94,11 +98,11 @@ module Bloak
     private
 
     def image_validation
-      errors[:cover_image] << 'is required' unless cover_image.attached?
+      errors.add(:cover_image, 'is required') unless cover_image.attached?
     end
 
     def correct_image_mime_type
-      return unless cover_image.attached? && !cover_image.content_type.in?(%w(image/jpeg image/png))
+      return unless cover_image.attached? && !cover_image.content_type.in?(%w[image/jpeg image/png])
 
       errors.add(:cover_image, 'must be an image')
     end
