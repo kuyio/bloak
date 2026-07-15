@@ -45,7 +45,17 @@ module Bloak
         content_type: "image/gif"
       )
       assert_not @image.valid?
-      assert_includes @image.errors[:image], "must be an image"
+      assert @image.errors[:image].any? { |e| e.include?("JPEG or PNG") }
+    end
+
+    test "rejects file with valid content type but wrong extension" do
+      @image.image_file.attach(
+        io: File.open(file_fixture("test.png")),
+        filename: "image.svg",
+        content_type: "image/png"
+      )
+      assert_not @image.valid?
+      assert @image.errors[:image].any? { |e| e.include?("JPEG or PNG") }
     end
 
     test "image_url returns path when attached" do

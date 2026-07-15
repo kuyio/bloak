@@ -64,7 +64,17 @@ module Bloak
         content_type: "image/gif"
       )
       assert_not @post.valid?
-      assert_includes @post.errors[:cover_image], "must be an image"
+      assert @post.errors[:cover_image].any? { |e| e.include?("JPEG or PNG") }
+    end
+
+    test "rejects file with valid content type but wrong extension" do
+      @post.cover_image.attach(
+        io: File.open(file_fixture("test.png")),
+        filename: "image.svg",
+        content_type: "image/png"
+      )
+      assert_not @post.valid?
+      assert @post.errors[:cover_image].any? { |e| e.include?("JPEG or PNG") }
     end
 
     # --- Scopes ---

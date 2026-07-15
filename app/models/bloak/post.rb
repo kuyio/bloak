@@ -34,6 +34,7 @@ module Bloak
     validates :content, presence: true
     validate  :image_validation
     validate  :correct_image_mime_type
+    validate  :image_file_size
 
     # Callbacks
     before_save :update_reading_time
@@ -102,9 +103,17 @@ module Bloak
     end
 
     def correct_image_mime_type
-      return unless cover_image.attached? && !cover_image.content_type.in?(%w[image/jpeg image/png])
+      return unless cover_image.attached?
+      return if cover_image.content_type.in?(%w[image/jpeg image/png]) &&
+        cover_image.filename.to_s.match?(/\.(jpe?g|png)\z/i)
 
-      errors.add(:cover_image, 'must be an image')
+      errors.add(:cover_image, "must be a JPEG or PNG image")
+    end
+
+    def image_file_size
+      return unless cover_image.attached? && cover_image.blob.byte_size > 10.megabytes
+
+      errors.add(:cover_image, "must be smaller than 10 MB")
     end
   end
 end
