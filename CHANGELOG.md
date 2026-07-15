@@ -1,5 +1,26 @@
 # HEAD
 
+- [BREAKING] Replace Redcarpet with CommonMarker for CommonMark-compliant markdown rendering
+- [BREAKING] Replace ERB with Liquid for post template processing (eliminates RCE risk)
+- [BREAKING] Replace `!`-prefix custom tags with Liquid tags (`{% toc %}`, `{% media %}`, `{% danger %}`, etc.)
+- Add Dandruff HTML sanitizer for rendered markdown output (XSS protection)
+- Add `liquid` gem dependency for sandboxed post templates
+- Add `dandruff` gem dependency for HTML sanitization
+- Add `commonmarker` gem dependency, remove `redcarpet` dependency
+- Add `config.allow_erb_in_posts` option (default: false) for legacy ERB support
+- Add `rake bloak:migrate_posts` task to convert `!`-prefix tags to Liquid syntax
+- Add install generator (`rails generate bloak:install`)
+- Add views generator (`rails generate bloak:views`) with `--scope` option
+- Add CSS custom properties for theming (14 variables)
+- Add `config.layout` option to use host app layout
+- Add default `logo.png` and `favicon.png` assets (overridable by host app)
+- Upgrade to Rails 8.1 compatibility, require Ruby >= 3.4
+- Use `kuyio-rubocop` for linting (replaces individual rubocop gems)
+- Comprehensive test suite (139 tests, 306 assertions)
+- Security audit and hardening pass
+
+# 1.0.6
+
 - Remove all inline styles to be compatible with CSP rules disallowing inline styles
 - Switch to TinyMDE as markdown editor
 - Use checkmark from asset url instead of data:svg to be compatible with CSP rules disallowing images from data attributes
