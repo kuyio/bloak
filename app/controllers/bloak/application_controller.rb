@@ -7,6 +7,17 @@ module Bloak
     protect_from_forgery with: :exception
     before_action :set_default_url_options
 
+    content_security_policy do |policy|
+      policy.default_src :self
+      policy.script_src  :self
+      policy.style_src   :self, :unsafe_inline
+      policy.img_src     :self, :data, "https://gravatar.com"
+      policy.font_src    :self
+      policy.connect_src :self
+      policy.frame_src   :none
+      policy.object_src  :none
+    end
+
     private
 
     def set_default_url_options
