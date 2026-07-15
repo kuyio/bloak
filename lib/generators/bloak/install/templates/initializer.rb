@@ -4,9 +4,9 @@ Bloak.configure do |config|
   # The name displayed in the navigation bar and footer
   config.site_name = "My Blog"
 
-  # Admin credentials for the /blog/admin panel
-  config.admin_user = ENV.fetch("BLOAK_ADMIN_USER", "admin")
-  config.admin_password = ENV.fetch("BLOAK_ADMIN_PASSWORD", "changeme")
+  # Admin credentials for the /blog/admin panel (required - raises if unset)
+  config.admin_user = ENV.fetch("BLOAK_ADMIN_USER")
+  config.admin_password = ENV.fetch("BLOAK_ADMIN_PASSWORD")
 
   # Number of posts per page
   # config.num_items = 10
