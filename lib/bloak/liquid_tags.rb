@@ -42,13 +42,12 @@ module Bloak
         document = context.registers[:document]
         return "" if document.blank?
 
-        toc_render = Redcarpet::Render::HTML_TOC.new(nesting_level: 2..2)
-        parser = Redcarpet::Markdown.new(toc_render)
+        toc_html = MarkdownRenderer.render_toc(document, 2)
 
         <<~HTML
           <div class="table-of-contents">
             <h2 class="toc-title">#{ERB::Util.html_escape(@label)}</h2>
-            #{parser.render(document)}
+            #{toc_html}
           </div>
         HTML
       end

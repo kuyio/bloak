@@ -1,55 +1,108 @@
 # frozen_string_literal: true
 
-require "redcarpet"
+require "commonmarker"
 require "rouge"
-require "rouge/plugins/redcarpet"
 require "liquid"
 require "dandruff"
+require "nokogiri"
 
 module MarkdownRenderer
-  class CustomHTML < Redcarpet::Render::HTML
-    include Rouge::Plugins::Redcarpet
-    include ActionView::Helpers::SanitizeHelper
-
-    def header(text, level)
-      stripped =
-        sanitize(text)
-          .downcase
-          .gsub(/[^0-9a-z]/i, "-").squeeze("-")
-          .delete_suffix("-")
-
-      %(<h#{level} class="title is-#{level}" id="#{stripped}">#{text}</h#{level}>)
-    end
-
-    def rouge_formatter(lexer)
-      Rouge::Formatters::HTMLLegacy.new(css_class: "highlight #{lexer.tag}")
-    end
-  end
+  COMMONMARKER_OPTIONS = {
+    parse: { smart: true },
+    render: { hardbreaks: false, unsafe: true, escape: false },
+    extension: {
+      table: true,
+      autolink: true,
+      superscript: true,
+      header_ids: "",
+      strikethrough: true,
+      tagfilter: false
+    }
+  }.freeze
+  private_constant :COMMONMARKER_OPTIONS
 
   def self.md_to_html(content, assigns = {})
     processed = preprocess(content, assigns)
 
-    raw_html = Redcarpet::Markdown.new(
-      CustomHTML.new(
-        link_attributes: { target: "_blank", rel: "noopener noreferrer nofollow" }
-      ),
-      fenced_code_blocks: true,
-      autolink: true,
-      superscript: true,
-      no_intra_emphasis: true,
-      space_after_headers: false,
-      highlight: true,
-      with_toc_data: true,
-      tables: true
-    ).render(processed)
+    raw_html = Commonmarker.to_html(processed.encode("UTF-8"), options: COMMONMARKER_OPTIONS, plugins: {
+      syntax_highlighter: nil
+    })
 
-    sanitize_html(raw_html).html_safe # rubocop:disable Rails/OutputSafety
+    post_processed = post_process(raw_html)
+    sanitize_html(post_processed).html_safe # rubocop:disable Rails/OutputSafety
   end
 
   def self.render_toc(content, depth = 2)
-    toc_render = Redcarpet::Render::HTML_TOC.new(nesting_level: 1..depth)
-    parser = Redcarpet::Markdown.new(toc_render)
-    parser.render(content).html_safe # rubocop:disable Rails/OutputSafety
+    doc = Commonmarker.parse(content, options: COMMONMARKER_OPTIONS)
+    entries = []
+
+    doc.walk do |node|
+      next unless node.type == :heading
+      next unless node.header_level.between?(1, depth)
+
+      text = collect_text(node)
+      slug = slugify(text)
+      entries << { level: node.header_level, text: text, id: slug }
+    end
+
+    return "".html_safe if entries.empty?
+
+    toc = entries.map { |e| %(<li><a href="##{e[:id]}">#{ERB::Util.html_escape(e[:text])}</a></li>) }
+    %(<ul>\n#{toc.join("\n")}\n</ul>).html_safe # rubocop:disable Rails/OutputSafety
+  end
+
+  def self.post_process(html)
+    doc = Nokogiri::HTML.fragment(html)
+
+    doc.css("a[href]").each do |link|
+      next if link["href"]&.start_with?("#")
+
+      link["target"] = "_blank"
+      link["rel"] = "noopener noreferrer nofollow"
+    end
+
+    doc.css("h1, h2, h3, h4, h5, h6").each do |heading|
+      level = heading.name.delete_prefix("h")
+      heading["class"] = "title is-#{level}"
+    end
+
+    doc.css("pre[lang]").each do |pre_node|
+      lang = pre_node["lang"]
+      next if lang.nil? || lang.empty?
+
+      code_node = pre_node.at_css("code") || pre_node
+      highlight_code(pre_node, code_node, lang)
+    end
+
+    doc.to_html
+  end
+
+  def self.highlight_code(pre_node, code_node, lang)
+    lexer = Rouge::Lexer.find(lang) || Rouge::Lexers::PlainText.new
+    formatter = Rouge::Formatters::HTML.new
+    source = code_node.inner_text
+
+    highlighted = formatter.format(lexer.lex(source))
+    code_node.inner_html = highlighted
+    code_node["class"] = "highlight #{lexer.tag}"
+    pre_node.remove_attribute("lang")
+    pre_node["class"] = "highlight #{lexer.tag}"
+  end
+
+  def self.collect_text(node)
+    text = ""
+    node.each do |child|
+      text += if child.type == :text || child.type == :code
+                child.string_content
+              else
+                collect_text(child)
+              end
+    end
+    text
+  end
+
+  def self.slugify(text)
+    text.downcase.gsub(/[^0-9a-z]/i, "-").squeeze("-").delete_prefix("-").delete_suffix("-")
   end
 
   def self.preprocess(content, assigns = {})
@@ -128,17 +181,18 @@ module MarkdownRenderer
     config.allowed_tags = %w[
       h1 h2 h3 h4 h5 h6
       p br hr
-      strong em sup sub
+      strong em sup sub del
       a img
       ul ol li
       blockquote pre code
       table thead tbody tfoot tr th td
       div span i
+      input
     ]
     config.allowed_attributes_per_tag = {
       "h1" => %w[id class], "h2" => %w[id class], "h3" => %w[id class],
       "h4" => %w[id class], "h5" => %w[id class], "h6" => %w[id class],
-      "a" => %w[href target rel class],
+      "a" => %w[href target rel class aria-label],
       "img" => %w[src alt class],
       "pre" => %w[class],
       "code" => %w[class],
@@ -149,9 +203,11 @@ module MarkdownRenderer
       "i" => %w[class],
       "tr" => %w[class],
       "td" => %w[colspan rowspan class],
-      "th" => %w[colspan rowspan scope class]
+      "th" => %w[colspan rowspan scope class],
+      "input" => %w[type checked disabled]
     }
-    config.allow_data_attributes = false
+    config.allow_data_attributes = true
+    config.allow_aria_attributes = true
     config.allow_data_uri = false
   end
   private_constant :SANITIZER
@@ -169,5 +225,6 @@ module MarkdownRenderer
     sanitized
   end
 
-  private_class_method :preprocess, :process_liquid, :process_erb, :chunk_code_blocks, :sanitize_html
+  private_class_method :preprocess, :process_liquid, :process_erb, :chunk_code_blocks,
+    :sanitize_html, :post_process, :highlight_code, :collect_text, :slugify
 end

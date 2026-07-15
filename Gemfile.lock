@@ -20,6 +20,7 @@ PATH
   specs:
     bloak (1.0.6)
       bootstrap (~> 5.2)
+      commonmarker (~> 2.0)
       dandruff (~> 0.8)
       friendly_id (~> 5.4)
       image_processing (~> 1.2)
@@ -29,7 +30,6 @@ PATH
       pagy (~> 8.0)
       pg_search (~> 2.3.5)
       rails (>= 7.0, < 9.0)
-      redcarpet (~> 3.6)
       rouge (~> 4.1)
       sass-rails (~> 6.0)
       sprockets-rails (>= 3.4)
@@ -118,6 +118,9 @@ GEM
     bootstrap (5.3.8)
       popper_js (>= 2.11.8, < 3)
     builder (3.3.0)
+    commonmarker (2.9.0-arm64-darwin)
+    commonmarker (2.9.0-x86_64-darwin)
+    commonmarker (2.9.0-x86_64-linux)
     concurrent-ruby (1.3.7)
     connection_pool (3.0.2)
     crass (1.0.7)
@@ -264,7 +267,6 @@ GEM
       prism (>= 1.6.0)
       rbs (>= 4.0.0)
       tsort
-    redcarpet (3.6.1)
     regexp_parser (2.12.0)
     reline (0.6.3)
       io-console (~> 0.5)

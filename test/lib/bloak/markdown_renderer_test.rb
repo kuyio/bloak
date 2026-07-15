@@ -15,13 +15,13 @@ class MarkdownRendererTest < ActiveSupport::TestCase
 
   test "renders headings with id and class" do
     html = MarkdownRenderer.md_to_html("## My Heading")
-    assert_match '<h2 class="title is-2"', html
+    assert_match 'class="title is-2"', html
     assert_match 'id="my-heading"', html
   end
 
   test "renders headings with special characters in id" do
     html = MarkdownRenderer.md_to_html("## Hello & World")
-    assert_match 'id="hello-amp-world"', html
+    assert_match 'id="hello--world"', html
   end
 
   test "renders fenced code blocks with syntax highlighting" do
