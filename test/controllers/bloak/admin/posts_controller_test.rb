@@ -112,14 +112,14 @@ module Bloak
 
       test "toggle_featured flips featured flag" do
         original = @post.featured?
-        get toggle_featured_admin_post_url(@post), headers: { "Authorization" => admin_credentials }
+        patch toggle_featured_admin_post_url(@post), headers: { "Authorization" => admin_credentials }
         @post.reload
         assert_equal !original, @post.featured?
       end
 
       test "toggle_published flips published flag" do
         original = @post.published?
-        get toggle_published_admin_post_url(@post), headers: { "Authorization" => admin_credentials }
+        patch toggle_published_admin_post_url(@post), headers: { "Authorization" => admin_credentials }
         @post.reload
         assert_equal !original, @post.published?
       end

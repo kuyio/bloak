@@ -13,8 +13,8 @@ Bloak::Engine.routes.draw do
 
     resources :posts do
       member do
-        get "/featured", to: "posts#toggle_featured", as: "toggle_featured"
-        get "/publish", to: "posts#toggle_published", as: "toggle_published"
+        patch "/featured", to: "posts#toggle_featured", as: "toggle_featured"
+        patch "/publish", to: "posts#toggle_published", as: "toggle_published"
       end
     end
     post 'posts/search', to: 'posts#search'

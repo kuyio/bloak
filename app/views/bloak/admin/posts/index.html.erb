@@ -75,15 +75,15 @@
                 </button>
                 <ul class="dropdown-menu" aria-labelledby="dropDownMenuMore">
                   <li>
-                    <a class="dropdown-item" href="<%= toggle_featured_admin_post_path(post) %>">
-                    <%= post.featured? ? 'Unfeature Post' : 'Feature Post' %>
-                    </a>
+                    <%= button_to toggle_featured_admin_post_path(post), method: :patch, class: "dropdown-item" do %>
+                      <%= post.featured? ? 'Unfeature Post' : 'Feature Post' %>
+                    <% end %>
                   </li>
 
                   <li>
-                    <a class="dropdown-item" href="<%= toggle_published_admin_post_path(post) %>">
+                    <%= button_to toggle_published_admin_post_path(post), method: :patch, class: "dropdown-item" do %>
                       <%= post.published? ? 'Unpublish Post' : 'Publish Post' %>
-                    </a>
+                    <% end %>
                   </li>
 
                   <li><hr class="dropdown-divider"></li>
