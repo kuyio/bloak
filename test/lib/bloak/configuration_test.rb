@@ -44,4 +44,8 @@ class BloakConfigurationTest < ActiveSupport::TestCase
   test "engine registers default stylesheet" do
     assert_includes Bloak::Engine.stylesheets, "bloak/application"
   end
+
+  test "allow_erb_in_posts defaults to false" do
+    assert_equal false, Bloak.allow_erb_in_posts
+  end
 end

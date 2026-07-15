@@ -28,6 +28,10 @@ module Bloak
   # The layout to use for public-facing blog pages (nil = engine default)
   mattr_writer(:layout)
 
+  # Allow ERB processing in post content (default: false - uses Liquid instead)
+  mattr_writer(:allow_erb_in_posts)
+  self.allow_erb_in_posts = false
+
   def self.configure
     yield self
   end
@@ -62,5 +66,9 @@ module Bloak
 
   def self.layout
     @@layout || nil
+  end
+
+  def self.allow_erb_in_posts
+    @@allow_erb_in_posts
   end
 end

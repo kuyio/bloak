@@ -51,31 +51,6 @@ class MarkdownRendererTest < ActiveSupport::TestCase
     assert_match "noopener", html
   end
 
-  test "danger box custom tag" do
-    html = MarkdownRenderer.md_to_html("!!This is dangerous")
-    assert_match "alert-danger", html
-    assert_match "Important:", html
-    assert_match "This is dangerous", html
-  end
-
-  test "warning box custom tag" do
-    html = MarkdownRenderer.md_to_html("!wThis is a warning")
-    assert_match "alert-warning", html
-    assert_match "Note:", html
-  end
-
-  test "info box custom tag" do
-    html = MarkdownRenderer.md_to_html("!iThis is info")
-    assert_match "alert-info", html
-    assert_match "This is info", html
-  end
-
-  test "quote box custom tag" do
-    html = MarkdownRenderer.md_to_html("!qThis is a quote")
-    assert_match "blockquote", html
-    assert_match "This is a quote", html
-  end
-
   test "regular paragraph wraps in p tags" do
     html = MarkdownRenderer.md_to_html("Just a paragraph.")
     assert_match "<p>Just a paragraph.</p>", html
@@ -88,20 +63,31 @@ class MarkdownRendererTest < ActiveSupport::TestCase
     assert_match "Second", html
   end
 
-  test "ERB in content is processed" do
-    html = MarkdownRenderer.md_to_html("<%= 1 + 1 %>")
-    assert_match "2", html
+  # Liquid tag tests
+
+  test "danger block tag" do
+    html = MarkdownRenderer.md_to_html("{% danger %}This is dangerous{% enddanger %}")
+    assert_match "alert-danger", html
+    assert_match "Important:", html
+    assert_match "This is dangerous", html
   end
 
-  test "ERB in fenced code blocks is not processed" do
-    md = "```\n<%= 1 + 1 %>\n```"
-    html = MarkdownRenderer.md_to_html(md)
-    assert_match "&lt;%=", html
+  test "warning block tag" do
+    html = MarkdownRenderer.md_to_html("{% warning %}This is a warning{% endwarning %}")
+    assert_match "alert-warning", html
+    assert_match "Note:", html
   end
 
-  test "assigns are available in ERB" do
-    html = MarkdownRenderer.md_to_html("<%= name %>", { name: "World" })
-    assert_match "World", html
+  test "info block tag" do
+    html = MarkdownRenderer.md_to_html("{% info %}This is info{% endinfo %}")
+    assert_match "alert-info", html
+    assert_match "This is info", html
+  end
+
+  test "quote block tag" do
+    html = MarkdownRenderer.md_to_html("{% quote %}This is a quote{% endquote %}")
+    assert_match "blockquote", html
+    assert_match "This is a quote", html
   end
 
   test "media tag with existing image renders img" do
@@ -112,27 +98,83 @@ class MarkdownRendererTest < ActiveSupport::TestCase
       content_type: "image/png"
     )
     image.save!
-    html = MarkdownRenderer.md_to_html("!media[md-test-image]")
+    html = MarkdownRenderer.md_to_html('{% media "md-test-image" %}')
     assert_match "<img", html
     assert_match "Test alt text", html
   end
 
   test "media tag with missing image renders error" do
-    html = MarkdownRenderer.md_to_html("!media[nonexistent]")
+    html = MarkdownRenderer.md_to_html('{% media "nonexistent" %}')
     assert_match "Image not found", html
     assert_match "nonexistent", html
   end
 
-  test "toc custom tag renders table of contents" do
-    md = "!toc\n\n## Section One\n\nContent\n\n## Section Two\n\nMore"
+  test "media tag escapes alt text" do
+    image = Bloak::Image.new(name: "xss-test", alt: '" onload="alert(1)')
+    image.image_file.attach(
+      io: File.open(file_fixture("test.png")),
+      filename: "test.png",
+      content_type: "image/png"
+    )
+    image.save!
+    html = MarkdownRenderer.md_to_html('{% media "xss-test" %}')
+    assert_no_match '" onload="', html
+    assert_match "&quot; onload=&quot;alert(1)", html
+  end
+
+  test "toc tag renders table of contents" do
+    md = "{% toc %}\n\n## Section One\n\nContent\n\n## Section Two\n\nMore"
     html = MarkdownRenderer.md_to_html(md)
     assert_match "table-of-contents", html
     assert_match "Table of Contents", html
   end
 
-  test "toc custom tag with custom label" do
-    md = "!toc[My Contents]\n\n## Section One\n\nContent"
+  test "toc tag with custom label" do
+    md = "{% toc \"My Contents\" %}\n\n## Section One\n\nContent"
     html = MarkdownRenderer.md_to_html(md)
     assert_match "My Contents", html
+  end
+
+  test "Liquid variables are interpolated" do
+    html = MarkdownRenderer.md_to_html("Hello {{ name }}", { name: "World" })
+    assert_match "World", html
+  end
+
+  test "Liquid tags in fenced code blocks are not processed" do
+    md = "```\n{{ secret }}\n```"
+    html = MarkdownRenderer.md_to_html(md, { secret: "LEAKED" })
+    assert_no_match "LEAKED", html
+  end
+
+  test "ERB is not processed by default" do
+    html = MarkdownRenderer.md_to_html("<%= 1 + 1 %>")
+    assert_no_match "2", html
+  end
+
+  # ERB legacy mode tests
+
+  test "ERB is processed when allow_erb_in_posts is true" do
+    Bloak.allow_erb_in_posts = true
+    html = MarkdownRenderer.md_to_html("<%= 1 + 1 %>")
+    assert_match "2", html
+  ensure
+    Bloak.allow_erb_in_posts = false
+  end
+
+  test "ERB assigns work when allow_erb_in_posts is true" do
+    Bloak.allow_erb_in_posts = true
+    html = MarkdownRenderer.md_to_html("<%= name %>", { name: "World" })
+    assert_match "World", html
+  ensure
+    Bloak.allow_erb_in_posts = false
+  end
+
+  test "ERB in fenced code blocks is not processed when allow_erb_in_posts is true" do
+    Bloak.allow_erb_in_posts = true
+    md = "```\n<%= 1 + 1 %>\n```"
+    html = MarkdownRenderer.md_to_html(md)
+    assert_match "&lt;%=", html
+  ensure
+    Bloak.allow_erb_in_posts = false
   end
 end

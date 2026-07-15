@@ -9,6 +9,7 @@ require 'pagy'
 require 'meta-tags'
 
 require "bloak/nlp"
+require "bloak/liquid_tags"
 require "bloak/markdown_renderer"
 require "bloak/media"
 

@@ -28,6 +28,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency("friendly_id", "~> 5.4")
   spec.add_dependency("image_processing", "~> 1.2")
   spec.add_dependency("jquery-rails", "~> 4.4")
+  spec.add_dependency("liquid", "~> 5.0")
   spec.add_dependency("meta-tags", "~> 2.17")
   spec.add_dependency("pagy", "~> 8.0")
   spec.add_dependency("pg_search", "~> 2.3.5")

@@ -22,4 +22,9 @@ Bloak.configure do |config|
 
   # Custom copyright notice (supports HTML)
   # config.copyright = "&copy; #{Time.now.utc.year} My Company"
+
+  # Allow ERB in post content (DANGEROUS: enables arbitrary code execution)
+  # Only enable if you trust all admin users with full server access.
+  # Default is false - uses sandboxed Liquid templates instead.
+  # config.allow_erb_in_posts = false
 end

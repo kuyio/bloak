@@ -1,196 +1,36 @@
 # frozen_string_literal: true
 
-require 'redcarpet'
-require 'rouge'
-require 'rouge/plugins/redcarpet'
+require "redcarpet"
+require "rouge"
+require "rouge/plugins/redcarpet"
+require "liquid"
 
 module MarkdownRenderer
-  # Our own custom renderer
   class CustomHTML < Redcarpet::Render::HTML
     include Rouge::Plugins::Redcarpet
     include ActionView::Helpers::SanitizeHelper
 
-    def initialize(extensions = {})
-      @locals = extensions.fetch(:locals, {})
-      super
-    end
-
-    def preprocess(document)
-      chunks = chunk_code_blocks(document)
-      rendered_chunks = []
-
-      chunks.each do |chunk|
-        rendered_chunk =
-          if chunk.start_with?('```')
-            chunk
-          else
-            ERB.new(chunk).result_with_hash(@locals)
-          end
-        rendered_chunks << rendered_chunk
-      end
-
-      @document = rendered_chunks.join("\n")
-
-      @document
-    end
-
-    # Helper function to divide document into blocks of fenced code and not fenced code
-    # WARNING! We assume GFM with ``` fences
-    def chunk_code_blocks(text)
-      chunks = []
-      chunk = []
-      in_block = false
-
-      lines = text.lines.reverse
-      until lines.empty?
-        line = lines.pop
-
-        if line.start_with?('```')
-          if in_block
-            in_block = false
-            chunk << line
-            chunks << chunk.join
-            chunk = []
-          else
-            in_block = true
-            chunks << chunk.join
-            chunk = []
-            chunk << line
-          end
-        else
-          chunk << line
-        end
-      end
-      chunks << chunk.join
-      chunks
-    end
-
-    # Render a heading with the appropriate hX level and style class
     def header(text, level)
-      # Replicate the behaviour of redcarpet/html.c:297 (rndr_header_anchor)
       stripped =
         sanitize(text)
           .downcase
-          .gsub(/[^0-9a-z]/i, '-').squeeze('-')
-          .delete_suffix('-')
+          .gsub(/[^0-9a-z]/i, "-").squeeze("-")
+          .delete_suffix("-")
 
       %(<h#{level} class="title is-#{level}" id="#{stripped}">#{text}</h#{level}>)
-    end
-
-    def paragraph(text)
-      process_custom_tags(text)
     end
 
     def rouge_formatter(lexer)
       Rouge::Formatters::HTMLLegacy.new(css_class: "highlight #{lexer.tag}")
     end
-
-    private
-
-    def process_custom_tags(text)
-      # Our own custom tags
-      if text.start_with?("!!")
-        content = text.delete_prefix("!!")
-        danger_box(content)
-      elsif text.start_with?("!w")
-        content = text.delete_prefix("!w")
-        warning_box(content)
-      elsif text.start_with?("!i")
-        content = text.delete_prefix("!i")
-        info_box(content)
-      elsif text.start_with?("!q")
-        content = text.delete_prefix("!q")
-        quote_box(content)
-      elsif text.start_with?("!media")
-        content = text.delete_prefix("!media").delete_prefix("[").delete_suffix("]")
-        media_tag(content.strip)
-      elsif text.start_with?("!toc")
-        content = text.delete_prefix("!toc").delete_prefix("[").delete_suffix("]")
-        table_of_contents(content&.strip)
-      else
-        %(<p>#{text}</p>)
-      end
-    end
-
-    def quote_box(content)
-      <<~HTML
-        <blockquote class="blockquote">
-          <p class="text-dark">
-            #{content}
-          </p>
-        </blockquote>
-      HTML
-    end
-
-    def info_box(content)
-      <<~HTML
-        <blockquote class="alert alert-info">
-        <p class="text-dark">
-            <span class="icon text-info"><i class="fa fa-info-circle"></i></span>
-            #{content}
-          </p>
-        </blockquote>
-      HTML
-    end
-
-    def warning_box(content)
-      <<~HTML
-        <blockquote class="alert alert-warning">
-          <p class="text-dark">
-            <span class="icon text-warning"><i class="fa fa-exclamation-triangle"></i></span>
-            <strong>Note:</strong> #{content.strip}
-          </p>
-        </blockquote>
-      HTML
-    end
-
-    def danger_box(content)
-      <<~HTML
-        <blockquote class="alert alert-danger">
-        <p class="text-danger">
-            <span class="icon text-danger"><i class="fa fa-exclamation-circle"></i></span>
-            <strong>Important:</strong> #{content}
-          </p>
-        </blockquote>
-      HTML
-    end
-
-    def media_tag(name)
-      if Bloak::Media.image(name).present?
-        <<~HTML
-          <img src="#{Bloak::Media.image_url(name)}" alt="#{Bloak::Media.image_alt(name)}" />
-          <p class="fs-7 text-muted text-center mb-5 media-label">#{Bloak::Media.image_alt(name)}</p>
-        HTML
-      else
-        <<~HTML
-          <p class="bg-danger text-white text-centered p-3 mb-5">
-            <span class="icon"><i class="fa fa-exclamation-circle"></i></span>
-            Image not found: '#{name}'
-          </p>
-        HTML
-      end
-    end
-
-    def table_of_contents(label)
-      label = "Table of Contents" if label.blank?
-      toc_render = Redcarpet::Render::HTML_TOC.new(nesting_level: 2..2)
-      parser     = Redcarpet::Markdown.new(toc_render)
-
-      <<~HTML
-        <div class="table-of-contents">
-          <h2 class="toc-title">#{label}</h2>
-          #{parser.render(@document)}
-        </div>
-      HTML
-    end
   end
 
   def self.md_to_html(content, assigns = {})
-    # Render the result via Redcarpet, using our Custom Renderer
+    processed = preprocess(content, assigns)
+
     Redcarpet::Markdown.new(
       CustomHTML.new(
-        link_attributes: { target: '_blank', rel: 'noopener noreferrer nofollow' },
-        locals: assigns
+        link_attributes: { target: "_blank", rel: "noopener noreferrer nofollow" }
       ),
       fenced_code_blocks: true,
       autolink: true,
@@ -200,12 +40,86 @@ module MarkdownRenderer
       highlight: true,
       with_toc_data: true,
       tables: true
-    ).render(content).html_safe # rubocop:disable Rails/OutputSafety
+    ).render(processed).html_safe # rubocop:disable Rails/OutputSafety
   end
 
   def self.render_toc(content, depth = 2)
     toc_render = Redcarpet::Render::HTML_TOC.new(nesting_level: 1..depth)
-    parser     = Redcarpet::Markdown.new(toc_render)
+    parser = Redcarpet::Markdown.new(toc_render)
     parser.render(content).html_safe # rubocop:disable Rails/OutputSafety
   end
+
+  def self.preprocess(content, assigns = {})
+    if Bloak.allow_erb_in_posts
+      process_erb(content, assigns)
+    else
+      process_liquid(content, assigns)
+    end
+  end
+
+  def self.process_liquid(content, assigns = {})
+    chunks = chunk_code_blocks(content)
+    placeholder_map = {}
+
+    protected_content = chunks.map do |chunk|
+      if chunk.start_with?("```")
+        key = "BLOAKCODE#{placeholder_map.size}BLOAKCODE"
+        placeholder_map[key] = chunk
+        key
+      else
+        chunk
+      end
+    end.join("\n")
+
+    template = Liquid::Template.parse(protected_content)
+    rendered = template.render(
+      assigns.transform_keys(&:to_s),
+      registers: { document: content }
+    )
+
+    placeholder_map.each { |key, code| rendered.sub!(key, code) }
+    rendered
+  end
+
+  def self.process_erb(content, assigns = {})
+    chunks = chunk_code_blocks(content)
+    chunks.map do |chunk|
+      if chunk.start_with?("```")
+        chunk
+      else
+        ERB.new(chunk).result_with_hash(assigns)
+      end
+    end.join("\n")
+  end
+
+  def self.chunk_code_blocks(text)
+    chunks = []
+    chunk = []
+    in_block = false
+
+    lines = text.lines.reverse
+    until lines.empty?
+      line = lines.pop
+
+      if line.start_with?("```")
+        if in_block
+          in_block = false
+          chunk << line
+          chunks << chunk.join
+          chunk = []
+        else
+          in_block = true
+          chunks << chunk.join
+          chunk = []
+          chunk << line
+        end
+      else
+        chunk << line
+      end
+    end
+    chunks << chunk.join
+    chunks
+  end
+
+  private_class_method :preprocess, :process_liquid, :process_erb, :chunk_code_blocks
 end

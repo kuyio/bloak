@@ -164,7 +164,7 @@ module Bloak
     end
 
     test "render passes assigns to markdown" do
-      @post.content = "<%= greeting %>"
+      @post.content = "{{ greeting }}"
       html = @post.render({ greeting: "Hello World" })
       assert_match "Hello World", html
     end
