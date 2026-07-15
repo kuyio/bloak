@@ -1,0 +1,63 @@
+published_post:
+  slug: hello-world
+  title: Hello World
+  topic: tutorials
+  summary: A test post summary
+  content: "This is the **content** of the test post with enough words to test reading time calculation."
+  author_name: Jane Doe
+  author_email: jane@example.com
+  published: true
+  featured: false
+  reading_time: 1
+  published_at: "2024-01-15 12:00:00"
+
+featured_post:
+  slug: featured-post
+  title: Featured Post
+  topic: news
+  summary: A featured post
+  content: "Featured content goes here."
+  author_name: Jane Doe
+  author_email: jane@example.com
+  published: true
+  featured: true
+  reading_time: 1
+  published_at: "2024-01-16 12:00:00"
+
+draft_post:
+  slug: draft-post
+  title: Draft Post
+  topic: tutorials
+  summary: An unpublished draft
+  content: "Draft content not yet ready."
+  author_name: John Smith
+  author_email: john@example.com
+  published: false
+  featured: false
+  reading_time: 1
+
+another_topic_post:
+  slug: another-topic
+  title: Another Topic
+  topic: guides
+  summary: A post in guides
+  content: "Guide content here."
+  author_name: Jane Doe
+  author_email: jane@example.com
+  published: true
+  featured: false
+  reading_time: 1
+  published_at: "2024-01-14 12:00:00"
+
+other_author_post:
+  slug: other-author-post
+  title: Post By Other Author
+  topic: tutorials
+  summary: A published post by a different author
+  content: "Content by someone else."
+  author_name: Bob Wilson
+  author_email: bob@example.com
+  published: true
+  featured: false
+  reading_time: 1
+  published_at: "2024-01-13 12:00:00"

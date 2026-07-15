@@ -19,7 +19,7 @@ module Bloak
 
       # GET /posts/1
       def show
-        stream = render_to_string(template: 'bloak/admin/posts/show')
+        stream = render_to_string(template: 'bloak/admin/posts/show', formats: [:yml])
         send_data(stream,
           filename: "#{@post.published_at.strftime('%Y-%m-%d')}-#{@post.slug}.md",
           type: "text/plain")

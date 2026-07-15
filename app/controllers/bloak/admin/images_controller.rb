@@ -57,7 +57,7 @@ module Bloak
       # DELETE /images/1
       def destroy
         @image.destroy
-        redirect_to(images_url, notice: 'Image was successfully destroyed.')
+        redirect_to(admin_images_url, notice: 'Image was successfully destroyed.')
       end
 
       private
