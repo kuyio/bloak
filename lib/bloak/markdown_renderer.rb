@@ -138,7 +138,7 @@ module MarkdownRenderer
     config.allowed_attributes_per_tag = {
       "h1" => %w[id class], "h2" => %w[id class], "h3" => %w[id class],
       "h4" => %w[id class], "h5" => %w[id class], "h6" => %w[id class],
-      "a" => %w[href target rel],
+      "a" => %w[href target rel class],
       "img" => %w[src alt class],
       "pre" => %w[class],
       "code" => %w[class],
@@ -147,8 +147,9 @@ module MarkdownRenderer
       "blockquote" => %w[class],
       "p" => %w[class],
       "i" => %w[class],
-      "td" => %w[colspan rowspan],
-      "th" => %w[colspan rowspan scope]
+      "tr" => %w[class],
+      "td" => %w[colspan rowspan class],
+      "th" => %w[colspan rowspan scope class]
     }
     config.allow_data_attributes = false
     config.allow_data_uri = false
@@ -156,7 +157,16 @@ module MarkdownRenderer
   private_constant :SANITIZER
 
   def self.sanitize_html(html)
-    SANITIZER.scrub(html)
+    placeholders = {}
+    protected = html.gsub(%r{<pre[\s>].*?</pre>}m) do |match|
+      key = "BLOAKPRE#{placeholders.size}BLOAKPRE"
+      placeholders[key] = match
+      key
+    end
+
+    sanitized = SANITIZER.scrub(protected)
+    placeholders.each { |key, block| sanitized.sub!(key, block) }
+    sanitized
   end
 
   private_class_method :preprocess, :process_liquid, :process_erb, :chunk_code_blocks, :sanitize_html
