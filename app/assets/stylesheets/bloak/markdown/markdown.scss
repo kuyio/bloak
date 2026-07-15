@@ -13,17 +13,13 @@
     }
   }
 
-  div.highlight {
+  pre.highlight {
     margin-top: 1.5rem;
     margin-bottom: 2rem;
     border: 1px solid #000;
     border-radius: 8px;
     overflow: hidden;
-  }
-
-  pre.highlight {
     padding: 1rem;
-    margin-bottom: unset;
     line-height: 1.5em;
     font-size: 0.8em;
 
@@ -56,6 +52,10 @@
   .title {
     margin-bottom: 1.5rem;
     font-weight: 600;
+
+    a.anchor {
+      display: none;
+    }
   }
 
   .title.is-1 {

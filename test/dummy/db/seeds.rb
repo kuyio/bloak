@@ -22,15 +22,17 @@ posts = [
       gem "bloak"
       ```
 
-      Then mount the engine in your `config/routes.rb`:
+      Then run the install generator:
 
-      ```ruby
-      mount Bloak::Engine => "/blog"
+      ```sh
+      rails generate bloak:install
       ```
+
+      This mounts the engine, creates the initializer, and runs migrations.
 
       ### Configuration
 
-      Create an initializer at `config/initializers/bloak.rb`:
+      Edit the initializer at `config/initializers/bloak.rb`:
 
       ```ruby
       Bloak.configure do |config|
@@ -50,47 +52,140 @@ posts = [
   },
   {
     cover: "cover-2.jpg",
-    title: "Writing with Markdown",
+    title: "All Bloak Features in One Post",
     topic: "tutorials",
-    summary: "A quick guide to the Markdown syntax supported by Bloak.",
-    content: <<~MD,
-      ## Markdown Basics
+    summary: "A comprehensive demo of every Bloak markdown feature: code, tables, custom tags, and more.",
+    content: <<~MARKDOWN,
+      {% toc "What's In This Post" %}
 
-      Bloak uses [Redcarpet](https://github.com/vmg/redcarpet) for Markdown rendering
-      with syntax highlighting powered by [Rouge](https://github.com/rouge-ruby/rouge).
+      ## Text Formatting
 
-      ### Text Formatting
+      Regular paragraphs with **bold**, *italic*, ~~strikethrough~~, and `inline code`.
+      You can also write [links](https://example.com) and reference images.
 
-      You can write **bold**, *italic*, and ~~strikethrough~~ text.
+      ## Code Blocks
 
-      ### Code Blocks
-
-      Fenced code blocks with language hints are fully supported:
+      Fenced code blocks with syntax highlighting:
 
       ```ruby
-      class HelloWorld
+      class Post < ApplicationRecord
+        # Inspect output: #<Post id: 1, title: "Hello">
         def greet(name)
           puts "Hello, \#{name}!"
         end
       end
       ```
 
-      ### Lists
+      JavaScript works too:
+
+      ```javascript
+      const greet = (name) => {
+        console.log(`Hello, ${name}!`);
+      };
+      ```
+
+      And plain text blocks:
+
+      ```
+      No syntax highlighting here.
+      Just plain text in a code fence.
+      ```
+
+      ## Lists
+
+      Unordered lists:
 
       - Item one
       - Item two
-        - Nested item
+        - Nested item A
+        - Nested item B
       - Item three
 
-      ### Blockquotes
+      Ordered lists:
+
+      1. First step
+      2. Second step
+      3. Third step
+
+      ## Blockquotes
 
       > Markdown is intended to be as easy-to-read and easy-to-write
       > as is feasible. — John Gruber
-    MD
+
+      ## Tables
+
+      | Feature | Status | Notes |
+      |---------|--------|-------|
+      | Markdown | Supported | CommonMarker |
+      | Code highlighting | Supported | Rouge |
+      | Tables | Supported | GFM |
+      | Custom tags | Supported | Liquid |
+
+      ## Headings at Every Level
+
+      ### Level 3 Heading
+
+      Content under a level 3 heading.
+
+      #### Level 4 Heading
+
+      Content under a level 4 heading.
+
+      ##### Level 5 Heading
+
+      Content under a level 5 heading.
+
+      ## Custom Tags
+
+      ### Danger Box
+
+      {% danger %}Backup your database before running migrations in production.{% enddanger %}
+
+      ### Warning Box
+
+      {% warning %}This feature is experimental and may change in future releases.{% endwarning %}
+
+      ### Info Box
+
+      {% info %}Bloak uses Liquid templates for safe, sandboxed content rendering.{% endinfo %}
+
+      ### Quote Box
+
+      {% quote %}The best way to predict the future is to invent it. — Alan Kay{% endquote %}
+
+      ## Media Embeds
+
+      You can embed uploaded images with the media tag:
+
+      {% media "sample-hero" %}
+
+      If an image doesn't exist, you get a clear error:
+
+      {% media "nonexistent-image" %}
+
+      ## Liquid Variables
+
+      Liquid templates support variable interpolation. When rendering with assigns,
+      variables like `{%raw%}{{ post.title }}{%endraw%}` are replaced with their values.
+
+      ## Links and Autolinks
+
+      Regular links: [Visit Example](https://example.com)
+
+      Autolinked URLs: https://github.com/kuyio/bloak
+
+      ## Horizontal Rules
+
+      Content above the rule.
+
+      ---
+
+      Content below the rule.
+    MARKDOWN
     author_name: "Demo Author",
     author_email: "demo@example.com",
     published: true,
-    featured: false,
+    featured: true,
     published_at: 2.days.ago
   },
   {
@@ -111,10 +206,10 @@ posts = [
 
       ### Using Images in Posts
 
-      Once uploaded, you can reference images by their URL in your Markdown:
+      Reference uploaded images by name using the media tag:
 
-      ```markdown
-      ![Alt text](/blog/images/my-image)
+      ```
+      {%raw%}{% media "my-image" %}{%endraw%}
       ```
 
       ### Cover Images
@@ -125,7 +220,7 @@ posts = [
     author_name: "Demo Author",
     author_email: "demo@example.com",
     published: true,
-    featured: true,
+    featured: false,
     published_at: 1.day.ago
   },
   {
@@ -147,11 +242,23 @@ posts = [
 
       ### Overriding Views
 
-      Since Bloak is a Rails engine, you can override any view by creating
-      a file at the same path in your host application:
+      Copy engine views to your app for full control:
 
+      ```sh
+      rails generate bloak:views
+      rails generate bloak:views --scope=posts
       ```
-      app/views/bloak/posts/index.html.erb
+
+      ### CSS Theming
+
+      Override CSS custom properties to match your brand:
+
+      ```css
+      :root {
+        --bloak-link: #e63946;
+        --bloak-heading: #1d3557;
+        --bloak-bg: #ffffff;
+      }
       ```
 
       ### Custom Stylesheets
