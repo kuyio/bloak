@@ -113,29 +113,47 @@ routes.default_url_options[:protocol] = 'https'
 
 ## The Admin Interface
 
-You can access the admin interface under the `/admin` sub-path of your engine mount, for example, if you mounted the engine at `/blog` the admin UI is available at `/blog/admin`. The Admin UI is secured by HTTP Basic Auth and both `admin_user` and `admin_password` muste be set in the `Bloak` configuration (see above).
+You can access the admin interface under the `/admin` sub-path of your engine mount, for example, if you mounted the engine at `/blog` the admin UI is available at `/blog/admin`. The Admin UI is secured by HTTP Basic Auth and both `admin_user` and `admin_password` must be set in the `Bloak` configuration (see above).
 
 Within the admin UI, you can upload images for embedding within Blog posts, as well as write and manage Blog posts.
 
+### Security Recommendations
+
+Bloak uses HTTP Basic Auth for the admin panel. For production deployments:
+
+- **HTTPS is required.** Basic Auth credentials are sent Base64-encoded (not encrypted) on every request. Without TLS, they can be intercepted.
+- **Rate limiting is recommended.** Bloak does not include brute-force protection. Use [Rack::Attack](https://github.com/rack/rack-attack) or your reverse proxy to throttle login attempts and public search requests.
+- **Set strong credentials.** The install generator requires `BLOAK_ADMIN_USER` and `BLOAK_ADMIN_PASSWORD` environment variables with no fallback defaults.
+
 ## Writing Posts
 
-Post content can be written in GitHub-flavoured markdown syntax with a few custom Markdown tag extensions. Additionally we support `HTML` tags and `ERB` tags (see below).
+Post content is written in [CommonMark](https://commonmark.org/)-compliant Markdown (via [CommonMarker](https://github.com/gjtorikian/commonmarker)) with syntax highlighting by [Rouge](https://github.com/rouge-ruby/rouge). Bloak extends Markdown with custom [Liquid](https://shopify.github.io/liquid/) tags for rich content.
 
-### Custom Markdown Tags
+### Custom Liquid Tags
 
-The `Bloak` Engine includes a custom Markdown render, that introduces a number of additional tags beyond GitHub-flavoured Markdown.
+- `{% danger %}text{% enddanger %}` renders a danger alert box
+- `{% warning %}text{% endwarning %}` renders a warning alert box
+- `{% info %}text{% endinfo %}` renders an info box
+- `{% quote %}text{% endquote %}` renders a quote box
+- `{% media "name" %}` embeds an uploaded image by its unique name
+- `{% toc %}` or `{% toc "Custom Label" %}` inserts a table of contents
 
-- `!! text` renders a danger alert box with icon and the text given in the paragraph
-- `!w text` renders a warning alert box with icon and the text given in the paragraph
-- `!i text` renders an info box with icon and the text given in the paragraph
-- `!q text` renders a quote box with icon and the text given in the paragraph
-- `!media[name]` inserts an Image (make sure to upload and name it) identified by its unique name
-- `!toc` or `!toc[label]` inserts a level-1 table of contents at this position, with an optional `label`
+### Liquid Variables
 
-### ERB Content
+Liquid templates support variable interpolation. The following variables are available in every post:
 
-The custom Markdown engine also supports `ERB` tags outside of fenced code blocks, in the Markdown content of your article.
-You can pass local variables (`assigns`) into the ERB template engine by passing a Hash to the `Bloak::Post.render()` method.
+| Variable | Type | Description |
+|----------|------|-------------|
+| `post` | `Bloak::Post` | The current post object |
+| `request` | `ActionDispatch::Request` | The current HTTP request |
+
+Use them in your post content:
+
+```
+This post is titled "{{ post.title }}" by {{ post.author_name }}.
+```
+
+Liquid is sandboxed by design and cannot execute arbitrary code. To show Liquid tags as literal text in a post, wrap them in `{% raw %}` / `{% endraw %}`.
 
 ## Customization
 
