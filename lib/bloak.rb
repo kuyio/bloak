@@ -49,7 +49,7 @@ module Bloak
   end
 
   def self.copyright
-    @@copyright || "© #{Time.now.utc.year} #{site_name} &mdash; All rights reserved.".html_safe # rubocop:disable Rails/OutputSafety
+    @@copyright || "© #{Time.now.utc.year} #{site_name} — All rights reserved."
   end
 
   def self.num_items
