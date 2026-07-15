@@ -111,13 +111,15 @@ routes.default_url_options[:host] = 'blog.example.com'
 routes.default_url_options[:protocol] = 'https'
 ```
 
+## Security
+
+See [SECURITY.md](SECURITY.md) for the full security model, rendering pipeline details, and common misconfiguration pitfalls.
+
 ## The Admin Interface
 
 You can access the admin interface under the `/admin` sub-path of your engine mount, for example, if you mounted the engine at `/blog` the admin UI is available at `/blog/admin`. The Admin UI is secured by HTTP Basic Auth and both `admin_user` and `admin_password` must be set in the `Bloak` configuration (see above).
 
 Within the admin UI, you can upload images for embedding within Blog posts, as well as write and manage Blog posts.
-
-### Security Recommendations
 
 Bloak uses HTTP Basic Auth for the admin panel. For production deployments:
 
@@ -142,9 +144,9 @@ Post content is written in [CommonMark](https://commonmark.org/)-compliant Markd
 
 Liquid templates support variable interpolation. The following variables are available in every post:
 
-| Variable | Type | Description |
-|----------|------|-------------|
-| `post` | `Bloak::Post` | The current post object |
+| Variable  | Type                      | Description              |
+| --------- | ------------------------- | ------------------------ |
+| `post`    | `Bloak::Post`             | The current post object  |
 | `request` | `ActionDispatch::Request` | The current HTTP request |
 
 Use them in your post content:
