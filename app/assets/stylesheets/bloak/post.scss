@@ -24,20 +24,20 @@ ul.menu-list {
     margin-bottom: 0.5rem;
 
     a {
-      color: #666;
+      color: var(--bloak-muted);
       padding: 0.5rem 1rem;
       display: block;
       text-decoration: none;
       width: 100%;
       border-radius: 2rem;
       &.is-active {
-        background-color: #e0ecfa;
+        background-color: var(--bloak-active-tag-bg);
         font-weight: 400;
-        color: #0d6efd;
+        color: var(--bloak-active-tag-text);
       }
       &:hover {
-        background-color: #e0ecfa;
-        color: #0d6efd;
+        background-color: var(--bloak-active-tag-bg);
+        color: var(--bloak-active-tag-text);
       }
     }
   }

@@ -25,6 +25,9 @@ module Bloak
   # The maximum depth to render for the TOC of a post
   mattr_writer(:max_toc_depth)
 
+  # The layout to use for public-facing blog pages (nil = engine default)
+  mattr_writer(:layout)
+
   def self.configure
     yield self
   end
@@ -55,5 +58,9 @@ module Bloak
 
   def self.max_toc_depth
     @@max_toc_depth || 3
+  end
+
+  def self.layout
+    @@layout || nil
   end
 end

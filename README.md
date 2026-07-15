@@ -38,44 +38,48 @@ Google Lighthouse is a free tool that provides a report analyzing page experienc
 
 ## Installation
 
-Usually, specifying the engine inside your application's `Gemfile` would be done by adding it as a normal, everyday gem. However, because we have not released the `Bloak` engine on the official rubygems.org repository, we will need to specify the `git` option:
+Add the gem to your application's `Gemfile`:
 
 ```ruby
-# Blog
 gem 'bloak', git: "https://github.com/kuyio/bloak.git"
 ```
 
-Then run `bundle` to install the gem.
+Then run `bundle install` and use the install generator:
 
-As described earlier, by placing the gem in the `Gemfile` it will be loaded when Rails is loaded. It will first require `lib/bloak.rb` from the engine, then `lib/bloak/engine.rb`, which is the file that defines the major pieces of functionality for the engine.
+```sh
+rails generate bloak:install
+```
 
-To make the engine's functionality accessible from within an application, it needs to be mounted in that application's `config/routes.rb` file:
+This will create a configuration initializer, mount the engine at `/blog`, and run all required migrations.
+
+Bloak requires Active Storage for image uploads. If you haven't set it up yet, run `bin/rails active_storage:install` first. The `image_processing` gem also requires `libvips` to be installed on your system.
+
+### Manual Installation
+
+If you prefer to set things up by hand:
 
 ```ruby
+# config/routes.rb
 mount Bloak::Engine, at: "/blog"
 ```
 
-The engine contains migrations for the `bloak_articles` and `bloak_images` tables which need to be created in the application's database so that the engine's models can query them correctly. To copy these migrations into the application run the following command from the application's root:
-
 ```sh
-$ bin/rails bloak:install:migrations
+bin/rails bloak:install:migrations
+bin/rails active_storage:install  # if not already done
+bin/rails db:migrate
 ```
-
-Additionally, Bloak requires `ActiveStorage` to be installed in your Rails application to store images for your posts. If you haven't done so yet, now is a good time to run `bin/rails active_storage:install`. Please note, that Bloak uses the `image_processing` gem to create thumbnails and image variants, which in turn requires the `vips` linrary to be installed on your system.
-
-Then, run all migrations within the context of the application with `bin/rails db:migrate`.
 
 ## Configuration
 
-You can configure the Bloak engine through an initializer file at `main_app/config/initializers/bloak.rb`
+Configure the Bloak engine through an initializer at `config/initializers/bloak.rb` (the install generator creates this for you):
 
 ```ruby
 Bloak.configure do |c|
-# The name of the site, used in the Navigation Bar, and footer unless a copyright is set
+  # The name of the site, used in the Navigation Bar, and footer unless a copyright is set
   c.site_name = "My Awesome Blog"
 
-  # The copyright notice in the footer
-  c.copyright = "© 2023 My Awesome Company - all rights reserved"
+  # The copyright notice in the footer (supports HTML)
+  c.copyright = "© 2025 My Awesome Company - all rights reserved"
 
   # The username for the admin user
   c.admin_user = ENV.fetch('BLOAK_ADMIN_USER')
@@ -83,14 +87,17 @@ Bloak.configure do |c|
   # The password for the admin user
   c.admin_password = ENV.fetch('BLOAK_ADMIN_PASSWORD')
 
-  # The number of blog posts to show before pagination
+  # The number of blog posts to show before pagination (default: 10)
   c.num_items = 10
 
-  # The maximum number of featured posts to display
+  # The maximum number of featured posts to display (default: 3)
   c.num_featured_posts = 3
 
-  # The maximum depth to render for the TOC of a post
+  # The maximum depth to render for the TOC of a post (default: 3)
   c.max_toc_depth = 3
+
+  # Use your app's own layout instead of the engine's built-in layout (default: nil)
+  # c.layout = "application"
 end
 ```
 
@@ -130,37 +137,113 @@ The `Bloak` Engine includes a custom Markdown render, that introduces a number o
 The custom Markdown engine also supports `ERB` tags outside of fenced code blocks, in the Markdown content of your article.
 You can pass local variables (`assigns`) into the ERB template engine by passing a Hash to the `Bloak::Post.render()` method.
 
-## Customizations and Styles
+## Customization
 
-You can create or copy the following files from the Bloak engine to customize the rendering of Header, and Footer, as well as to include custom styles and JavaScripts:
+There are several levels of customization, from simple theming to full control over every template.
+
+### CSS Variables (Theming)
+
+The fastest way to match your brand. Override any of these CSS custom properties in your application's stylesheet:
+
+```css
+:root {
+  --bloak-font-family: "Inter", sans-serif;
+  --bloak-font-size: 16px;
+  --bloak-bg: #ffffff;
+  --bloak-text: #333333;
+  --bloak-heading: #111111;
+  --bloak-link: #e63946;
+  --bloak-link-hover: #c1121f;
+  --bloak-border: #eeeeee;
+  --bloak-muted: #888888;
+  --bloak-code-bg: #f4f4f4;
+  --bloak-code-text: #d63384;
+  --bloak-blockquote-bg: #f9f9f9;
+  --bloak-navbar-bg: #ffffff;
+  --bloak-footer-bg: #fafafa;
+  --bloak-active-tag-bg: #fde8e8;
+  --bloak-active-tag-text: #e63946;
+}
+```
+
+### Layout
+
+By default, Bloak renders inside its own layout with a navbar, footer, and Bootstrap styling. To embed the blog inside your app's existing layout instead:
+
+```ruby
+# config/initializers/bloak.rb
+c.layout = "application"
+```
+
+When using your own layout, include the Bloak stylesheets to keep post rendering intact:
+
+```erb
+<%= stylesheet_link_tag "bloak/application" %>
+```
+
+### View Overrides
+
+For full control over every template, copy the engine's views into your application:
+
+```sh
+rails generate bloak:views
+```
+
+Or copy only what you need:
+
+```sh
+rails generate bloak:views --scope=layout    # layout templates
+rails generate bloak:views --scope=posts     # post index, show, search
+rails generate bloak:views --scope=admin     # admin panel
+rails generate bloak:views --scope=partials  # header, footer, search box, etc.
+```
+
+Rails automatically picks up your local copies over the engine defaults — no additional configuration needed.
+
+### Assets
+
+The engine ships default `logo.png` and `favicon.png` assets. Override them by placing your own files at the same paths in your application:
 
 ```
-views/
-  bloak/
-    application/
-      _stylesheet.html.erb
-      _javascript.html.erb
-      _meta_tags.html.erb
-      _header.html.erb
-      _footer.html.erb
+app/assets/images/logo.png      # navbar logo
+app/assets/images/favicon.png   # browser favicon
 ```
 
-You can create or copy the following files from the Bloak engine inside the host application to customize the rendering of Post index, Post display and display of search results:
+### Additional Stylesheets and JavaScripts
 
-```
-views/
-  bloak/
-    posts/
-      index.html.erb
-      show.html.erb
-      search.html.erb
-      _topics.html.erb
-      _post_list.html.erb
+Register extra assets to be loaded on every blog page:
+
+```ruby
+Bloak::Engine.add_stylesheet("my_blog_styles")
+Bloak::Engine.add_javascript("my_blog_scripts")
 ```
 
-You can customize the brand logo rendered in the navbar by adding your own file to `app/assets/images/logo.png`.
+## Development
 
-You can customize the favicon rendered in the browser tab by adding your own file to `app/assets/images/favicon.png`.
+### Setup
+
+```sh
+git clone https://github.com/kuyio/bloak.git
+cd bloak
+bundle install
+rails db:create db:migrate
+rails db:seed
+```
+
+Start the dummy app:
+
+```sh
+cd test/dummy && bin/rails server
+```
+
+Visit `http://localhost:3000/blog` for the blog and `http://localhost:3000/blog/admin` for the admin panel (user: `admin`, password: `password`).
+
+### Testing
+
+```sh
+make test    # rubocop lint + trivy vulnerability scan
+rake test    # full test suite
+```
 
 ## Roadmap
 
@@ -168,9 +251,6 @@ You can customize the favicon rendered in the browser tab by adding your own fil
 - [ ] Full authentication system beyond basic auth
 - [ ] Commenting system
 - [ ] Update UI to Hotwire
-- [ ] Rake tasks to copy views from engine
-- [ ] Improved customization options and splitting into additional partials
-- [ ] Rework CSS classes to allow using frameworks other than Bootstrap
 
 ## License
 

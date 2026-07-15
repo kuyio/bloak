@@ -4,6 +4,7 @@ require_dependency "bloak/application_controller"
 
 module Bloak
   class PostsController < ApplicationController
+    layout -> { Bloak.layout || "bloak/application" }
     before_action :set_post, only: [:show]
 
     # GET /posts
