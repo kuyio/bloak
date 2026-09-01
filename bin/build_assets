@@ -1,0 +1,86 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+# Pre-compiles Bloak engine CSS and JS from source files and gem dependencies.
+# Run after modifying any source files in src/assets/.
+#
+# Usage: bundle exec bin/build_assets
+
+require "bundler/setup"
+require "sassc"
+require "rouge"
+
+ROOT = File.expand_path("..", __dir__)
+SRC = File.join(ROOT, "src", "assets")
+OUT_CSS = File.join(ROOT, "app", "assets", "stylesheets", "bloak", "application.css")
+OUT_JS = File.join(ROOT, "app", "assets", "javascript", "bloak", "application.js")
+
+bootstrap_path = Gem.loaded_specs["bootstrap"].gem_dir + "/assets/stylesheets"
+jquery_js = Gem.loaded_specs["jquery-rails"].gem_dir + "/vendor/assets/javascripts/jquery3.js"
+popper_js = Gem.loaded_specs["popper_js"].gem_dir + "/assets/javascripts/popper.js"
+bootstrap_js = Gem.loaded_specs["bootstrap"].gem_dir + "/assets/javascripts/bootstrap.min.js"
+tiny_mde_js = File.join(SRC, "javascript", "vendor", "tiny-mde.min.js")
+
+def build_css(bootstrap_path)
+  parts = []
+
+  # 1. Bootstrap + Bloak main styles (SCSS)
+  bloak_scss = File.read(File.join(SRC, "stylesheets", "bloak.scss"))
+  parts << SassC::Engine.new(bloak_scss, style: :compressed, load_paths: [bootstrap_path]).render
+
+  # 2. Post styles (SCSS)
+  post_scss = File.read(File.join(SRC, "stylesheets", "post.scss"))
+  parts << SassC::Engine.new(post_scss, style: :compressed).render
+
+  # 3. Markdown styles (SCSS)
+  markdown_scss = File.read(File.join(SRC, "stylesheets", "markdown", "markdown.scss"))
+  parts << SassC::Engine.new(markdown_scss, style: :compressed).render
+
+  # 4. Rouge syntax highlighting theme
+  parts << Rouge::Themes::Molokai.render
+
+  # 5. FontAwesome icon classes (everything before the @font-face blocks)
+  fa_erb = File.read(File.join(SRC, "stylesheets", "fontawesome", "all.css.erb"))
+  fa_classes = fa_erb.split(/^@font-face\s*\{/).first
+  parts << fa_classes
+
+  # 6. FontAwesome class-to-font assignments (after the @font-face blocks)
+  parts << <<~CSS
+    .fab {
+      font-family: 'Font Awesome 5 Brands';
+      font-weight: 400;
+    }
+    .far {
+      font-family: 'Font Awesome 5 Free';
+      font-weight: 400;
+    }
+    .fa,
+    .fas {
+      font-family: 'Font Awesome 5 Free';
+      font-weight: 900;
+    }
+  CSS
+
+  # 7. TinyMDE editor styles
+  parts << File.read(File.join(SRC, "stylesheets", "tiny_mde", "tiny-mde.min.css"))
+
+  parts.join("\n")
+end
+
+def build_js(jquery_js, popper_js, bootstrap_js, tiny_mde_js)
+  [jquery_js, popper_js, bootstrap_js, tiny_mde_js].map do |path|
+    "// Source: #{File.basename(path)}\n#{File.read(path)}\n"
+  end.join("\n;\n")
+end
+
+puts "Compiling CSS..."
+css = build_css(bootstrap_path)
+File.write(OUT_CSS, css)
+puts "  -> #{OUT_CSS} (#{(File.size(OUT_CSS) / 1024.0).round(1)}KB)"
+
+puts "Compiling JS..."
+js = build_js(jquery_js, popper_js, bootstrap_js, tiny_mde_js)
+File.write(OUT_JS, js)
+puts "  -> #{OUT_JS} (#{(File.size(OUT_JS) / 1024.0).round(1)}KB)"
+
+puts "Done."

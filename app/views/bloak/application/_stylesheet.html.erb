@@ -5,6 +5,7 @@ By default, it includes the application CSS,
 but each page can define additional CSS sources
 by providing a `content_for(:stylesheet)` block.
 %>
+<%= bloak_font_faces %>
 <% Bloak::Engine.stylesheets.each do |css_path| %>
   <%= stylesheet_link_tag css_path %>
 <% end %>

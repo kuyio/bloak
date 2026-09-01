@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require_dependency "bloak/application_controller"
-
 module Bloak
   class PostsController < ApplicationController
     layout -> { Bloak.layout || "bloak/application" }

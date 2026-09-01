@@ -1,4 +1,5 @@
-# HEAD
+# 2.0.0 (unreleased)
+
 
 - [BREAKING] Replace Redcarpet with CommonMarker for CommonMark-compliant markdown rendering
 - [BREAKING] Replace ERB with Liquid for post template processing (eliminates RCE risk)
@@ -14,9 +15,14 @@
 - Add CSS custom properties for theming (14 variables)
 - Add `config.layout` option to use host app layout
 - Add default `logo.png` and `favicon.png` assets (overridable by host app)
+- Remove `require_dependency` calls (incompatible with Zeitwerk in Rails 7.2+)
+- Remove turbolinks dependency (replaced by `data-turbo-track` for Turbo compatibility)
+- Remove rails-ujs dependency (removed in Rails 8)
+- Pre-compile CSS and JS assets; engine no longer requires Sprockets, sass-rails, bootstrap, or jquery-rails at runtime
+- Drop `.eot`, `.svg`, `.ttf`, `.woff` font formats; ship `.woff2` only
 - Upgrade to Rails 8.1 compatibility, require Ruby >= 3.4
 - Use `kuyio-rubocop` for linting (replaces individual rubocop gems)
-- Comprehensive test suite (139 tests, 306 assertions)
+- Comprehensive test suite (141 tests, 308 assertions)
 - Security audit and hardening pass
 
 # 1.0.6

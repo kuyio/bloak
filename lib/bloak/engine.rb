@@ -1,9 +1,6 @@
 # frozen_string_literal: true
 
 require "friendly_id"
-require 'bootstrap'
-require 'jquery-rails'
-require 'turbolinks'
 require 'pg_search'
 require 'pagy'
 require 'meta-tags'
@@ -30,17 +27,28 @@ module Bloak
       end
     end
 
-    initializer "engine_name.assets.precompile" do |app|
-      app.config.assets.precompile += [
-        "bloak_manifest.js",
-        "bloak/application.js",
-        "bloak/application.scss"
-      ]
+    initializer "bloak.assets" do |app|
+      next unless app.config.respond_to?(:assets)
+
+      app.config.assets.paths << root.join("app", "assets", "fonts")
+
+      if defined?(Sprockets)
+        app.config.assets.precompile += %w[
+          bloak/application.css
+          bloak/application.js
+          bloak/fa-brands-400.woff2
+          bloak/fa-regular-400.woff2
+          bloak/fa-solid-900.woff2
+          favicon.png
+          logo.png
+          check.svg
+        ]
+      end
     end
 
     config.to_prepare do
       Rails.root.glob("app/decorators/**/*_decorator*.rb").each do |c|
-        require_dependency(c)
+        load(c)
       end
     end
 

@@ -19,24 +19,19 @@ Gem::Specification.new do |spec|
 
   spec.metadata["homepage_uri"] = spec.homepage
   spec.metadata["source_code_uri"] = "https://github.com/kuyio/bloak"
-  spec.metadata["changelog_uri"] = "https://github.com/kuyio/bloak/CHANGELOG.md"
+  spec.metadata["changelog_uri"] = "https://github.com/kuyio/bloak/blob/main/CHANGELOG.md"
   spec.metadata['rubygems_mfa_required'] = 'true'
 
   spec.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.md"]
 
-  spec.add_dependency("bootstrap", "~> 5.2")
   spec.add_dependency("commonmarker", "~> 2.0")
   spec.add_dependency("dandruff", "~> 0.8")
   spec.add_dependency("friendly_id", "~> 5.4")
   spec.add_dependency("image_processing", "~> 1.2")
-  spec.add_dependency("jquery-rails", "~> 4.4")
   spec.add_dependency("liquid", "~> 5.0")
   spec.add_dependency("meta-tags", "~> 2.17")
   spec.add_dependency("pagy", "~> 8.0")
   spec.add_dependency("pg_search", "~> 2.3.5")
   spec.add_dependency("rails", ">= 7.0", "< 9.0")
   spec.add_dependency("rouge", "~> 4.1")
-  spec.add_dependency("sass-rails", "~> 6.0")
-  spec.add_dependency("sprockets-rails", ">= 3.4")
-  spec.add_dependency("turbolinks", "~> 5.2")
 end

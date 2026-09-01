@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require_dependency "bloak/application_controller"
-
 module Bloak
   module Admin
     class PostsController < AdminController

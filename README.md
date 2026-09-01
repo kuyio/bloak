@@ -10,11 +10,11 @@ The Bloak engine was developed in-house to power [our own Blog](https://kuy.io/b
 
 - [x] Responsive and mobile friendly
 - [x] Google Lighthouse score of 90+ on all categories
-- [x] Write Blog posts in Markdown format (extended Github-flavoured markdown)
-- [x] SimpleDME markdown editor integration
-- [x] Custom Markdown tags for info, warning, quote boxes, table-of-contents and more
+- [x] Write Blog posts in [CommonMark](https://commonmark.org/)-compliant Markdown (via CommonMarker)
+- [x] TinyMDE markdown editor integration
+- [x] Custom [Liquid](https://shopify.github.io/liquid/) tags for info, warning, quote boxes, table-of-contents and more
 - [x] Syntax highlighting for fenced code blocks provided by Rouge
-- [x] Custom Markdown renderer supports ERB and HTML tags in Markdown
+- [x] Sandboxed Liquid templates with variable interpolation
 - [x] Cover images for posts with automatic resizing of preview images
 - [x] Post categories
 - [x] Filtering for categories
@@ -68,6 +68,24 @@ bin/rails bloak:install:migrations
 bin/rails active_storage:install  # if not already done
 bin/rails db:migrate
 ```
+
+## Upgrading from 1.x
+
+Bloak 2.0 includes three breaking changes:
+
+1. **Markdown engine**: Redcarpet (GitHub-flavored) has been replaced by [CommonMarker](https://github.com/gjtorikian/commonmarker) for spec-compliant CommonMark rendering. Most posts render identically; see the [CommonMark spec](https://spec.commonmark.org/) for edge cases.
+
+2. **Template engine**: ERB processing in post bodies has been replaced by [Liquid](https://shopify.github.io/liquid/). Liquid is sandboxed and cannot execute arbitrary Ruby. If you need time to migrate, set `config.allow_erb_in_posts = true` in your initializer — but plan to remove it, as this option will be dropped in a future release.
+
+3. **Custom tags**: The `!`-prefix tag syntax (`!toc`, `!media "name"`, `!danger ... !enddanger`) has been replaced by Liquid tags (`{% toc %}`, `{% media "name" %}`, `{% danger %}...{% enddanger %}`).
+
+Run the migration rake task to convert existing posts automatically:
+
+```sh
+bin/rails bloak:migrate_posts
+```
+
+This rewrites `!`-prefix tags to their Liquid equivalents. Review the output and spot-check a few posts afterward.
 
 ## Configuration
 
